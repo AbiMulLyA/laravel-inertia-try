@@ -1,0 +1,43 @@
+{
+  "node_modules/laravel-vite-plugin/inertia-helpers/index.js": [],
+  "resources/js/Layouts/AppLayout.tsx": [
+    "/build/assets/AppLayout-Bnl3kyBN.js"
+  ],
+  "resources/js/Pages/Auth/Login.tsx": [
+    "/build/assets/Login-DlS3REK4.js"
+  ],
+  "resources/js/Pages/Auth/Register.tsx": [
+    "/build/assets/Register-D0FPfwPf.js"
+  ],
+  "resources/js/Pages/Bidang/Form.tsx": [
+    "/build/assets/Form-m4nqzXTC.js"
+  ],
+  "resources/js/Pages/Bidang/Index.tsx": [
+    "/build/assets/Index-CCTiN59y.js"
+  ],
+  "resources/js/Pages/Dashboard.tsx": [
+    "/build/assets/Dashboard-VDwWAVB-.js"
+  ],
+  "resources/js/Pages/Kegiatan/Form.tsx": [
+    "/build/assets/Form-oU8UltpI.js"
+  ],
+  "resources/js/Pages/Kegiatan/Index.tsx": [
+    "/build/assets/Index-CNQ3b83H.js"
+  ],
+  "resources/js/Pages/PelakuUsaha/Form.tsx": [
+    "/build/assets/Form-DGUKx2Oc.js"
+  ],
+  "resources/js/Pages/PelakuUsaha/Import.tsx": [
+    "/build/assets/Import-CcsAx3A3.js"
+  ],
+  "resources/js/Pages/PelakuUsaha/Index.tsx": [
+    "/build/assets/Index-BgNRaiw0.js"
+  ],
+  "resources/js/Pages/Program/Form.tsx": [
+    "/build/assets/Form-CI3Y69cQ.js"
+  ],
+  "resources/js/Pages/Program/Index.tsx": [
+    "/build/assets/Index-CjnNslz2.js"
+  ],
+  "resources/js/ssr.tsx": []
+}

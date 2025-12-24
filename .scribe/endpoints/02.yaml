@@ -1,0 +1,367 @@
+name: Bidang
+description: |-
+
+  API untuk mengelola data Bidang/Unit Kerja
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/bidang
+    metadata:
+      custom: []
+      groupName: Bidang
+      groupDescription: |-
+
+        API untuk mengelola data Bidang/Unit Kerja
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get list of all bidang with optional filters'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[{"id":3,"kode":"KPG","nama":"Bidang Ketahanan Pangan","deskripsi":"Mengelola urusan ketahanan dan keamanan pangan","kepala_bidang":"Bakianto Sihombing S.Pd","nip_kepala":"622150828394562178","is_active":true,"total_program":5,"total_pelaku_usaha":25139,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":4,"kode":"PKN","nama":"Bidang Perkebunan","deskripsi":"Mengelola urusan perkebunan","kepala_bidang":"Cemani Maryadi","nip_kepala":"056606151877344551","is_active":true,"total_program":5,"total_pelaku_usaha":25048,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":1,"kode":"PTN","nama":"Bidang Pertanian","deskripsi":"Mengelola urusan tanaman pangan dan hortikultura","kepala_bidang":"Ivan Pangestu","nip_kepala":"310058795976735470","is_active":true,"total_program":5,"total_pelaku_usaha":24921,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":2,"kode":"PTK","nama":"Bidang Peternakan","deskripsi":"Mengelola urusan peternakan dan kesehatan hewan","kepala_bidang":"Ikhsan Martana Irawan M.Ak","nip_kepala":"193258292625556670","is_active":true,"total_program":5,"total_pelaku_usaha":24892,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"}],"links":{"first":"http:\/\/localhost:8000\/api\/v1\/bidang?page=1","last":"http:\/\/localhost:8000\/api\/v1\/bidang?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":1,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"http:\/\/localhost:8000\/api\/v1\/bidang?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"path":"http:\/\/localhost:8000\/api\/v1\/bidang","per_page":15,"to":4,"total":4}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/bidang/{bidang_id}'
+    metadata:
+      custom: []
+      groupName: Bidang
+      groupDescription: |-
+
+        API untuk mengelola data Bidang/Unit Kerja
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get single bidang with relationships'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      bidang_id:
+        custom: []
+        name: bidang_id
+        description: 'The ID of the bidang.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      bidang_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":{"id":1,"kode":"PTN","nama":"Bidang Pertanian","deskripsi":"Mengelola urusan tanaman pangan dan hortikultura","kepala_bidang":"Ivan Pangestu","nip_kepala":"310058795976735470","is_active":true,"total_program":5,"total_pelaku_usaha":24921,"program":[{"id":1,"bidang_id":1,"kode":"PTN-001","nama":"Program Bidang Pertanian sapiente doloremque quos","deskripsi":"Quo voluptate fuga dolorum minus voluptate est possimus. Non veniam ipsum qui est. Aut illo nulla autem placeat enim. Voluptas cumque in molestiae et quod. Esse voluptatem et quidem asperiores ducimus.","tahun_anggaran":2025,"pagu_anggaran":"2674079525.00","realisasi_anggaran":"1818374077.00","status":"aktif","tanggal_mulai":"2025-01-01","tanggal_selesai":"2025-12-31","persentase_realisasi":68,"progress_kegiatan":44.3,"kegiatan":[{"id":1,"program_id":1,"kode":"PTN-001-K01","nama":"Kegiatan quos optio placeat tempore","deskripsi":"Mollitia rem ullam aut quod rerum. Earum nam omnis asperiores earum aut quia. Possimus enim ab nulla voluptas dolor et nemo. Libero et placeat possimus autem et mollitia accusamus.","lokasi":"Ds. Balikpapan No. 899, Cimahi 16395, Babel","kecamatan":"Sadananya","desa":"Sukamanah","target":"9023.00","realisasi":"5774.72","satuan":"Ekor","anggaran":"85735795.00","realisasi_anggaran":"59157698.55","status":"selesai","progress":1,"tanggal_mulai":"2025-04-04","tanggal_selesai":"2025-11-17","dokumentasi":null,"catatan":null,"persentase_realisasi":64,"persentase_anggaran":69,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":2,"program_id":1,"kode":"PTN-001-K02","nama":"Kegiatan nisi doloremque sint asperiores","deskripsi":"Quos ut et consequatur quae itaque. Nemo sit quisquam nesciunt et vitae labore et. Et rerum omnis expedita delectus quia similique assumenda. Mollitia deleniti accusantium quisquam harum cum nihil dignissimos dolores.","lokasi":"Kpg. Bayam No. 179, Pekanbaru 33870, Kaltara","kecamatan":"Cipaku","desa":"Cintamulya","target":"4390.00","realisasi":"3687.60","satuan":"Kelompok","anggaran":"209827831.00","realisasi_anggaran":"186746769.59","status":"selesai","progress":42,"tanggal_mulai":"2025-06-04","tanggal_selesai":"2025-07-07","dokumentasi":null,"catatan":null,"persentase_realisasi":84,"persentase_anggaran":89,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":3,"program_id":1,"kode":"PTN-001-K03","nama":"Kegiatan et reprehenderit natus sit","deskripsi":"Laudantium numquam nisi explicabo non. Id quam officia aspernatur aspernatur est ullam optio. In distinctio qui iste est.","lokasi":"Gg. Hang No. 492, Singkawang 40899, Jabar","kecamatan":"Cijeungjing","desa":"Mekarjaya","target":"8573.00","realisasi":"5829.64","satuan":"Orang","anggaran":"419313864.00","realisasi_anggaran":"205463793.36","status":"belum_mulai","progress":18,"tanggal_mulai":"2025-01-11","tanggal_selesai":"2025-12-26","dokumentasi":null,"catatan":null,"persentase_realisasi":68,"persentase_anggaran":49,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":4,"program_id":1,"kode":"PTN-001-K04","nama":"Kegiatan porro aut tempore optio","deskripsi":"Ipsa dignissimos incidunt aut quidem ipsum cum quia. Consequatur quasi omnis rerum molestiae mollitia optio illo. Laborum delectus ducimus voluptatum velit explicabo.","lokasi":"Jr. Bata Putih No. 530, Palangka Raya 18184, Pabar","kecamatan":"Kawali","desa":"Cintamulya","target":"4204.00","realisasi":"1093.04","satuan":"Ha","anggaran":"219497179.00","realisasi_anggaran":"144868138.14","status":"selesai","progress":10,"tanggal_mulai":"2025-05-03","tanggal_selesai":"2025-09-15","dokumentasi":null,"catatan":null,"persentase_realisasi":26,"persentase_anggaran":66,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":5,"program_id":1,"kode":"PTN-001-K05","nama":"Kegiatan omnis quia aut eligendi","deskripsi":"Ex ad sunt et quod debitis numquam. Enim est voluptatem reprehenderit ipsa. Quidem et consequuntur praesentium voluptatibus officiis. Reiciendis autem beatae nam dolores sequi atque. Et sed quasi incidunt dolore.","lokasi":"Gg. Elang No. 552, Malang 89220, Gorontalo","kecamatan":"Sadananya","desa":"Cintamulya","target":"1385.00","realisasi":"1024.90","satuan":"Ekor","anggaran":"370491245.00","realisasi_anggaran":"174130885.15","status":"berjalan","progress":73,"tanggal_mulai":"2025-01-07","tanggal_selesai":"2025-07-30","dokumentasi":null,"catatan":null,"persentase_realisasi":74,"persentase_anggaran":47,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":6,"program_id":1,"kode":"PTN-001-K06","nama":"Kegiatan dolor sit iure praesentium","deskripsi":"Quo iusto ut fugit officia nisi ullam praesentium. Dolorem dicta et autem distinctio et at expedita. Qui non amet tempora recusandae ea.","lokasi":"Jr. Yogyakarta No. 129, Kotamobagu 34335, Sulteng","kecamatan":"Cipaku","desa":"Mekarmanik","target":"6473.00","realisasi":"129.46","satuan":"Kg","anggaran":"422881447.00","realisasi_anggaran":"253728868.20","status":"selesai","progress":76,"tanggal_mulai":"2025-05-12","tanggal_selesai":"2025-09-21","dokumentasi":null,"catatan":null,"persentase_realisasi":2,"persentase_anggaran":60,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":7,"program_id":1,"kode":"PTN-001-K07","nama":"Kegiatan non velit dolor tempore","deskripsi":"Saepe eos modi suscipit voluptatum. Necessitatibus aperiam sit sed consequuntur illum. Eveniet dolor recusandae modi est doloremque.","lokasi":"Jln. Baing No. 486, Bima 12235, NTT","kecamatan":"Lakbok","desa":"Sukajadi","target":"8911.00","realisasi":"8911.00","satuan":"Kelompok","anggaran":"456263236.00","realisasi_anggaran":"278320573.96","status":"tertunda","progress":15,"tanggal_mulai":"2025-01-08","tanggal_selesai":"2025-07-08","dokumentasi":null,"catatan":null,"persentase_realisasi":100,"persentase_anggaran":61,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":8,"program_id":1,"kode":"PTN-001-K08","nama":"Kegiatan laboriosam corporis accusamus laborum","deskripsi":"Vero laudantium omnis nihil non. Quisquam fuga mollitia reiciendis nisi libero numquam ut. Qui ullam repudiandae voluptatem a ducimus optio corrupti. Omnis ea odit et sed harum.","lokasi":"Jr. R.E. Martadinata No. 716, Mojokerto 98720, Jabar","kecamatan":"Lakbok","desa":"Cintakarya","target":"3114.00","realisasi":"1868.40","satuan":"Kelompok","anggaran":"214073654.00","realisasi_anggaran":"124162719.32","status":"selesai","progress":92,"tanggal_mulai":"2025-04-07","tanggal_selesai":"2025-07-27","dokumentasi":null,"catatan":null,"persentase_realisasi":60,"persentase_anggaran":58,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":9,"program_id":1,"kode":"PTN-001-K09","nama":"Kegiatan voluptates et porro voluptatem","deskripsi":"Deserunt aliquam amet ut voluptatibus tempora deserunt excepturi. Et nam eius reprehenderit ipsa libero. Laudantium placeat praesentium consequatur maiores quidem unde.","lokasi":"Dk. Pasir Koja No. 18, Bandar Lampung 12752, Sumbar","kecamatan":"Kawali","desa":"Cintajaya","target":"1080.00","realisasi":"140.40","satuan":"Orang","anggaran":"310375680.00","realisasi_anggaran":"158291596.80","status":"selesai","progress":83,"tanggal_mulai":"2025-05-08","tanggal_selesai":"2025-09-09","dokumentasi":null,"catatan":null,"persentase_realisasi":13,"persentase_anggaran":51,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":10,"program_id":1,"kode":"PTN-001-K10","nama":"Kegiatan sit vero velit numquam","deskripsi":"Quis doloremque beatae voluptas quis. Ut dolorem fuga in neque quis. Nihil eaque non est.","lokasi":"Ki. Basmol Raya No. 784, Gorontalo 53590, Kepri","kecamatan":"Rancah","desa":"Mekarwangi","target":"6033.00","realisasi":"4223.10","satuan":"Kelompok","anggaran":"440516982.00","realisasi_anggaran":"281930868.48","status":"berjalan","progress":33,"tanggal_mulai":"2025-01-24","tanggal_selesai":"2025-07-12","dokumentasi":null,"catatan":null,"persentase_realisasi":70,"persentase_anggaran":64,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"}],"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":2,"bidang_id":1,"kode":"PTN-002","nama":"Program Bidang Pertanian totam consequuntur ratione","deskripsi":"Eum est aut eaque hic sequi reprehenderit architecto nihil. Ratione omnis ullam facilis aut ullam qui vitae. Repellendus id id amet eaque. Minus laboriosam eos dicta minus iure.","tahun_anggaran":2025,"pagu_anggaran":"2947029661.00","realisasi_anggaran":"1208282161.01","status":"selesai","tanggal_mulai":"2025-01-01","tanggal_selesai":"2025-12-31","persentase_realisasi":41,"progress_kegiatan":52.4,"kegiatan":[{"id":11,"program_id":2,"kode":"PTN-002-K01","nama":"Kegiatan vel non in magni","deskripsi":"Doloremque reprehenderit sapiente animi nam veniam optio ipsum. Architecto nihil nostrum voluptate voluptatum officia. Asperiores aspernatur nam quam saepe doloribus debitis.","lokasi":"Psr. Bacang No. 260, Bandung 38023, Kaltara","kecamatan":"Rancah","desa":"Sukajadi","target":"2772.00","realisasi":"1330.56","satuan":"Kg","anggaran":"368509810.00","realisasi_anggaran":"143718825.90","status":"selesai","progress":81,"tanggal_mulai":"2025-05-28","tanggal_selesai":"2025-08-30","dokumentasi":null,"catatan":null,"persentase_realisasi":48,"persentase_anggaran":39,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":12,"program_id":2,"kode":"PTN-002-K02","nama":"Kegiatan consequuntur fugit quis soluta","deskripsi":"At nisi repellendus aliquid quidem aperiam. Aspernatur incidunt earum porro nihil sed. Molestiae ratione aut est enim. Veniam sit ab minus incidunt labore iure quo.","lokasi":"Jr. Nanas No. 131, Palu 12761, Kalsel","kecamatan":"Lakbok","desa":"Mekarwangi","target":"4127.00","realisasi":"41.27","satuan":"Orang","anggaran":"384156741.00","realisasi_anggaran":"265068151.29","status":"berjalan","progress":65,"tanggal_mulai":"2025-01-30","tanggal_selesai":"2025-10-16","dokumentasi":null,"catatan":null,"persentase_realisasi":1,"persentase_anggaran":69,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":13,"program_id":2,"kode":"PTN-002-K03","nama":"Kegiatan qui error perferendis placeat","deskripsi":"Corporis aspernatur veritatis sint id aut aut. Quidem hic incidunt ratione dolorem architecto similique dolor. Et aut harum placeat libero minima et aut. Beatae alias quis temporibus similique minus.","lokasi":"Psr. Bagas Pati No. 695, Madiun 76476, Pabar","kecamatan":"Cidolog","desa":"Sukamanah","target":"1901.00","realisasi":"855.45","satuan":"Kelompok","anggaran":"145055560.00","realisasi_anggaran":"65275002.00","status":"tertunda","progress":61,"tanggal_mulai":"2025-01-17","tanggal_selesai":"2025-07-21","dokumentasi":null,"catatan":null,"persentase_realisasi":45,"persentase_anggaran":45,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":14,"program_id":2,"kode":"PTN-002-K04","nama":"Kegiatan ut rerum perspiciatis vitae","deskripsi":"Et dolorum autem architecto. Beatae earum repudiandae et ut et dolorem ut. Excepturi facilis quia sequi laudantium.","lokasi":"Kpg. Katamso No. 522, Kupang 19031, Maluku","kecamatan":"Cihaurbeuti","desa":"Cintajaya","target":"8193.00","realisasi":"6390.54","satuan":"Unit","anggaran":"21888316.00","realisasi_anggaran":"9630859.04","status":"tertunda","progress":40,"tanggal_mulai":"2025-02-08","tanggal_selesai":"2025-10-31","dokumentasi":null,"catatan":null,"persentase_realisasi":78,"persentase_anggaran":44,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":15,"program_id":2,"kode":"PTN-002-K05","nama":"Kegiatan dolorum aut aut labore","deskripsi":"Adipisci dicta similique non quos impedit omnis adipisci. Eligendi molestiae neque debitis consequatur aspernatur est ipsa. Natus enim nisi eum ab maxime dolorem aliquid.","lokasi":"Dk. Astana Anyar No. 630, Kediri 53114, Kalteng","kecamatan":"Ciamis","desa":"Cintarasa","target":"8436.00","realisasi":"7845.48","satuan":"Kg","anggaran":"228356128.00","realisasi_anggaran":"191819147.52","status":"belum_mulai","progress":84,"tanggal_mulai":"2025-03-04","tanggal_selesai":"2025-12-19","dokumentasi":null,"catatan":null,"persentase_realisasi":93,"persentase_anggaran":84,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":16,"program_id":2,"kode":"PTN-002-K06","nama":"Kegiatan aut quam quo similique","deskripsi":"Fuga aut non dolorum est maxime sit. Consequatur autem ea autem facere. Harum voluptates voluptatem mollitia deleniti quae recusandae.","lokasi":"Psr. Daan No. 647, Bogor 79950, Sumsel","kecamatan":"Rajadesa","desa":"Mekarsari","target":"8155.00","realisasi":"5219.20","satuan":"Ha","anggaran":"421139859.00","realisasi_anggaran":"294797901.30","status":"selesai","progress":86,"tanggal_mulai":"2025-01-08","tanggal_selesai":"2025-11-19","dokumentasi":null,"catatan":null,"persentase_realisasi":64,"persentase_anggaran":70,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":17,"program_id":2,"kode":"PTN-002-K07","nama":"Kegiatan vero in quam tempora","deskripsi":"Non atque hic repudiandae qui non sapiente quae. In recusandae adipisci laboriosam dolores. Quidem alias enim deleniti.","lokasi":"Kpg. Halim No. 614, Serang 12871, Kaltim","kecamatan":"Sadananya","desa":"Mekarmukti","target":"3590.00","realisasi":"1651.40","satuan":"Ekor","anggaran":"80606381.00","realisasi_anggaran":"24181914.30","status":"tertunda","progress":40,"tanggal_mulai":"2025-05-21","tanggal_selesai":"2025-07-07","dokumentasi":null,"catatan":null,"persentase_realisasi":46,"persentase_anggaran":30,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":18,"program_id":2,"kode":"PTN-002-K08","nama":"Kegiatan dolorem qui corporis eligendi","deskripsi":"Similique dolores eos sint quisquam amet. Eveniet ducimus ipsum cum consequatur. Assumenda perspiciatis ut nulla. Enim voluptates exercitationem magnam fugit et.","lokasi":"Jr. Sugiyopranoto No. 966, Binjai 13573, Jatim","kecamatan":"Rancah","desa":"Mekarmukti","target":"2335.00","realisasi":"1027.40","satuan":"Unit","anggaran":"395070785.00","realisasi_anggaran":"331859459.40","status":"belum_mulai","progress":56,"tanggal_mulai":"2025-06-07","tanggal_selesai":"2025-07-06","dokumentasi":null,"catatan":null,"persentase_realisasi":44,"persentase_anggaran":84,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":19,"program_id":2,"kode":"PTN-002-K09","nama":"Kegiatan doloremque quidem voluptas qui","deskripsi":"Dolorum aut id ducimus odio ipsa velit iste. Omnis perspiciatis libero laborum libero alias alias qui. Aperiam autem nostrum omnis nihil.","lokasi":"Ki. Gatot Subroto No. 167, Sawahlunto 48443, Lampung","kecamatan":"Cikoneng","desa":"Mekarjaya","target":"3980.00","realisasi":"3900.40","satuan":"Unit","anggaran":"168409032.00","realisasi_anggaran":"131359044.96","status":"berjalan","progress":4,"tanggal_mulai":"2025-04-24","tanggal_selesai":"2025-07-11","dokumentasi":null,"catatan":null,"persentase_realisasi":98,"persentase_anggaran":78,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":20,"program_id":2,"kode":"PTN-002-K10","nama":"Kegiatan praesentium beatae et ullam","deskripsi":"Omnis est dicta eos qui voluptate dolorem qui. Nostrum perspiciatis tempore minima est nemo debitis ducimus aut. Dolorum ipsam consequuntur ipsam consequatur cumque. Id ut qui aspernatur aspernatur et dolorum.","lokasi":"Psr. Pintu Besar Selatan No. 709, Tegal 12667, DKI","kecamatan":"Ciamis","desa":"Sukajadi","target":"7329.00","realisasi":"1026.06","satuan":"Unit","anggaran":"227352211.00","realisasi_anggaran":"134137804.49","status":"belum_mulai","progress":7,"tanggal_mulai":"2025-01-13","tanggal_selesai":"2025-09-18","dokumentasi":null,"catatan":null,"persentase_realisasi":14,"persentase_anggaran":59,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"}],"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":3,"bidang_id":1,"kode":"PTN-003","nama":"Program Bidang Pertanian blanditiis pariatur omnis","deskripsi":"Voluptatem ad voluptatum in et expedita incidunt. Ad quia labore voluptas fuga quo. Deserunt maxime dolores rerum iusto. Saepe sunt soluta officia et. Necessitatibus voluptates consectetur adipisci modi.","tahun_anggaran":2025,"pagu_anggaran":"953467563.00","realisasi_anggaran":"743704699.14","status":"selesai","tanggal_mulai":"2025-01-01","tanggal_selesai":"2025-12-31","persentase_realisasi":78,"progress_kegiatan":50.7,"kegiatan":[{"id":21,"program_id":3,"kode":"PTN-003-K01","nama":"Kegiatan id placeat asperiores quidem","deskripsi":"Omnis sit ut molestiae corporis. Expedita accusantium amet beatae corporis itaque quidem. Non quia consequuntur dolorem.","lokasi":"Ds. Katamso No. 856, Prabumulih 29634, Papua","kecamatan":"Ciamis","desa":"Mekarsari","target":"4336.00","realisasi":"4032.48","satuan":"Kelompok","anggaran":"457793972.00","realisasi_anggaran":"361657237.88","status":"selesai","progress":31,"tanggal_mulai":"2025-06-29","tanggal_selesai":"2025-07-17","dokumentasi":null,"catatan":null,"persentase_realisasi":93,"persentase_anggaran":79,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":22,"program_id":3,"kode":"PTN-003-K02","nama":"Kegiatan eos dolor tempore sunt","deskripsi":"Neque amet consequuntur rerum illo. Nobis eos fuga soluta laudantium. Est omnis totam beatae nemo non aspernatur doloribus. Consequatur doloremque omnis cupiditate incidunt libero.","lokasi":"Gg. Barat No. 756, Tasikmalaya 18963, Pabar","kecamatan":"Lakbok","desa":"Sukasari","target":"2806.00","realisasi":"1823.90","satuan":"Kg","anggaran":"472206246.00","realisasi_anggaran":"335266434.66","status":"belum_mulai","progress":98,"tanggal_mulai":"2025-02-05","tanggal_selesai":"2025-07-18","dokumentasi":null,"catatan":null,"persentase_realisasi":65,"persentase_anggaran":71,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":23,"program_id":3,"kode":"PTN-003-K03","nama":"Kegiatan consequatur sequi sit qui","deskripsi":"Vel explicabo illum maiores voluptatem tempora. Vero nostrum recusandae aut harum. Porro nam enim nobis odit modi atque labore. Eos cupiditate tenetur sed libero.","lokasi":"Ki. Nangka No. 248, Makassar 51610, Malut","kecamatan":"Jatinagara","desa":"Cintarasa","target":"517.00","realisasi":"330.88","satuan":"Ha","anggaran":"261581172.00","realisasi_anggaran":"164796138.36","status":"tertunda","progress":58,"tanggal_mulai":"2025-01-07","tanggal_selesai":"2025-12-22","dokumentasi":null,"catatan":null,"persentase_realisasi":64,"persentase_anggaran":63,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":24,"program_id":3,"kode":"PTN-003-K04","nama":"Kegiatan itaque omnis illo tempora","deskripsi":"Est consequatur et alias qui dolor. Repellat ut sint voluptatum recusandae. Quibusdam hic aut dolorem repellendus perferendis est est. Debitis id maxime temporibus autem et eius et. Sit unde ipsum quae rerum.","lokasi":"Kpg. Ekonomi No. 439, Lhokseumawe 12901, Jateng","kecamatan":"Rajadesa","desa":"Cintaasih","target":"4231.00","realisasi":"3596.35","satuan":"Kelompok","anggaran":"487499314.00","realisasi_anggaran":"151124787.34","status":"tertunda","progress":63,"tanggal_mulai":"2025-03-17","tanggal_selesai":"2025-12-12","dokumentasi":null,"catatan":null,"persentase_realisasi":85,"persentase_anggaran":31,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":25,"program_id":3,"kode":"PTN-003-K05","nama":"Kegiatan aperiam eius ea voluptatem","deskripsi":"Et error nesciunt ut sed. Molestias rerum porro nisi velit. Minima consectetur et ut nihil id explicabo.","lokasi":"Jr. Agus Salim No. 410, Sukabumi 59758, Kaltara","kecamatan":"Jatinagara","desa":"Cintakarya","target":"1760.00","realisasi":"1214.40","satuan":"Orang","anggaran":"225160619.00","realisasi_anggaran":"101322278.55","status":"tertunda","progress":4,"tanggal_mulai":"2025-05-30","tanggal_selesai":"2025-08-05","dokumentasi":null,"catatan":null,"persentase_realisasi":69,"persentase_anggaran":45,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":26,"program_id":3,"kode":"PTN-003-K06","nama":"Kegiatan unde aut eveniet veritatis","deskripsi":"Dicta consequatur animi earum sapiente. Adipisci nihil voluptate quaerat aut illum temporibus sed. Eum optio esse pariatur cupiditate aspernatur praesentium suscipit. Consectetur ut enim voluptatem quos sequi.","lokasi":"Jr. Baranangsiang No. 477, Solok 25885, Sumsel","kecamatan":"Kawali","desa":"Cintarasa","target":"1906.00","realisasi":"667.10","satuan":"Kelompok","anggaran":"107332776.00","realisasi_anggaran":"49373076.96","status":"berjalan","progress":68,"tanggal_mulai":"2025-04-05","tanggal_selesai":"2025-09-14","dokumentasi":null,"catatan":null,"persentase_realisasi":35,"persentase_anggaran":46,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":27,"program_id":3,"kode":"PTN-003-K07","nama":"Kegiatan et odit et harum","deskripsi":"Necessitatibus magni rerum porro quidem eum alias voluptas cumque. Non numquam et qui accusantium. Unde autem temporibus sapiente nisi. Tenetur sed quisquam eveniet dolorem sit ducimus libero.","lokasi":"Jr. Taman No. 730, Palangka Raya 11515, Kalbar","kecamatan":"Rajadesa","desa":"Mekarmukti","target":"2323.00","realisasi":"1115.04","satuan":"Orang","anggaran":"191736617.00","realisasi_anggaran":"76694646.80","status":"selesai","progress":68,"tanggal_mulai":"2025-06-13","tanggal_selesai":"2025-07-13","dokumentasi":null,"catatan":null,"persentase_realisasi":48,"persentase_anggaran":40,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":28,"program_id":3,"kode":"PTN-003-K08","nama":"Kegiatan cupiditate sit dignissimos quaerat","deskripsi":"Vero itaque cumque omnis quia molestiae. Eos quis ut sed est exercitationem. Sit dolores nisi labore non omnis aspernatur.","lokasi":"Jr. Pacuan Kuda No. 571, Banda Aceh 89739, Kaltara","kecamatan":"Lakbok","desa":"Sukamaju","target":"6962.00","realisasi":"6474.66","satuan":"Unit","anggaran":"477891058.00","realisasi_anggaran":"310629187.70","status":"belum_mulai","progress":88,"tanggal_mulai":"2025-06-20","tanggal_selesai":"2025-07-24","dokumentasi":null,"catatan":null,"persentase_realisasi":93,"persentase_anggaran":65,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":29,"program_id":3,"kode":"PTN-003-K09","nama":"Kegiatan sed libero tempora iusto","deskripsi":"Nihil vel corrupti est quos iure libero ipsa est. Aliquid recusandae voluptatibus rerum. Facere et maxime deserunt aliquid et. Eligendi libero explicabo ipsam suscipit excepturi.","lokasi":"Ki. Suprapto No. 617, Yogyakarta 32755, Sulbar","kecamatan":"Cipaku","desa":"Mekarsari","target":"9170.00","realisasi":"3301.20","satuan":"Orang","anggaran":"286422176.00","realisasi_anggaran":"160396418.56","status":"berjalan","progress":20,"tanggal_mulai":"2025-03-18","tanggal_selesai":"2025-07-01","dokumentasi":null,"catatan":null,"persentase_realisasi":36,"persentase_anggaran":56,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":30,"program_id":3,"kode":"PTN-003-K10","nama":"Kegiatan eaque officia quia commodi","deskripsi":"Nemo facere ipsum dignissimos illo in corporis qui. Facilis facilis quos cumque delectus possimus aut. Perferendis odio asperiores tempora.","lokasi":"Ki. Abdul. Muis No. 655, Palu 46539, Sulsel","kecamatan":"Cidolog","desa":"Mekarwangi","target":"6270.00","realisasi":"3511.20","satuan":"Orang","anggaran":"246242644.00","realisasi_anggaran":"209306247.40","status":"belum_mulai","progress":9,"tanggal_mulai":"2025-06-24","tanggal_selesai":"2025-11-01","dokumentasi":null,"catatan":null,"persentase_realisasi":56,"persentase_anggaran":85,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"}],"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":4,"bidang_id":1,"kode":"PTN-004","nama":"Program Bidang Pertanian quam nam iure","deskripsi":"Saepe quis illo sequi voluptatem aperiam cum doloribus. Sunt atque non perferendis dolorem. Rerum eos ex non quo quisquam ad qui.","tahun_anggaran":2025,"pagu_anggaran":"4223724771.00","realisasi_anggaran":"3547928807.64","status":"selesai","tanggal_mulai":"2025-01-01","tanggal_selesai":"2025-12-31","persentase_realisasi":84,"progress_kegiatan":63.1,"kegiatan":[{"id":31,"program_id":4,"kode":"PTN-004-K01","nama":"Kegiatan rerum iste expedita laborum","deskripsi":"Reprehenderit voluptate temporibus et minus excepturi. Doloremque vero eum sint porro atque nihil. Odit et et dolorem accusantium ad. Id et aut autem vel asperiores fugiat enim.","lokasi":"Dk. Nanas No. 240, Dumai 80601, Gorontalo","kecamatan":"Panjalu","desa":"Sukamanah","target":"6516.00","realisasi":"651.60","satuan":"Orang","anggaran":"130047736.00","realisasi_anggaran":"80629596.32","status":"berjalan","progress":69,"tanggal_mulai":"2025-03-27","tanggal_selesai":"2025-10-20","dokumentasi":null,"catatan":null,"persentase_realisasi":10,"persentase_anggaran":62,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":32,"program_id":4,"kode":"PTN-004-K02","nama":"Kegiatan ut ut nisi et","deskripsi":"Sed repellendus repellat cumque exercitationem quod. Aut debitis enim ullam similique quas. Cupiditate doloremque qui sunt eum.","lokasi":"Ds. Gegerkalong Hilir No. 537, Pekanbaru 78326, Sulbar","kecamatan":"Cihaurbeuti","desa":"Cintajaya","target":"126.00","realisasi":"56.70","satuan":"Kg","anggaran":"143928885.00","realisasi_anggaran":"99310930.65","status":"selesai","progress":96,"tanggal_mulai":"2025-05-12","tanggal_selesai":"2025-12-02","dokumentasi":null,"catatan":null,"persentase_realisasi":45,"persentase_anggaran":69,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":33,"program_id":4,"kode":"PTN-004-K03","nama":"Kegiatan corrupti alias dolor voluptas","deskripsi":"Animi qui nobis qui id. Temporibus eius consequatur quaerat quam quod explicabo delectus. Omnis alias cupiditate corrupti labore et in enim similique.","lokasi":"Ki. Banal No. 14, Padang 11942, Sulteng","kecamatan":"Jatinagara","desa":"Sukarame","target":"1288.00","realisasi":"51.52","satuan":"Orang","anggaran":"287811610.00","realisasi_anggaran":"132393340.60","status":"tertunda","progress":72,"tanggal_mulai":"2025-01-31","tanggal_selesai":"2025-07-03","dokumentasi":null,"catatan":null,"persentase_realisasi":4,"persentase_anggaran":46,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":34,"program_id":4,"kode":"PTN-004-K04","nama":"Kegiatan quia voluptatem consequatur nobis","deskripsi":"Ipsum et facere et libero modi. Odit sed ut laborum nemo ut voluptatem sit. Ut modi et qui sunt.","lokasi":"Jln. Otto No. 466, Bau-Bau 22821, Babel","kecamatan":"Jatinagara","desa":"Mekarmanik","target":"8578.00","realisasi":"4203.22","satuan":"Ekor","anggaran":"176172278.00","realisasi_anggaran":"151508159.08","status":"tertunda","progress":11,"tanggal_mulai":"2025-06-16","tanggal_selesai":"2025-07-03","dokumentasi":null,"catatan":null,"persentase_realisasi":49,"persentase_anggaran":86,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":35,"program_id":4,"kode":"PTN-004-K05","nama":"Kegiatan pariatur nihil aut ut","deskripsi":"Rerum eos et mollitia eum et qui aliquam. Impedit odit quibusdam saepe voluptas dicta labore dolores qui. Maiores blanditiis ut recusandae excepturi reprehenderit. Tenetur distinctio cupiditate rerum laudantium blanditiis.","lokasi":"Jln. Jayawijaya No. 528, Bandung 72078, Sulbar","kecamatan":"Sadananya","desa":"Sukasari","target":"4083.00","realisasi":"3552.21","satuan":"Orang","anggaran":"231256318.00","realisasi_anggaran":"71689458.58","status":"belum_mulai","progress":13,"tanggal_mulai":"2025-05-12","tanggal_selesai":"2025-11-04","dokumentasi":null,"catatan":null,"persentase_realisasi":87,"persentase_anggaran":31,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":36,"program_id":4,"kode":"PTN-004-K06","nama":"Kegiatan consequatur suscipit consequatur sed","deskripsi":"Eum consequatur aperiam ipsam voluptatem dolorum. Rerum id qui quis accusantium dolorum molestias ut. Omnis voluptas architecto excepturi omnis. Non molestias aliquam excepturi. Voluptatibus expedita aut eum omnis accusamus iure eaque unde.","lokasi":"Ds. Bara Tambar No. 84, Administrasi Jakarta Pusat 77044, Sumbar","kecamatan":"Cipaku","desa":"Mekarwangi","target":"237.00","realisasi":"189.60","satuan":"Unit","anggaran":"271796337.00","realisasi_anggaran":"130462241.76","status":"belum_mulai","progress":70,"tanggal_mulai":"2025-06-27","tanggal_selesai":"2025-11-15","dokumentasi":null,"catatan":null,"persentase_realisasi":80,"persentase_anggaran":48,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":37,"program_id":4,"kode":"PTN-004-K07","nama":"Kegiatan enim aspernatur quisquam omnis","deskripsi":"Tempore facilis alias quam. Ea sapiente labore est ea amet sed. Explicabo velit iste est saepe vero quam. Laboriosam itaque sit rerum nesciunt molestiae eum asperiores est.","lokasi":"Jr. Ters. Kiaracondong No. 451, Bandung 58434, Jabar","kecamatan":"Cijeungjing","desa":"Sukajadi","target":"4932.00","realisasi":"2268.72","satuan":"Ekor","anggaran":"302582451.00","realisasi_anggaran":"220885189.23","status":"berjalan","progress":27,"tanggal_mulai":"2025-06-24","tanggal_selesai":"2025-07-22","dokumentasi":null,"catatan":null,"persentase_realisasi":46,"persentase_anggaran":73,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":38,"program_id":4,"kode":"PTN-004-K08","nama":"Kegiatan maxime necessitatibus voluptatem aut","deskripsi":"Sequi quasi et odio accusamus architecto. Et iste ut unde labore numquam. Atque quo itaque numquam et et eum rerum nostrum.","lokasi":"Ds. Cihampelas No. 148, Administrasi Jakarta Timur 42769, Kalbar","kecamatan":"Rancah","desa":"Mekarmukti","target":"4705.00","realisasi":"1223.30","satuan":"Kelompok","anggaran":"326771457.00","realisasi_anggaran":"294094311.30","status":"selesai","progress":97,"tanggal_mulai":"2025-02-13","tanggal_selesai":"2025-10-09","dokumentasi":null,"catatan":null,"persentase_realisasi":26,"persentase_anggaran":90,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":39,"program_id":4,"kode":"PTN-004-K09","nama":"Kegiatan excepturi porro quibusdam repudiandae","deskripsi":"Soluta non voluptatem ut enim sit consequatur. Et iusto illum necessitatibus atque.","lokasi":"Kpg. Pacuan Kuda No. 867, Metro 60711, DKI","kecamatan":"Panjalu","desa":"Cintamulya","target":"7039.00","realisasi":"4575.35","satuan":"Ha","anggaran":"147477993.00","realisasi_anggaran":"60465977.13","status":"belum_mulai","progress":83,"tanggal_mulai":"2025-04-20","tanggal_selesai":"2025-09-10","dokumentasi":null,"catatan":null,"persentase_realisasi":65,"persentase_anggaran":41,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":40,"program_id":4,"kode":"PTN-004-K10","nama":"Kegiatan est sed officia molestias","deskripsi":"Sit quas eum dolore accusantium doloremque corrupti. Ducimus ex neque quia nobis aliquid voluptas sit. Tempore delectus aut molestias non et.","lokasi":"Ki. Villa No. 24, Bengkulu 33550, Riau","kecamatan":"Kawali","desa":"Cintamulya","target":"819.00","realisasi":"204.75","satuan":"Kelompok","anggaran":"288824493.00","realisasi_anggaran":"193512410.31","status":"selesai","progress":93,"tanggal_mulai":"2025-02-23","tanggal_selesai":"2025-07-14","dokumentasi":null,"catatan":null,"persentase_realisasi":25,"persentase_anggaran":67,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"}],"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":5,"bidang_id":1,"kode":"PTN-005","nama":"Program Bidang Pertanian ipsum dolorem harum","deskripsi":"Sed libero omnis nostrum similique rerum deserunt. Ad et illum at molestias accusantium ab earum. Quia tempore esse et eos. Qui quo sed ut quos dolorem voluptatem est.","tahun_anggaran":2025,"pagu_anggaran":"4236031302.00","realisasi_anggaran":"1948574398.92","status":"selesai","tanggal_mulai":"2025-01-01","tanggal_selesai":"2025-12-31","persentase_realisasi":46,"progress_kegiatan":41.6,"kegiatan":[{"id":41,"program_id":5,"kode":"PTN-005-K01","nama":"Kegiatan amet consequatur odit suscipit","deskripsi":"Aliquam veritatis quidem veritatis sapiente. Maiores facere adipisci voluptas ipsa deserunt porro. Maiores quod in tenetur ex optio ut adipisci quo. Ut ut illo ut ex provident non ullam quia.","lokasi":"Dk. Labu No. 443, Batam 21371, NTB","kecamatan":"Cijeungjing","desa":"Sukarame","target":"3870.00","realisasi":"1973.70","satuan":"Ekor","anggaran":"223962107.00","realisasi_anggaran":"132137643.13","status":"belum_mulai","progress":13,"tanggal_mulai":"2025-03-13","tanggal_selesai":"2025-08-31","dokumentasi":null,"catatan":null,"persentase_realisasi":51,"persentase_anggaran":59,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":42,"program_id":5,"kode":"PTN-005-K02","nama":"Kegiatan qui sit unde quisquam","deskripsi":"Dolorum unde deleniti numquam quam. Quis quod ut nulla quibusdam impedit. Ut neque porro et.","lokasi":"Ki. Tubagus Ismail No. 451, Ternate 15141, Sumut","kecamatan":"Rajadesa","desa":"Cintarasa","target":"1598.00","realisasi":"223.72","satuan":"Orang","anggaran":"79058574.00","realisasi_anggaran":"60084516.24","status":"selesai","progress":99,"tanggal_mulai":"2025-05-31","tanggal_selesai":"2025-12-19","dokumentasi":null,"catatan":null,"persentase_realisasi":14,"persentase_anggaran":76,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":43,"program_id":5,"kode":"PTN-005-K03","nama":"Kegiatan soluta est corrupti eos","deskripsi":"Eum unde architecto inventore aliquid dignissimos consequatur. Sunt corrupti omnis reprehenderit. Veniam suscipit architecto fugit in. Similique voluptas doloribus quia.","lokasi":"Ki. Mahakam No. 903, Subulussalam 46746, Kalsel","kecamatan":"Panumbangan","desa":"Sukamaju","target":"8030.00","realisasi":"6825.50","satuan":"Orang","anggaran":"402066272.00","realisasi_anggaran":"301549704.00","status":"tertunda","progress":94,"tanggal_mulai":"2025-04-27","tanggal_selesai":"2025-08-15","dokumentasi":null,"catatan":null,"persentase_realisasi":85,"persentase_anggaran":75,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":44,"program_id":5,"kode":"PTN-005-K04","nama":"Kegiatan quis ut voluptatem est","deskripsi":"Aut commodi omnis quibusdam quis ut iusto. In est ipsa reiciendis saepe veritatis consequuntur tenetur ut. Quam autem consequatur recusandae accusamus perferendis sit. Rerum blanditiis exercitationem et vitae.","lokasi":"Ds. Jaksa No. 515, Sorong 59656, Sumsel","kecamatan":"Rajadesa","desa":"Sukasari","target":"8732.00","realisasi":"4366.00","satuan":"Unit","anggaran":"333027885.00","realisasi_anggaran":"199816731.00","status":"tertunda","progress":93,"tanggal_mulai":"2025-04-17","tanggal_selesai":"2025-07-18","dokumentasi":null,"catatan":null,"persentase_realisasi":50,"persentase_anggaran":60,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":45,"program_id":5,"kode":"PTN-005-K05","nama":"Kegiatan fugiat unde at cumque","deskripsi":"Ab qui sed qui id. Itaque eum vero nostrum iure blanditiis dignissimos sit.","lokasi":"Kpg. Kali No. 493, Tegal 64372, Jambi","kecamatan":"Panumbangan","desa":"Mekarwangi","target":"1940.00","realisasi":"1649.00","satuan":"Kelompok","anggaran":"124029181.00","realisasi_anggaran":"94262177.56","status":"berjalan","progress":1,"tanggal_mulai":"2025-04-14","tanggal_selesai":"2025-08-25","dokumentasi":null,"catatan":null,"persentase_realisasi":85,"persentase_anggaran":76,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":46,"program_id":5,"kode":"PTN-005-K06","nama":"Kegiatan in cumque est laudantium","deskripsi":"Dolor vero voluptatem nihil architecto veniam laboriosam. In sint eum occaecati quisquam eos. Ipsam modi deleniti quasi. Labore qui sunt expedita doloremque iusto omnis voluptatem.","lokasi":"Psr. Gremet No. 26, Padangsidempuan 43316, Jatim","kecamatan":"Panumbangan","desa":"Mekarsari","target":"4686.00","realisasi":"3655.08","satuan":"Orang","anggaran":"224071789.00","realisasi_anggaran":"194942456.43","status":"berjalan","progress":17,"tanggal_mulai":"2025-05-24","tanggal_selesai":"2025-12-22","dokumentasi":null,"catatan":null,"persentase_realisasi":78,"persentase_anggaran":87,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":47,"program_id":5,"kode":"PTN-005-K07","nama":"Kegiatan temporibus non voluptatem inventore","deskripsi":"Delectus doloremque totam odio maxime. Iure sequi ea debitis voluptatem voluptas. Odit est culpa quis nulla delectus aut ut. Voluptates id natus impedit libero rerum ad eum quae.","lokasi":"Ki. Urip Sumoharjo No. 980, Batam 41911, Jambi","kecamatan":"Cipaku","desa":"Cintaasih","target":"9207.00","realisasi":"7273.53","satuan":"Ekor","anggaran":"217860441.00","realisasi_anggaran":"150323704.29","status":"selesai","progress":19,"tanggal_mulai":"2025-04-26","tanggal_selesai":"2025-12-03","dokumentasi":null,"catatan":null,"persentase_realisasi":79,"persentase_anggaran":69,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":48,"program_id":5,"kode":"PTN-005-K08","nama":"Kegiatan est nihil dignissimos aut","deskripsi":"Eos veniam quo et sint aut. Cum magnam aut dolorem ipsam vero autem eum aliquid. Quisquam quo minus fugiat et ipsam ab quod. Aut iusto eaque numquam eos. Distinctio inventore inventore omnis nisi et.","lokasi":"Dk. Samanhudi No. 220, Pariaman 46490, Kalsel","kecamatan":"Cidolog","desa":"Cintarasa","target":"461.00","realisasi":"322.70","satuan":"Orang","anggaran":"243701512.00","realisasi_anggaran":"119413740.88","status":"belum_mulai","progress":2,"tanggal_mulai":"2025-02-24","tanggal_selesai":"2025-07-29","dokumentasi":null,"catatan":null,"persentase_realisasi":70,"persentase_anggaran":49,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":49,"program_id":5,"kode":"PTN-005-K09","nama":"Kegiatan est hic commodi odio","deskripsi":"Facilis ratione optio cupiditate quasi totam. Ducimus quaerat reiciendis voluptatibus voluptas tenetur repellendus est. Perferendis eligendi doloribus voluptates autem animi occaecati et qui.","lokasi":"Ds. Ters. Buah Batu No. 217, Serang 82234, Sumut","kecamatan":"Tambaksari","desa":"Mekarmanik","target":"1651.00","realisasi":"676.91","satuan":"Kelompok","anggaran":"158200188.00","realisasi_anggaran":"137634163.56","status":"tertunda","progress":65,"tanggal_mulai":"2025-04-04","tanggal_selesai":"2025-09-10","dokumentasi":null,"catatan":null,"persentase_realisasi":41,"persentase_anggaran":87,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"},{"id":50,"program_id":5,"kode":"PTN-005-K10","nama":"Kegiatan tenetur animi repellendus corrupti","deskripsi":"Exercitationem esse aut nostrum sapiente voluptatem facilis quasi et. Qui praesentium et maxime rerum non dolor. Perferendis reiciendis voluptas non delectus maiores. Culpa officia dignissimos et distinctio expedita officia repellat. Ut amet inventore veniam minima ea neque.","lokasi":"Ds. Bahagia No. 229, Jambi 74484, Riau","kecamatan":"Cihaurbeuti","desa":"Sukarame","target":"2658.00","realisasi":"903.72","satuan":"Kg","anggaran":"474615031.00","realisasi_anggaran":"412915076.97","status":"selesai","progress":13,"tanggal_mulai":"2025-03-17","tanggal_selesai":"2025-10-31","dokumentasi":null,"catatan":null,"persentase_realisasi":34,"persentase_anggaran":87,"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"}],"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"}],"created_at":"2025-12-24 03:50:50","updated_at":"2025-12-24 03:50:50"}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/bidang
+    metadata:
+      custom: []
+      groupName: Bidang
+      groupDescription: |-
+
+        API untuk mengelola data Bidang/Unit Kerja
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create new bidang'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      kode:
+        custom: []
+        name: kode
+        description: 'Must not be greater than 20 characters.'
+        required: true
+        example: bngzmiyvdljnikhw
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      nama:
+        custom: []
+        name: nama
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: a
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      deskripsi:
+        custom: []
+        name: deskripsi
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      kepala_bidang:
+        custom: []
+        name: kepala_bidang
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      nip_kepala:
+        custom: []
+        name: nip_kepala
+        description: 'Must not be greater than 50 characters.'
+        required: false
+        example: g
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      is_active:
+        custom: []
+        name: is_active
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      kode: bngzmiyvdljnikhw
+      nama: a
+      deskripsi: architecto
+      kepala_bidang: 'n'
+      nip_kepala: g
+      is_active: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/v1/bidang/{bidang_id}'
+    metadata:
+      custom: []
+      groupName: Bidang
+      groupDescription: |-
+
+        API untuk mengelola data Bidang/Unit Kerja
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update existing bidang'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      bidang_id:
+        custom: []
+        name: bidang_id
+        description: 'The ID of the bidang.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      bidang_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      kode:
+        custom: []
+        name: kode
+        description: ''
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      nama:
+        custom: []
+        name: nama
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      deskripsi:
+        custom: []
+        name: deskripsi
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      kepala_bidang:
+        custom: []
+        name: kepala_bidang
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: 'n'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      nip_kepala:
+        custom: []
+        name: nip_kepala
+        description: 'Must not be greater than 50 characters.'
+        required: false
+        example: g
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
+      is_active:
+        custom: []
+        name: is_active
+        description: ''
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      nama: b
+      deskripsi: architecto
+      kepala_bidang: 'n'
+      nip_kepala: g
+      is_active: true
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/bidang/{bidang_id}'
+    metadata:
+      custom: []
+      groupName: Bidang
+      groupDescription: |-
+
+        API untuk mengelola data Bidang/Unit Kerja
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete bidang'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      bidang_id:
+        custom: []
+        name: bidang_id
+        description: 'The ID of the bidang.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      bidang_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

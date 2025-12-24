@@ -1,0 +1,131 @@
+name: Statistik
+description: |-
+
+  API untuk mendapatkan data statistik dan agregasi
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/statistik
+    metadata:
+      custom: []
+      groupName: Statistik
+      groupDescription: |-
+
+        API untuk mendapatkan data statistik dan agregasi
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get overall statistics for dashboard'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Statistik berhasil diambil","data":{"total_bidang":4,"total_bidang_aktif":4,"total_program":20,"total_program_aktif":9,"total_kegiatan":200,"total_kegiatan_berjalan":45,"total_kegiatan_selesai":46,"total_pelaku_usaha":100000,"total_pelaku_usaha_aktif":89973,"total_pagu_anggaran":"57911393527.00","total_realisasi_anggaran":"38699697461.44","persentase_realisasi":66.83,"rata_rata_progress_kegiatan":51.34,"pelaku_usaha_by_jenis":[{"jenis_usaha":"peternak_kambing","total":10138},{"jenis_usaha":"petani_palawija","total":10101},{"jenis_usaha":"peternak_ayam","total":10071},{"jenis_usaha":"lainnya","total":10061},{"jenis_usaha":"peternak_sapi","total":10039},{"jenis_usaha":"distributor","total":9973},{"jenis_usaha":"petani_hortikultura","total":9971},{"jenis_usaha":"petani_padi","total":9966},{"jenis_usaha":"peternak_ikan","total":9932},{"jenis_usaha":"pengolah_pangan","total":9748}],"kegiatan_terbaru":[{"id":2,"nama":"Kegiatan nisi doloremque sint asperiores","status":"selesai","progress":42,"bidang":"Bidang Pertanian"},{"id":3,"nama":"Kegiatan et reprehenderit natus sit","status":"belum_mulai","progress":18,"bidang":"Bidang Pertanian"},{"id":4,"nama":"Kegiatan porro aut tempore optio","status":"selesai","progress":10,"bidang":"Bidang Pertanian"},{"id":5,"nama":"Kegiatan omnis quia aut eligendi","status":"berjalan","progress":73,"bidang":"Bidang Pertanian"},{"id":1,"nama":"Kegiatan quos optio placeat tempore","status":"selesai","progress":1,"bidang":"Bidang Pertanian"}]}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/statistik/bidang
+    metadata:
+      custom: []
+      groupName: Statistik
+      groupDescription: |-
+
+        API untuk mendapatkan data statistik dan agregasi
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get statistics grouped by bidang'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Statistik per bidang berhasil diambil","data":[{"id":1,"kode":"PTN","nama":"Bidang Pertanian","is_active":true,"total_program":5,"total_pelaku_usaha":24921,"total_program_aktif":1,"pagu_anggaran":15034332822,"realisasi_anggaran":9266864143.71,"persentase_realisasi":61.64},{"id":2,"kode":"PTK","nama":"Bidang Peternakan","is_active":true,"total_program":5,"total_pelaku_usaha":24892,"total_program_aktif":3,"pagu_anggaran":16133764690,"realisasi_anggaran":9414855008.630001,"persentase_realisasi":58.35},{"id":3,"kode":"KPG","nama":"Bidang Ketahanan Pangan","is_active":true,"total_program":5,"total_pelaku_usaha":25139,"total_program_aktif":1,"pagu_anggaran":8488364277,"realisasi_anggaran":5413894492.940001,"persentase_realisasi":63.78},{"id":4,"kode":"PKN","nama":"Bidang Perkebunan","is_active":true,"total_program":5,"total_pelaku_usaha":25048,"total_program_aktif":4,"pagu_anggaran":18254931738,"realisasi_anggaran":14604083816.16,"persentase_realisasi":80}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/statistik/kecamatan
+    metadata:
+      custom: []
+      groupName: Statistik
+      groupDescription: |-
+
+        API untuk mendapatkan data statistik dan agregasi
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get statistics grouped by kecamatan'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Statistik per kecamatan berhasil diambil","data":{"pelaku_usaha":[{"kecamatan":"Tambaksari","total_pelaku_usaha":6899,"total_aktif":6204},{"kecamatan":"Jatinagara","total_pelaku_usaha":6801,"total_aktif":6169},{"kecamatan":"Ciamis","total_pelaku_usaha":6773,"total_aktif":6115},{"kecamatan":"Cikoneng","total_pelaku_usaha":6771,"total_aktif":6091},{"kecamatan":"Cihaurbeuti","total_pelaku_usaha":6711,"total_aktif":6037},{"kecamatan":"Panjalu","total_pelaku_usaha":6695,"total_aktif":6056},{"kecamatan":"Panumbangan","total_pelaku_usaha":6687,"total_aktif":6035},{"kecamatan":"Cipaku","total_pelaku_usaha":6651,"total_aktif":5931},{"kecamatan":"Lakbok","total_pelaku_usaha":6637,"total_aktif":5949},{"kecamatan":"Kawali","total_pelaku_usaha":6636,"total_aktif":5948},{"kecamatan":"Cijeungjing","total_pelaku_usaha":6627,"total_aktif":5961},{"kecamatan":"Rancah","total_pelaku_usaha":6586,"total_aktif":5942},{"kecamatan":"Cidolog","total_pelaku_usaha":6549,"total_aktif":5872},{"kecamatan":"Sadananya","total_pelaku_usaha":6528,"total_aktif":5890},{"kecamatan":"Rajadesa","total_pelaku_usaha":6449,"total_aktif":5773}],"kegiatan":[{"kecamatan":"Rajadesa","total_kegiatan":21,"rata_rata_progress":61.1,"total_anggaran":"5356337844.00","total_realisasi":"3009856034.74","persentase_realisasi":56.19},{"kecamatan":"Lakbok","total_kegiatan":17,"rata_rata_progress":63.47,"total_anggaran":"5462758195.00","total_realisasi":"3262915411.89","persentase_realisasi":59.73},{"kecamatan":"Cidolog","total_kegiatan":17,"rata_rata_progress":44.82,"total_anggaran":"3987694990.00","total_realisasi":"2456577213.21","persentase_realisasi":61.6},{"kecamatan":"Panumbangan","total_kegiatan":16,"rata_rata_progress":41.75,"total_anggaran":"4760656039.00","total_realisasi":"3400650866.35","persentase_realisasi":71.43},{"kecamatan":"Sadananya","total_kegiatan":15,"rata_rata_progress":49.73,"total_anggaran":"3125742116.00","total_realisasi":"1821332629.61","persentase_realisasi":58.27},{"kecamatan":"Kawali","total_kegiatan":14,"rata_rata_progress":48.86,"total_anggaran":"3517402791.00","total_realisasi":"1891396407.00","persentase_realisasi":53.77},{"kecamatan":"Cikoneng","total_kegiatan":13,"rata_rata_progress":38.92,"total_anggaran":"2916583763.00","total_realisasi":"2039588355.44","persentase_realisasi":69.93},{"kecamatan":"Ciamis","total_kegiatan":13,"rata_rata_progress":44.46,"total_anggaran":"3945614985.00","total_realisasi":"2531711398.90","persentase_realisasi":64.17},{"kecamatan":"Cihaurbeuti","total_kegiatan":12,"rata_rata_progress":42.17,"total_anggaran":"2516884752.00","total_realisasi":"1730427810.42","persentase_realisasi":68.75},{"kecamatan":"Cipaku","total_kegiatan":12,"rata_rata_progress":58.17,"total_anggaran":"3853073298.00","total_realisasi":"2496309093.20","persentase_realisasi":64.79},{"kecamatan":"Cijeungjing","total_kegiatan":12,"rata_rata_progress":46.83,"total_anggaran":"3332714387.00","total_realisasi":"1955530766.11","persentase_realisasi":58.68},{"kecamatan":"Panjalu","total_kegiatan":11,"rata_rata_progress":62.18,"total_anggaran":"2707127187.00","total_realisasi":"1684456493.60","persentase_realisasi":62.22},{"kecamatan":"Jatinagara","total_kegiatan":11,"rata_rata_progress":56.55,"total_anggaran":"3025671413.00","total_realisasi":"1726916558.52","persentase_realisasi":57.08},{"kecamatan":"Tambaksari","total_kegiatan":9,"rata_rata_progress":47.89,"total_anggaran":"1939373571.00","total_realisasi":"1076422348.63","persentase_realisasi":55.5},{"kecamatan":"Rancah","total_kegiatan":7,"rata_rata_progress":65.57,"total_anggaran":"2397239295.00","total_realisasi":"1734590308.59","persentase_realisasi":72.36}]}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
