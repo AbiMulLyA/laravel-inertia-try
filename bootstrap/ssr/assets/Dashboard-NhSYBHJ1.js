@@ -1,46 +1,46 @@
 import { jsxs, jsx } from "react/jsx-runtime";
-import { A as AppLayout } from "./AppLayout-Bnl3kyBN.js";
+import { A as AppLayout } from "./AppLayout-CbOP_oBK.js";
 import { Head, router } from "@inertiajs/react";
-import { Building2, FolderKanban, ClipboardList, Users, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { Layers, FolderKanban, ClipboardList, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import "react";
 function formatCurrency(value) {
-  return new Intl.NumberFormat("id-ID", {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "IDR",
+    currency: "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
   }).format(value);
 }
 function formatNumber(value) {
-  return new Intl.NumberFormat("id-ID").format(value);
+  return new Intl.NumberFormat("en-US").format(value);
 }
 function Dashboard({
   overview,
-  statistikBidang,
-  distribusiPelakuUsaha,
+  statisticsCategory,
+  tasksByPriority,
   recentActivities,
-  tahun,
-  tahunOptions
+  year,
+  yearOptions
 }) {
-  const persentaseRealisasi = overview.total_anggaran > 0 ? (overview.total_realisasi / overview.total_anggaran * 100).toFixed(1) : 0;
+  const spentPercentage = overview.total_budget > 0 ? (overview.total_spent / overview.total_budget * 100).toFixed(1) : 0;
   return /* @__PURE__ */ jsxs(AppLayout, { children: [
     /* @__PURE__ */ jsx(Head, { title: "Dashboard" }),
     /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
       /* @__PURE__ */ jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4", children: [
         /* @__PURE__ */ jsxs("div", { children: [
           /* @__PURE__ */ jsx("h1", { className: "text-2xl font-bold text-gray-900", children: "Dashboard" }),
-          /* @__PURE__ */ jsx("p", { className: "text-gray-500", children: "Overview data Dinas Pertanian" })
+          /* @__PURE__ */ jsx("p", { className: "text-gray-500", children: "Application overview and statistics" })
         ] }),
         /* @__PURE__ */ jsx(
           "select",
           {
-            value: tahun,
-            onChange: (e) => router.get("/dashboard", { tahun: e.target.value }),
-            className: "px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500",
-            children: tahunOptions.map((t) => /* @__PURE__ */ jsxs("option", { value: t, children: [
-              "Tahun ",
-              t
-            ] }, t))
+            value: year,
+            onChange: (e) => router.get("/dashboard", { year: e.target.value }),
+            className: "px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
+            children: yearOptions.map((y) => /* @__PURE__ */ jsxs("option", { value: y, children: [
+              "Year ",
+              y
+            ] }, y))
           }
         )
       ] }),
@@ -48,17 +48,17 @@ function Dashboard({
         /* @__PURE__ */ jsx(
           StatCard,
           {
-            title: "Total Bidang",
-            value: overview.total_bidang,
-            icon: Building2,
+            title: "Categories",
+            value: overview.total_categories,
+            icon: Layers,
             color: "blue"
           }
         ),
         /* @__PURE__ */ jsx(
           StatCard,
           {
-            title: "Total Program",
-            value: overview.total_program,
+            title: "Projects",
+            value: overview.total_projects,
             icon: FolderKanban,
             color: "green"
           }
@@ -66,8 +66,8 @@ function Dashboard({
         /* @__PURE__ */ jsx(
           StatCard,
           {
-            title: "Total Kegiatan",
-            value: overview.total_kegiatan,
+            title: "Total Tasks",
+            value: overview.total_tasks,
             icon: ClipboardList,
             color: "purple"
           }
@@ -75,127 +75,125 @@ function Dashboard({
         /* @__PURE__ */ jsx(
           StatCard,
           {
-            title: "Pelaku Usaha",
-            value: formatNumber(overview.total_pelaku_usaha),
-            icon: Users,
+            title: "Completed",
+            value: overview.tasks_completed,
+            icon: ClipboardList,
             color: "orange"
           }
         )
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-3 gap-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "lg:col-span-2 bg-white rounded-xl border p-6", children: [
-          /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Realisasi Anggaran" }),
+          /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Budget Overview" }),
           /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-2 gap-6", children: [
             /* @__PURE__ */ jsxs("div", { children: [
-              /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-500", children: "Pagu Anggaran" }),
-              /* @__PURE__ */ jsx("p", { className: "text-2xl font-bold text-gray-900", children: formatCurrency(overview.total_anggaran) })
+              /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-500", children: "Total Budget" }),
+              /* @__PURE__ */ jsx("p", { className: "text-2xl font-bold text-gray-900", children: formatCurrency(overview.total_budget) })
             ] }),
             /* @__PURE__ */ jsxs("div", { children: [
-              /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-500", children: "Realisasi" }),
-              /* @__PURE__ */ jsx("p", { className: "text-2xl font-bold text-green-600", children: formatCurrency(overview.total_realisasi) })
+              /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-500", children: "Spent" }),
+              /* @__PURE__ */ jsx("p", { className: "text-2xl font-bold text-primary-600", children: formatCurrency(overview.total_spent) })
             ] })
           ] }),
           /* @__PURE__ */ jsxs("div", { className: "mt-4", children: [
             /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between mb-2", children: [
               /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-500", children: "Progress" }),
               /* @__PURE__ */ jsxs("span", { className: "text-sm font-medium", children: [
-                persentaseRealisasi,
+                spentPercentage,
                 "%"
               ] })
             ] }),
             /* @__PURE__ */ jsx("div", { className: "h-3 bg-gray-200 rounded-full overflow-hidden", children: /* @__PURE__ */ jsx(
               "div",
               {
-                className: "h-full bg-green-500 rounded-full transition-all duration-500",
-                style: { width: `${Math.min(Number(persentaseRealisasi), 100)}%` }
+                className: "h-full bg-primary-500 rounded-full transition-all duration-500",
+                style: { width: `${Math.min(Number(spentPercentage), 100)}%` }
               }
             ) })
           ] })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "bg-white rounded-xl border p-6", children: [
-          /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Status Kegiatan" }),
+          /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Task Status" }),
           /* @__PURE__ */ jsxs("div", { className: "space-y-4", children: [
             /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
               /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
                 /* @__PURE__ */ jsx("div", { className: "w-3 h-3 bg-blue-500 rounded-full" }),
-                /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-600", children: "Berjalan" })
+                /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-600", children: "In Progress" })
               ] }),
-              /* @__PURE__ */ jsx("span", { className: "font-semibold", children: overview.kegiatan_berjalan })
+              /* @__PURE__ */ jsx("span", { className: "font-semibold", children: overview.tasks_in_progress })
             ] }),
             /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
               /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
                 /* @__PURE__ */ jsx("div", { className: "w-3 h-3 bg-green-500 rounded-full" }),
-                /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-600", children: "Selesai" })
+                /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-600", children: "Completed" })
               ] }),
-              /* @__PURE__ */ jsx("span", { className: "font-semibold", children: overview.kegiatan_selesai })
+              /* @__PURE__ */ jsx("span", { className: "font-semibold", children: overview.tasks_completed })
             ] }),
             /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
               /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
                 /* @__PURE__ */ jsx("div", { className: "w-3 h-3 bg-gray-300 rounded-full" }),
-                /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-600", children: "Lainnya" })
+                /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-600", children: "Other" })
               ] }),
-              /* @__PURE__ */ jsx("span", { className: "font-semibold", children: overview.total_kegiatan - overview.kegiatan_berjalan - overview.kegiatan_selesai })
+              /* @__PURE__ */ jsx("span", { className: "font-semibold", children: overview.total_tasks - overview.tasks_in_progress - overview.tasks_completed })
             ] })
           ] })
         ] })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "bg-white rounded-xl border overflow-hidden", children: [
-        /* @__PURE__ */ jsx("div", { className: "p-6 border-b", children: /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "Statistik per Bidang" }) }),
+        /* @__PURE__ */ jsx("div", { className: "p-6 border-b", children: /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900", children: "Statistics by Category" }) }),
         /* @__PURE__ */ jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxs("table", { className: "w-full", children: [
           /* @__PURE__ */ jsx("thead", { className: "bg-gray-50", children: /* @__PURE__ */ jsxs("tr", { children: [
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase", children: "Bidang" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase", children: "Program" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase", children: "Pelaku Usaha" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase", children: "Anggaran" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase", children: "Realisasi" }),
+            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase", children: "Category" }),
+            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase", children: "Projects" }),
+            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase", children: "Budget" }),
+            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase", children: "Spent" }),
             /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase", children: "Progress" })
           ] }) }),
-          /* @__PURE__ */ jsx("tbody", { className: "divide-y divide-gray-200", children: statistikBidang.map((bidang) => /* @__PURE__ */ jsxs("tr", { className: "hover:bg-gray-50", children: [
+          /* @__PURE__ */ jsx("tbody", { className: "divide-y divide-gray-200", children: statisticsCategory.map((category) => /* @__PURE__ */ jsxs("tr", { className: "hover:bg-gray-50", children: [
             /* @__PURE__ */ jsx("td", { className: "px-6 py-4", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
-              /* @__PURE__ */ jsx("div", { className: "w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsx("span", { className: "text-sm font-bold text-green-600", children: bidang.kode }) }),
-              /* @__PURE__ */ jsx("span", { className: "font-medium text-gray-900", children: bidang.nama })
+              /* @__PURE__ */ jsx("div", { className: "w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsx("span", { className: "text-sm font-bold text-primary-600", children: category.code }) }),
+              /* @__PURE__ */ jsx("span", { className: "font-medium text-gray-900", children: category.name })
             ] }) }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600", children: bidang.total_program }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600", children: formatNumber(bidang.total_pelaku_usaha) }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600", children: formatCurrency(bidang.total_anggaran) }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600", children: formatCurrency(bidang.total_realisasi) }),
+            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600", children: category.total_projects }),
+            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600", children: formatCurrency(category.total_budget) }),
+            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600", children: formatCurrency(category.total_spent) }),
             /* @__PURE__ */ jsx("td", { className: "px-6 py-4", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-end gap-2", children: [
               /* @__PURE__ */ jsx("div", { className: "w-16 h-2 bg-gray-200 rounded-full overflow-hidden", children: /* @__PURE__ */ jsx(
                 "div",
                 {
-                  className: "h-full bg-green-500 rounded-full",
-                  style: { width: `${bidang.persentase_realisasi}%` }
+                  className: "h-full bg-primary-500 rounded-full",
+                  style: { width: `${category.spent_percentage}%` }
                 }
               ) }),
               /* @__PURE__ */ jsxs("span", { className: "text-sm text-gray-600 w-12 text-right", children: [
-                bidang.persentase_realisasi,
+                category.spent_percentage,
                 "%"
               ] })
             ] }) })
-          ] }, bidang.id)) })
+          ] }, category.id)) })
         ] }) })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-4", children: [
         /* @__PURE__ */ jsxs("div", { className: "bg-white rounded-xl border p-6", children: [
-          /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Distribusi Pelaku Usaha per Jenis" }),
-          /* @__PURE__ */ jsx("div", { className: "space-y-3", children: distribusiPelakuUsaha.slice(0, 6).map((item, index) => /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-600", children: item.jenis_usaha_label }),
+          /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Tasks by Priority" }),
+          /* @__PURE__ */ jsx("div", { className: "space-y-3", children: tasksByPriority.slice(0, 6).map((item, index) => /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
+            /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-600", children: item.priority_label }),
             /* @__PURE__ */ jsx("span", { className: "font-semibold text-gray-900", children: formatNumber(item.total) })
           ] }, index)) })
         ] }),
         /* @__PURE__ */ jsxs("div", { className: "bg-white rounded-xl border p-6", children: [
-          /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Aktivitas Terbaru" }),
+          /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 mb-4", children: "Recent Activities" }),
           /* @__PURE__ */ jsx("div", { className: "space-y-3", children: recentActivities.slice(0, 5).map((activity) => /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50", children: [
             /* @__PURE__ */ jsx("div", { className: `
                                         w-2 h-2 rounded-full
-                                        ${activity.status === "selesai" ? "bg-green-500" : ""}
-                                        ${activity.status === "berjalan" ? "bg-blue-500" : ""}
-                                        ${activity.status === "belum_mulai" ? "bg-gray-400" : ""}
-                                        ${activity.status === "tertunda" ? "bg-yellow-500" : ""}
+                                        ${activity.status === "completed" ? "bg-green-500" : ""}
+                                        ${activity.status === "in_progress" ? "bg-blue-500" : ""}
+                                        ${activity.status === "pending" ? "bg-gray-400" : ""}
+                                        ${activity.status === "on_hold" ? "bg-yellow-500" : ""}
                                     ` }),
             /* @__PURE__ */ jsxs("div", { className: "flex-1 min-w-0", children: [
-              /* @__PURE__ */ jsx("p", { className: "text-sm font-medium text-gray-900 truncate", children: activity.nama }),
-              /* @__PURE__ */ jsx("p", { className: "text-xs text-gray-500", children: activity.program?.bidang?.nama })
+              /* @__PURE__ */ jsx("p", { className: "text-sm font-medium text-gray-900 truncate", children: activity.name }),
+              /* @__PURE__ */ jsx("p", { className: "text-xs text-gray-500", children: activity.project?.category?.name })
             ] }),
             /* @__PURE__ */ jsxs("span", { className: "text-sm text-gray-500", children: [
               activity.progress,

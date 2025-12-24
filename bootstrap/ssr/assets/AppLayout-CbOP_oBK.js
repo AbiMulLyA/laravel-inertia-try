@@ -1,13 +1,14 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { usePage, Link } from "@inertiajs/react";
 import { useState } from "react";
-import { X, LayoutDashboard, Building2, FolderKanban, ClipboardList, Users, Menu, User, ChevronDown, LogOut } from "lucide-react";
+import { X, LayoutDashboard, Layers, FolderKanban, ClipboardList, Menu, User, ChevronDown, LogOut } from "lucide-react";
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Bidang", href: "/bidang", icon: Building2 },
-  { name: "Program", href: "/program", icon: FolderKanban },
-  { name: "Kegiatan", href: "/kegiatan", icon: ClipboardList },
-  { name: "Pelaku Usaha", href: "/pelaku-usaha", icon: Users }
+  { name: "Categories", href: "/categories", icon: Layers },
+  { name: "Projects", href: "/projects", icon: FolderKanban },
+  { name: "Tasks", href: "/tasks", icon: ClipboardList }
+  // Add more menu items here:
+  // { name: 'Users', href: '/users', icon: Users },
 ];
 function AppLayout({ children }) {
   const { auth, flash } = usePage().props;
@@ -36,8 +37,8 @@ function AppLayout({ children }) {
             className: "flex items-center gap-2",
             prefetch: "mount",
             children: [
-              /* @__PURE__ */ jsx("div", { className: "w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsx("span", { className: "text-white font-bold text-sm", children: "DP" }) }),
-              /* @__PURE__ */ jsx("span", { className: "font-semibold text-gray-900", children: "Dinas Pertanian" })
+              /* @__PURE__ */ jsx("div", { className: "w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsx("span", { className: "text-white font-bold text-sm", children: "KM" }) }),
+              /* @__PURE__ */ jsx("span", { className: "font-semibold text-gray-900", children: "Kominfo Base" })
             ]
           }
         ),
@@ -88,7 +89,7 @@ function AppLayout({ children }) {
               className: "flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100",
               onClick: () => setUserMenuOpen(!userMenuOpen),
               children: [
-                /* @__PURE__ */ jsx("div", { className: "w-8 h-8 bg-green-100 rounded-full flex items-center justify-center", children: /* @__PURE__ */ jsx(User, { className: "w-4 h-4 text-green-600" }) }),
+                /* @__PURE__ */ jsx("div", { className: "w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center", children: /* @__PURE__ */ jsx(User, { className: "w-4 h-4 text-primary-600" }) }),
                 /* @__PURE__ */ jsx("span", { className: "hidden sm:block text-sm font-medium text-gray-700", children: auth.user.name }),
                 /* @__PURE__ */ jsx(ChevronDown, { className: "w-4 h-4 text-gray-400" })
               ]
@@ -102,7 +103,7 @@ function AppLayout({ children }) {
                 className: "flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100",
                 children: [
                   /* @__PURE__ */ jsx(User, { className: "w-4 h-4" }),
-                  "Profil"
+                  "Profile"
                 ]
               }
             ),
@@ -115,7 +116,7 @@ function AppLayout({ children }) {
                 className: "flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50",
                 children: [
                   /* @__PURE__ */ jsx(LogOut, { className: "w-4 h-4" }),
-                  "Keluar"
+                  "Logout"
                 ]
               }
             )
