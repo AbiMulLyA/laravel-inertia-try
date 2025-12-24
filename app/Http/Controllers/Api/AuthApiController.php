@@ -6,56 +6,92 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 /**
  * @group Authentication
  *
- * API untuk autentikasi dan manajemen token
+ * API untuk autentikasi dan manajemen token menggunakan JWT
  */
 class AuthApiController extends Controller
 {
     /**
+     * Get the JWT guard instance.
+     *
+     * This helper method provides proper type hinting for the JWTGuard,
+     * resolving static analysis warnings for JWT-specific methods.
+     *
+     * @return JWTGuard
+     */
+    protected function guard(): JWTGuard
+    {
+        /** @var JWTGuard $guard */
+        $guard = auth('api');
+        return $guard;
+    }
+
+    /**
      * Login and get access token
+     *
+     * Authenticate user with email and password, returns JWT token on success.
+     *
+     * @bodyParam email string required The user's email address. Example: user@example.com
+     * @bodyParam password string required The user's password. Example: password123
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "data": {
+     *     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+     *     "token_type": "bearer",
+     *     "expires_in": 3600,
+     *     "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}
+     *   }
+     * }
+     * @response 422 {
+     *   "message": "Email atau password salah.",
+     *   "errors": {"email": ["Email atau password salah."]}
+     * }
      */
     public function login(Request $request): JsonResponse
     {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
-            'device_name' => 'nullable|string|max:255',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $credentials = $request->only('email', 'password');
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$token = $this->guard()->attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['Email atau password salah.'],
             ]);
         }
 
-        $deviceName = $request->input('device_name', 'api-client');
-        $token = $user->createToken($deviceName)->plainTextToken;
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Login berhasil',
-            'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                ],
-                'token' => $token,
-                'token_type' => 'Bearer',
-            ],
-        ]);
+        return $this->respondWithToken($token);
     }
 
     /**
      * Register new user
+     *
+     * Create a new user account and return JWT token.
+     *
+     * @bodyParam name string required The user's full name. Example: John Doe
+     * @bodyParam email string required The user's email address. Example: user@example.com
+     * @bodyParam password string required The user's password (min 8 characters). Example: password123
+     * @bodyParam password_confirmation string required Password confirmation. Example: password123
+     *
+     * @response 201 {
+     *   "success": true,
+     *   "message": "Registrasi berhasil",
+     *   "data": {
+     *     "user": {"id": 1, "name": "John Doe", "email": "user@example.com"},
+     *     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+     *     "token_type": "bearer",
+     *     "expires_in": 3600
+     *   }
+     * }
      */
     public function register(Request $request): JsonResponse
     {
@@ -63,7 +99,6 @@ class AuthApiController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'device_name' => 'nullable|string|max:255',
         ]);
 
         $user = User::create([
@@ -72,31 +107,55 @@ class AuthApiController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        $deviceName = $request->input('device_name', 'api-client');
-        $token = $user->createToken($deviceName)->plainTextToken;
+        $token = $this->guard()->login($user);
 
         return response()->json([
             'success' => true,
             'message' => 'Registrasi berhasil',
             'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                ],
+                'user' => $user,
                 'token' => $token,
-                'token_type' => 'Bearer',
+                'token_type' => 'bearer',
+                'expires_in' => $this->guard()->factory()->getTTL() * 60
             ],
         ], 201);
     }
 
     /**
-     * Logout and revoke token
+     * Get the authenticated User
+     *
+     * Returns the currently authenticated user's information.
+     *
+     * @authenticated
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "data": {"id": 1, "name": "John Doe", "email": "user@example.com"}
+     * }
      */
-    public function logout(Request $request): JsonResponse
+    public function user(): JsonResponse
     {
-        // Revoke the current access token
-        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'success' => true,
+            'data' => $this->guard()->user(),
+        ]);
+    }
+
+    /**
+     * Log the user out (Invalidate the token)
+     *
+     * Invalidates the current JWT token.
+     *
+     * @authenticated
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "message": "Logout berhasil"
+     * }
+     */
+    public function logout(): JsonResponse
+    {
+        $this->guard()->logout();
 
         return response()->json([
             'success' => true,
@@ -105,49 +164,43 @@ class AuthApiController extends Controller
     }
 
     /**
-     * Get current authenticated user
+     * Refresh a token
+     *
+     * Get a new token using the current valid token.
+     *
+     * @authenticated
+     *
+     * @response 200 {
+     *   "success": true,
+     *   "data": {
+     *     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+     *     "token_type": "bearer",
+     *     "expires_in": 3600,
+     *     "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}
+     *   }
+     * }
      */
-    public function user(Request $request): JsonResponse
+    public function refresh(): JsonResponse
     {
-        $user = $request->user();
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'email_verified_at' => $user->email_verified_at,
-                'created_at' => $user->created_at->format('Y-m-d H:i:s'),
-            ],
-        ]);
+        return $this->respondWithToken($this->guard()->refresh());
     }
 
     /**
-     * Create a new API token
+     * Get the token array structure.
+     *
+     * @param string $token The JWT token
+     * @return JsonResponse
      */
-    public function createToken(Request $request): JsonResponse
+    protected function respondWithToken(string $token): JsonResponse
     {
-        $request->validate([
-            'token_name' => 'required|string|max:255',
-            'abilities' => 'nullable|array',
-            'abilities.*' => 'string',
-        ]);
-
-        $abilities = $request->input('abilities', ['*']);
-        $token = $request->user()->createToken(
-            $request->input('token_name'),
-            $abilities
-        );
-
         return response()->json([
             'success' => true,
-            'message' => 'Token berhasil dibuat',
             'data' => [
-                'token' => $token->plainTextToken,
-                'token_type' => 'Bearer',
-                'abilities' => $abilities,
-            ],
-        ], 201);
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => $this->guard()->factory()->getTTL() * 60,
+                'user' => $this->guard()->user()
+            ]
+        ]);
     }
 }

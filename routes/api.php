@@ -23,13 +23,15 @@ Route::prefix('v1')->group(function () {
     // ===========================================
     // Authentication Endpoints
     // ===========================================
-    Route::post('/auth/login', [AuthApiController::class, 'login']);
-    Route::post('/auth/register', [AuthApiController::class, 'register']);
+    Route::middleware('throttle:10,1')->group(function () {
+        Route::post('/auth/login', [AuthApiController::class, 'login']);
+        Route::post('/auth/register', [AuthApiController::class, 'register']);
+    });
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:api')->group(function () {
         Route::post('/auth/logout', [AuthApiController::class, 'logout']);
+        Route::post('/auth/refresh', [AuthApiController::class, 'refresh']);
         Route::get('/auth/user', [AuthApiController::class, 'user']);
-        Route::post('/auth/tokens', [AuthApiController::class, 'createToken']);
     });
 
     // ===========================================
@@ -60,7 +62,7 @@ Route::prefix('v1')->group(function () {
     // ===========================================
     // Protected Endpoints (Require Authentication)
     // ===========================================
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:api')->group(function () {
 
         // Bidang - CRUD
         Route::post('/bidang', [BidangApiController::class, 'store']);
