@@ -1,135 +1,239 @@
-# Aplikasi CRUD Dinas Pertanian
+# Kominfo Laravel Inertia Base
 
-Aplikasi manajemen data Dinas Pertanian dengan stack modern 2025.
+A production-ready template for building modern web applications with **Laravel 12**, **React 19**, **TypeScript**, and **Inertia.js**.
 
-## Tech Stack (Latest Versions)
+![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat&logo=laravel&logoColor=white)
+![React](https://img.shields.io/badge/React-19.x-61DAFB?style=flat&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
 
-- **Backend:** Laravel 12.11
-- **Frontend:** React 19.2 + Inertia.js 2.3.4 + TypeScript 5.x
-- **Styling:** Tailwind CSS 4.1 (CSS-first config)
-- **Database:** PostgreSQL 18.1
-- **Performance:** Laravel Octane + FrankenPHP
+## ✨ Features
 
-## Requirements
+- 🔐 **Dual Authentication** - JWT for APIs + Session for Web
+- 📊 **Dashboard Template** - Statistics cards, charts, tables
+- 📝 **CRUD Examples** - Categories, Projects, Tasks
+- 🎨 **Modern UI** - Responsive design with Tailwind CSS
+- ⚡ **Fast Development** - Hot reload with Vite
+- 🚀 **SSR Ready** - Server-side rendering support
+- 📚 **API Documentation** - Auto-generated with Scribe
 
-- PHP 8.2+ (recommended 8.4)
-- Composer 2.8+
-- Node.js 22+ (LTS)
-- PostgreSQL 18+
-- pnpm (recommended) atau npm
+## 🚀 Quick Start
 
-## Quick Start
+### Prerequisites
+
+- PHP 8.2+
+- Node.js 18+
+- PostgreSQL (or MySQL)
+- Composer
+
+### Installation
 
 ```bash
-# 1. Create Laravel 12.11 Project
-composer create-project laravel/laravel:^12.11 dinas-pertanian
-cd dinas-pertanian
+# Clone the repository
+git clone https://github.com/your-org/kominfo-laravel-inertia-base.git my-project
+cd my-project
 
-# 2. Install Breeze dengan React 19 + TypeScript + Inertia 2.x
-composer require laravel/breeze --dev
-php artisan breeze:install react --typescript --ssr
+# Install PHP dependencies
+composer install
 
-# 3. Install Octane untuk performance
-composer require laravel/octane
-php artisan octane:install --server=frankenphp
+# Install Node.js dependencies
+npm install
 
-# 4. Install additional packages
-composer require spatie/laravel-permission
-composer require spatie/laravel-query-builder
-composer require maatwebsite/excel
-
-# 5. Setup database
+# Copy environment file
 cp .env.example .env
-# Edit .env untuk PostgreSQL 18
 
-# 6. Run migrations
-php artisan migrate
+# Generate application key
+php artisan key:generate
 
-# 7. Run development server
-pnpm install  # atau npm install
-pnpm dev      # atau npm run dev
+# Generate JWT secret
+php artisan jwt:secret
 
-# Terminal terpisah
-php artisan octane:start --workers=4
+# Configure your database in .env, then run migrations
+php artisan migrate --seed
+
+# Build frontend assets
+npm run build
+
+# Start the development server
+composer dev
 ```
 
-## Environment Setup (.env)
+Open `http://localhost:8000` and login with:
 
-```env
-APP_NAME="Dinas Pertanian"
-APP_ENV=local
-APP_DEBUG=true
+- **Email:** admin@example.com
+- **Password:** password
 
-DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=dinas_pertanian
-DB_USERNAME=postgres
-DB_PASSWORD=your_password
-
-CACHE_STORE=redis
-SESSION_DRIVER=redis
-QUEUE_CONNECTION=redis
-```
-
-## Database Schema
+## 📁 Project Structure
 
 ```
-bidang
-├── id
-├── nama (Pertanian, Peternakan, Ketahanan Pangan)
-├── kode
-├── deskripsi
-└── timestamps
-
-program
-├── id
-├── bidang_id (FK)
-├── nama
-├── tahun_anggaran
-├── pagu_anggaran
-├── status
-└── timestamps
-
-kegiatan
-├── id
-├── program_id (FK)
-├── nama
-├── lokasi
-├── target
-├── realisasi
-├── satuan
-├── anggaran
-├── status
-└── timestamps
-
-pelaku_usaha
-├── id
-├── bidang_id (FK)
-├── nik
-├── nama
-├── alamat
-├── no_hp
-├── jenis_usaha
-├── luas_lahan
-├── komoditas (JSON)
-└── timestamps
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── Api/                    # API controllers
+│   │   ├── CategoryController.php  # Master data example
+│   │   ├── ProjectController.php   # Relational data example
+│   │   ├── TaskController.php      # Full CRUD example
+│   │   └── DashboardController.php
+│   ├── Models/
+│   │   ├── Category.php            # Simple model
+│   │   ├── Project.php             # Model with relationships
+│   │   └── Task.php                # Model with status/progress
+│   └── Services/
+│       └── DashboardService.php    # Business logic example
+├── database/
+│   ├── migrations/                 # Database schema
+│   └── seeders/                    # Sample data
+├── resources/js/
+│   ├── Components/                 # Reusable UI components
+│   ├── Layouts/
+│   │   └── AppLayout.tsx          # Main layout with sidebar
+│   └── Pages/
+│       ├── Auth/                   # Login, Register, etc.
+│       ├── Categories/             # Simple CRUD pages
+│       ├── Projects/               # CRUD with relationships
+│       ├── Tasks/                  # Full-featured CRUD
+│       └── Dashboard.tsx           # Overview page
+├── routes/
+│   ├── web.php                     # Web routes (Inertia)
+│   └── api.php                     # API routes (JWT)
+└── docs/                           # Documentation
 ```
 
-## Fitur Utama
+## 🎨 UI Patterns Included
 
-1. **Dashboard** - Overview statistik per bidang
-2. **Master Bidang** - CRUD bidang organisasi
-3. **Program** - Manajemen program kerja
-4. **Kegiatan** - Tracking kegiatan per program
-5. **Pelaku Usaha** - Database petani/peternak
-6. **Laporan** - Export data ke Excel/PDF
-7. **Import Data** - Bulk import dari Excel
+### Dashboard
 
-## Performance Optimization
+- Stat cards with icons and colors
+- Progress bars
+- Data tables with sorting
+- Activity feeds
 
-- Lazy Collections untuk data > 10.000 records
-- Cursor-based pagination
-- Chunked exports
-- Redis caching
-- Query optimization dengan indexes
+### List Pages
+
+- Search functionality
+- Multi-filter dropdowns
+- Pagination
+- Empty states
+- Summary cards
+
+### Forms
+
+- Validation feedback
+- Relationships dropdowns
+- Date pickers
+- Multi-section layouts
+
+## 🔧 Customization
+
+### Adding a New Module
+
+1. **Create Model**
+
+   ```bash
+   php artisan make:model YourModel -mf
+   ```
+
+2. **Create Controller**
+
+   ```bash
+   php artisan make:controller YourModelController
+   ```
+
+3. **Add Routes** in `routes/web.php`
+
+   ```php
+   Route::resource('your-models', YourModelController::class);
+   ```
+
+4. **Create Pages** in `resources/js/Pages/YourModels/`
+   - Copy from `Categories/` for simple CRUD
+   - Copy from `Tasks/` for complex CRUD
+
+5. **Update Navigation** in `resources/js/Layouts/AppLayout.tsx`
+   ```typescript
+   const navigation = [
+     // ... existing items
+     { name: "Your Models", href: "/your-models", icon: YourIcon },
+   ];
+   ```
+
+### Changing Branding
+
+1. Update `resources/js/Layouts/AppLayout.tsx`:
+   - Logo text
+   - App name
+   - Colors (primary-\* classes)
+
+2. Update `.env`:
+   - `APP_NAME`
+
+3. Update `tailwind.config.js` for custom colors
+
+## 🔐 Authentication
+
+### Web (Session-based)
+
+- Login: `/login`
+- Register: `/register`
+- Logout: `/logout`
+
+### API (JWT)
+
+- Login: `POST /api/v1/auth/login`
+- Register: `POST /api/v1/auth/register`
+- Logout: `POST /api/v1/auth/logout` (requires token)
+- Refresh: `POST /api/v1/auth/refresh`
+- User: `GET /api/v1/auth/user`
+
+#### JWT Token Usage
+
+```bash
+# Get token
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@example.com","password":"password"}'
+
+# Use token
+curl http://localhost:8000/api/v1/auth/user \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+## 📦 Tech Stack
+
+| Layer    | Technology                |
+| -------- | ------------------------- |
+| Backend  | Laravel 12, PHP 8.2       |
+| Frontend | React 19, TypeScript      |
+| Bridge   | Inertia.js 2              |
+| Styling  | Tailwind CSS 4            |
+| Build    | Vite 7                    |
+| Database | PostgreSQL / MySQL        |
+| Auth     | JWT (API) + Session (Web) |
+| Icons    | Lucide React              |
+
+## 🛠️ Development
+
+```bash
+# Start dev server with hot reload
+composer dev
+
+# Or run separately:
+php artisan serve
+npm run dev
+
+# Build for production
+npm run build
+
+# Run tests
+php artisan test
+
+# Generate API docs
+php artisan scribe:generate
+```
+
+## 📄 License
+
+MIT License - feel free to use this template for any project.
+
+---
+
+Made with ❤️ by Kominfo Team

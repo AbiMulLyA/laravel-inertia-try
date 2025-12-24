@@ -1,8 +1,8 @@
 {
-    "name": "dinas/pertanian-app",
+    "name": "kominfo/laravel-inertia-base",
     "type": "project",
-    "description": "Aplikasi CRUD Dinas Pertanian dengan Laravel 12.11",
-    "keywords": ["laravel", "dinas", "pertanian", "crud"],
+    "description": "Base template Laravel 12 + React 19 + Inertia.js dengan UI/UX siap pakai",
+    "keywords": ["laravel", "inertia", "react", "template", "kominfo"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
