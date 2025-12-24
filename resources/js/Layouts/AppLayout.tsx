@@ -2,10 +2,9 @@ import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, useState } from 'react';
 import { 
     LayoutDashboard, 
-    Users, 
     FolderKanban, 
     ClipboardList,
-    Building2,
+    Layers,
     Menu,
     X,
     ChevronDown,
@@ -29,14 +28,31 @@ interface PageProps {
     [key: string]: unknown;
 }
 
+/**
+ * Navigation Items
+ * 
+ * Customize this array to add/remove menu items.
+ * Each item requires: name, href, icon
+ */
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Bidang', href: '/bidang', icon: Building2 },
-    { name: 'Program', href: '/program', icon: FolderKanban },
-    { name: 'Kegiatan', href: '/kegiatan', icon: ClipboardList },
-    { name: 'Pelaku Usaha', href: '/pelaku-usaha', icon: Users },
+    { name: 'Categories', href: '/categories', icon: Layers },
+    { name: 'Projects', href: '/projects', icon: FolderKanban },
+    { name: 'Tasks', href: '/tasks', icon: ClipboardList },
+    // Add more menu items here:
+    // { name: 'Users', href: '/users', icon: Users },
 ];
 
+/**
+ * AppLayout Component
+ * 
+ * Main layout with sidebar navigation and top bar.
+ * Features:
+ * - Responsive sidebar (collapsible on mobile)
+ * - User dropdown menu
+ * - Flash message display
+ * - Inertia.js prefetching for fast navigation
+ */
 export default function AppLayout({ children }: PropsWithChildren) {
     const { auth, flash } = usePage<PageProps>().props;
     const { url } = usePage();
@@ -60,17 +76,17 @@ export default function AppLayout({ children }: PropsWithChildren) {
                 lg:translate-x-0
                 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
-                {/* Logo */}
+                {/* Logo - Customize this section */}
                 <div className="h-16 flex items-center justify-between px-6 border-b">
                     <Link 
                         href="/dashboard" 
                         className="flex items-center gap-2"
-                        prefetch="mount" // Inertia 2.x prefetching
+                        prefetch="mount"
                     >
                         <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">DP</span>
+                            <span className="text-white font-bold text-sm">KM</span>
                         </div>
-                        <span className="font-semibold text-gray-900">Dinas Pertanian</span>
+                        <span className="font-semibold text-gray-900">Kominfo Base</span>
                     </Link>
                     <button 
                         className="lg:hidden p-1 text-gray-500 hover:text-gray-700"
@@ -88,7 +104,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
                             <Link
                                 key={item.name}
                                 href={item.href}
-                                prefetch="hover" // Inertia 2.x - prefetch on hover
+                                prefetch="hover"
                                 className={`
                                     flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
                                     transition-all duration-200
@@ -124,8 +140,8 @@ export default function AppLayout({ children }: PropsWithChildren) {
                                 className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100"
                                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                             >
-                                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                    <User className="w-4 h-4 text-green-600" />
+                                <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                                    <User className="w-4 h-4 text-primary-600" />
                                 </div>
                                 <span className="hidden sm:block text-sm font-medium text-gray-700">
                                     {auth.user.name}
@@ -140,7 +156,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
                                         className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     >
                                         <User className="w-4 h-4" />
-                                        Profil
+                                        Profile
                                     </Link>
                                     <Link
                                         href="/logout"
@@ -149,7 +165,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
                                         className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                                     >
                                         <LogOut className="w-4 h-4" />
-                                        Keluar
+                                        Logout
                                     </Link>
                                 </div>
                             )}

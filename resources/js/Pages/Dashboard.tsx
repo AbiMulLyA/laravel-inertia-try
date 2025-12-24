@@ -1,70 +1,72 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, router } from '@inertiajs/react';
 import { 
-    Users, 
+    Layers, 
     FolderKanban, 
-    ClipboardList, 
-    Building2,
+    ClipboardList,
     ArrowUpRight,
     ArrowDownRight
 } from 'lucide-react';
 
 interface Overview {
-    total_bidang: number;
-    total_program: number;
-    total_kegiatan: number;
-    total_pelaku_usaha: number;
-    total_anggaran: number;
-    total_realisasi: number;
-    kegiatan_berjalan: number;
-    kegiatan_selesai: number;
+    total_categories: number;
+    total_projects: number;
+    total_tasks: number;
+    total_budget: number;
+    total_spent: number;
+    tasks_in_progress: number;
+    tasks_completed: number;
 }
 
-interface StatistikBidang {
+interface CategoryStatistic {
     id: number;
-    nama: string;
-    kode: string;
-    total_program: number;
-    total_pelaku_usaha: number;
-    total_anggaran: number;
-    total_realisasi: number;
-    persentase_realisasi: number;
+    name: string;
+    code: string;
+    total_projects: number;
+    total_budget: number;
+    total_spent: number;
+    spent_percentage: number;
 }
 
 interface Props {
     overview: Overview;
-    statistikBidang: StatistikBidang[];
-    progressKegiatan: any[];
-    distribusiPelakuUsaha: any[];
-    distribusiKecamatan: any[];
+    statisticsCategory: CategoryStatistic[];
+    taskProgress: any[];
+    tasksByPriority: any[];
     recentActivities: any[];
-    tahun: number;
-    tahunOptions: number[];
+    year: number;
+    yearOptions: number[];
 }
 
 function formatCurrency(value: number): string {
-    return new Intl.NumberFormat('id-ID', {
+    return new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'IDR',
+        currency: 'USD',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
     }).format(value);
 }
 
 function formatNumber(value: number): string {
-    return new Intl.NumberFormat('id-ID').format(value);
+    return new Intl.NumberFormat('en-US').format(value);
 }
 
+/**
+ * Dashboard Page
+ * 
+ * Overview page with statistics cards, data tables, and activity feed.
+ * Uses UI patterns that can be reused across other pages.
+ */
 export default function Dashboard({
     overview,
-    statistikBidang,
-    distribusiPelakuUsaha,
+    statisticsCategory,
+    tasksByPriority,
     recentActivities,
-    tahun,
-    tahunOptions,
+    year,
+    yearOptions,
 }: Props) {
-    const persentaseRealisasi = overview.total_anggaran > 0 
-        ? ((overview.total_realisasi / overview.total_anggaran) * 100).toFixed(1)
+    const spentPercentage = overview.total_budget > 0 
+        ? ((overview.total_spent / overview.total_budget) * 100).toFixed(1)
         : 0;
 
     return (
@@ -76,15 +78,15 @@ export default function Dashboard({
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-                        <p className="text-gray-500">Overview data Dinas Pertanian</p>
+                        <p className="text-gray-500">Application overview and statistics</p>
                     </div>
                     <select
-                        value={tahun}
-                        onChange={(e) => router.get('/dashboard', { tahun: e.target.value })}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        value={year}
+                        onChange={(e) => router.get('/dashboard', { year: e.target.value })}
+                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                     >
-                        {tahunOptions.map((t) => (
-                            <option key={t} value={t}>Tahun {t}</option>
+                        {yearOptions.map((y) => (
+                            <option key={y} value={y}>Year {y}</option>
                         ))}
                     </select>
                 </div>
@@ -92,60 +94,60 @@ export default function Dashboard({
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <StatCard
-                        title="Total Bidang"
-                        value={overview.total_bidang}
-                        icon={Building2}
+                        title="Categories"
+                        value={overview.total_categories}
+                        icon={Layers}
                         color="blue"
                     />
                     <StatCard
-                        title="Total Program"
-                        value={overview.total_program}
+                        title="Projects"
+                        value={overview.total_projects}
                         icon={FolderKanban}
                         color="green"
                     />
                     <StatCard
-                        title="Total Kegiatan"
-                        value={overview.total_kegiatan}
+                        title="Total Tasks"
+                        value={overview.total_tasks}
                         icon={ClipboardList}
                         color="purple"
                     />
                     <StatCard
-                        title="Pelaku Usaha"
-                        value={formatNumber(overview.total_pelaku_usaha)}
-                        icon={Users}
+                        title="Completed"
+                        value={overview.tasks_completed}
+                        icon={ClipboardList}
                         color="orange"
                     />
                 </div>
 
-                {/* Anggaran Overview */}
+                {/* Budget Overview */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <div className="lg:col-span-2 bg-white rounded-xl border p-6">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Realisasi Anggaran
+                            Budget Overview
                         </h2>
                         <div className="grid grid-cols-2 gap-6">
                             <div>
-                                <p className="text-sm text-gray-500">Pagu Anggaran</p>
+                                <p className="text-sm text-gray-500">Total Budget</p>
                                 <p className="text-2xl font-bold text-gray-900">
-                                    {formatCurrency(overview.total_anggaran)}
+                                    {formatCurrency(overview.total_budget)}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-500">Realisasi</p>
-                                <p className="text-2xl font-bold text-green-600">
-                                    {formatCurrency(overview.total_realisasi)}
+                                <p className="text-sm text-gray-500">Spent</p>
+                                <p className="text-2xl font-bold text-primary-600">
+                                    {formatCurrency(overview.total_spent)}
                                 </p>
                             </div>
                         </div>
                         <div className="mt-4">
                             <div className="flex items-center justify-between mb-2">
                                 <span className="text-sm text-gray-500">Progress</span>
-                                <span className="text-sm font-medium">{persentaseRealisasi}%</span>
+                                <span className="text-sm font-medium">{spentPercentage}%</span>
                             </div>
                             <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
                                 <div 
-                                    className="h-full bg-green-500 rounded-full transition-all duration-500"
-                                    style={{ width: `${Math.min(Number(persentaseRealisasi), 100)}%` }}
+                                    className="h-full bg-primary-500 rounded-full transition-all duration-500"
+                                    style={{ width: `${Math.min(Number(spentPercentage), 100)}%` }}
                                 />
                             </div>
                         </div>
@@ -153,41 +155,41 @@ export default function Dashboard({
 
                     <div className="bg-white rounded-xl border p-6">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Status Kegiatan
+                            Task Status
                         </h2>
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 bg-blue-500 rounded-full" />
-                                    <span className="text-sm text-gray-600">Berjalan</span>
+                                    <span className="text-sm text-gray-600">In Progress</span>
                                 </div>
-                                <span className="font-semibold">{overview.kegiatan_berjalan}</span>
+                                <span className="font-semibold">{overview.tasks_in_progress}</span>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 bg-green-500 rounded-full" />
-                                    <span className="text-sm text-gray-600">Selesai</span>
+                                    <span className="text-sm text-gray-600">Completed</span>
                                 </div>
-                                <span className="font-semibold">{overview.kegiatan_selesai}</span>
+                                <span className="font-semibold">{overview.tasks_completed}</span>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 bg-gray-300 rounded-full" />
-                                    <span className="text-sm text-gray-600">Lainnya</span>
+                                    <span className="text-sm text-gray-600">Other</span>
                                 </div>
                                 <span className="font-semibold">
-                                    {overview.total_kegiatan - overview.kegiatan_berjalan - overview.kegiatan_selesai}
+                                    {overview.total_tasks - overview.tasks_in_progress - overview.tasks_completed}
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Statistik per Bidang */}
+                {/* Statistics per Category */}
                 <div className="bg-white rounded-xl border overflow-hidden">
                     <div className="p-6 border-b">
                         <h2 className="text-lg font-semibold text-gray-900">
-                            Statistik per Bidang
+                            Statistics by Category
                         </h2>
                     </div>
                     <div className="overflow-x-auto">
@@ -195,19 +197,16 @@ export default function Dashboard({
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                        Bidang
+                                        Category
                                     </th>
                                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                                        Program
+                                        Projects
                                     </th>
                                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                                        Pelaku Usaha
+                                        Budget
                                     </th>
                                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                                        Anggaran
-                                    </th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                                        Realisasi
+                                        Spent
                                     </th>
                                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
                                         Progress
@@ -215,42 +214,39 @@ export default function Dashboard({
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {statistikBidang.map((bidang) => (
-                                    <tr key={bidang.id} className="hover:bg-gray-50">
+                                {statisticsCategory.map((category) => (
+                                    <tr key={category.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                                                    <span className="text-sm font-bold text-green-600">
-                                                        {bidang.kode}
+                                                <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                                                    <span className="text-sm font-bold text-primary-600">
+                                                        {category.code}
                                                     </span>
                                                 </div>
                                                 <span className="font-medium text-gray-900">
-                                                    {bidang.nama}
+                                                    {category.name}
                                                 </span>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-right text-gray-600">
-                                            {bidang.total_program}
+                                            {category.total_projects}
                                         </td>
                                         <td className="px-6 py-4 text-right text-gray-600">
-                                            {formatNumber(bidang.total_pelaku_usaha)}
+                                            {formatCurrency(category.total_budget)}
                                         </td>
                                         <td className="px-6 py-4 text-right text-gray-600">
-                                            {formatCurrency(bidang.total_anggaran)}
-                                        </td>
-                                        <td className="px-6 py-4 text-right text-gray-600">
-                                            {formatCurrency(bidang.total_realisasi)}
+                                            {formatCurrency(category.total_spent)}
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center justify-end gap-2">
                                                 <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
                                                     <div 
-                                                        className="h-full bg-green-500 rounded-full"
-                                                        style={{ width: `${bidang.persentase_realisasi}%` }}
+                                                        className="h-full bg-primary-500 rounded-full"
+                                                        style={{ width: `${category.spent_percentage}%` }}
                                                     />
                                                 </div>
                                                 <span className="text-sm text-gray-600 w-12 text-right">
-                                                    {bidang.persentase_realisasi}%
+                                                    {category.spent_percentage}%
                                                 </span>
                                             </div>
                                         </td>
@@ -261,17 +257,17 @@ export default function Dashboard({
                     </div>
                 </div>
 
-                {/* Distribusi Pelaku Usaha */}
+                {/* Priority Distribution & Recent Activities */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="bg-white rounded-xl border p-6">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Distribusi Pelaku Usaha per Jenis
+                            Tasks by Priority
                         </h2>
                         <div className="space-y-3">
-                            {distribusiPelakuUsaha.slice(0, 6).map((item, index) => (
+                            {tasksByPriority.slice(0, 6).map((item, index) => (
                                 <div key={index} className="flex items-center justify-between">
                                     <span className="text-sm text-gray-600">
-                                        {item.jenis_usaha_label}
+                                        {item.priority_label}
                                     </span>
                                     <span className="font-semibold text-gray-900">
                                         {formatNumber(item.total)}
@@ -283,24 +279,24 @@ export default function Dashboard({
 
                     <div className="bg-white rounded-xl border p-6">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Aktivitas Terbaru
+                            Recent Activities
                         </h2>
                         <div className="space-y-3">
                             {recentActivities.slice(0, 5).map((activity) => (
                                 <div key={activity.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
                                     <div className={`
                                         w-2 h-2 rounded-full
-                                        ${activity.status === 'selesai' ? 'bg-green-500' : ''}
-                                        ${activity.status === 'berjalan' ? 'bg-blue-500' : ''}
-                                        ${activity.status === 'belum_mulai' ? 'bg-gray-400' : ''}
-                                        ${activity.status === 'tertunda' ? 'bg-yellow-500' : ''}
+                                        ${activity.status === 'completed' ? 'bg-green-500' : ''}
+                                        ${activity.status === 'in_progress' ? 'bg-blue-500' : ''}
+                                        ${activity.status === 'pending' ? 'bg-gray-400' : ''}
+                                        ${activity.status === 'on_hold' ? 'bg-yellow-500' : ''}
                                     `} />
                                     <div className="flex-1 min-w-0">
                                         <p className="text-sm font-medium text-gray-900 truncate">
-                                            {activity.nama}
+                                            {activity.name}
                                         </p>
                                         <p className="text-xs text-gray-500">
-                                            {activity.program?.bidang?.nama}
+                                            {activity.project?.category?.name}
                                         </p>
                                     </div>
                                     <span className="text-sm text-gray-500">
@@ -316,7 +312,9 @@ export default function Dashboard({
     );
 }
 
-// Stat Card Component
+// ============================================
+// Stat Card Component - Reusable UI Pattern
+// ============================================
 interface StatCardProps {
     title: string;
     value: string | number;
