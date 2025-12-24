@@ -7,25 +7,30 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * DashboardController
+ * 
+ * Dashboard with overview statistics and analytics.
+ */
 class DashboardController extends Controller
 {
     public function __construct(
         private DashboardService $dashboardService
-    ) {}
+    ) {
+    }
 
     public function index(Request $request): Response
     {
-        $tahun = $request->input('tahun', now()->year);
+        $year = $request->input('year', now()->year);
 
         return Inertia::render('Dashboard', [
             'overview' => $this->dashboardService->getOverview(),
-            'statistikBidang' => $this->dashboardService->getStatistikPerBidang($tahun),
-            'progressKegiatan' => $this->dashboardService->getProgressKegiatan(),
-            'distribusiPelakuUsaha' => $this->dashboardService->getDistribusiPelakuUsaha(),
-            'distribusiKecamatan' => $this->dashboardService->getDistribusiPerKecamatan(),
+            'statisticsCategory' => $this->dashboardService->getStatisticsPerCategory($year),
+            'taskProgress' => $this->dashboardService->getTaskProgress(),
+            'tasksByPriority' => $this->dashboardService->getTasksByPriority(),
             'recentActivities' => $this->dashboardService->getRecentActivities(),
-            'tahun' => $tahun,
-            'tahunOptions' => range(now()->year - 5, now()->year + 1),
+            'year' => $year,
+            'yearOptions' => range(now()->year - 5, now()->year + 1),
         ]);
     }
 }

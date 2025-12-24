@@ -2,14 +2,19 @@
 
 namespace App\Services;
 
-use App\Models\Bidang;
-use App\Models\Program;
-use App\Models\Kegiatan;
-use App\Models\PelakuUsaha;
+use App\Models\Category;
+use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * DashboardService
+ * 
+ * Provides dashboard statistics and analytics.
+ * Uses caching for better performance with large datasets.
+ */
 class DashboardService
 {
     /**
@@ -19,54 +24,53 @@ class DashboardService
     {
         return Cache::remember('dashboard_overview', 1800, function () {
             return [
-                'total_bidang' => Bidang::active()->count(),
-                'total_program' => Program::aktif()->count(),
-                'total_kegiatan' => Kegiatan::count(),
-                'total_pelaku_usaha' => PelakuUsaha::active()->count(),
-                'total_anggaran' => Program::aktif()->sum('pagu_anggaran'),
-                'total_realisasi' => Program::aktif()->sum('realisasi_anggaran'),
-                'kegiatan_berjalan' => Kegiatan::berjalan()->count(),
-                'kegiatan_selesai' => Kegiatan::status('selesai')->count(),
+                'total_categories' => Category::active()->count(),
+                'total_projects' => Project::active()->count(),
+                'total_tasks' => Task::count(),
+                'total_budget' => Project::active()->sum('budget'),
+                'total_spent' => Project::active()->sum('spent'),
+                'tasks_in_progress' => Task::inProgress()->count(),
+                'tasks_completed' => Task::completed()->count(),
             ];
         });
     }
 
     /**
-     * Get statistics per bidang dengan detail
+     * Get statistics per category with detailed breakdown
      */
-    public function getStatistikPerBidang(int $tahun = null): Collection
+    public function getStatisticsPerCategory(int $year = null): Collection
     {
-        $tahun = $tahun ?? now()->year;
-        $cacheKey = "statistik_bidang_{$tahun}";
+        $year = $year ?? now()->year;
+        $cacheKey = "statistics_category_{$year}";
 
-        return Cache::remember($cacheKey, 1800, function () use ($tahun) {
-            return Bidang::active()
+        return Cache::remember($cacheKey, 1800, function () use ($year) {
+            return Category::active()
                 ->withCount([
-                    'program as total_program' => function ($query) use ($tahun) {
-                        $query->where('tahun_anggaran', $tahun);
-                    },
-                    'pelakuUsaha as total_pelaku_usaha' => function ($query) {
-                        $query->where('is_active', true);
+                    'projects as total_projects' => function ($query) use ($year) {
+                        $query->where('year', $year);
                     },
                 ])
-                ->withSum(['program as total_anggaran' => function ($query) use ($tahun) {
-                    $query->where('tahun_anggaran', $tahun);
-                }], 'pagu_anggaran')
-                ->withSum(['program as total_realisasi' => function ($query) use ($tahun) {
-                    $query->where('tahun_anggaran', $tahun);
-                }], 'realisasi_anggaran')
+                ->withSum([
+                    'projects as total_budget' => function ($query) use ($year) {
+                        $query->where('year', $year);
+                    }
+                ], 'budget')
+                ->withSum([
+                    'projects as total_spent' => function ($query) use ($year) {
+                        $query->where('year', $year);
+                    }
+                ], 'spent')
                 ->get()
-                ->map(function ($bidang) {
+                ->map(function ($category) {
                     return [
-                        'id' => $bidang->id,
-                        'nama' => $bidang->nama,
-                        'kode' => $bidang->kode,
-                        'total_program' => $bidang->total_program ?? 0,
-                        'total_pelaku_usaha' => $bidang->total_pelaku_usaha ?? 0,
-                        'total_anggaran' => $bidang->total_anggaran ?? 0,
-                        'total_realisasi' => $bidang->total_realisasi ?? 0,
-                        'persentase_realisasi' => $bidang->total_anggaran > 0 
-                            ? round(($bidang->total_realisasi / $bidang->total_anggaran) * 100, 2) 
+                        'id' => $category->id,
+                        'name' => $category->name,
+                        'code' => $category->code,
+                        'total_projects' => $category->total_projects ?? 0,
+                        'total_budget' => $category->total_budget ?? 0,
+                        'total_spent' => $category->total_spent ?? 0,
+                        'spent_percentage' => $category->total_budget > 0
+                            ? round(($category->total_spent / $category->total_budget) * 100, 2)
                             : 0,
                     ];
                 });
@@ -74,73 +78,51 @@ class DashboardService
     }
 
     /**
-     * Get progress kegiatan per bidang
+     * Get task progress per category
      */
-    public function getProgressKegiatan(): Collection
+    public function getTaskProgress(): Collection
     {
-        return Cache::remember('progress_kegiatan', 900, function () {
-            return DB::table('kegiatan')
-                ->join('program', 'kegiatan.program_id', '=', 'program.id')
-                ->join('bidang', 'program.bidang_id', '=', 'bidang.id')
+        return Cache::remember('task_progress', 900, function () {
+            return DB::table('tasks')
+                ->join('projects', 'tasks.project_id', '=', 'projects.id')
+                ->join('categories', 'projects.category_id', '=', 'categories.id')
                 ->select(
-                    'bidang.id',
-                    'bidang.nama',
-                    DB::raw('COUNT(kegiatan.id) as total_kegiatan'),
-                    DB::raw("SUM(CASE WHEN kegiatan.status = 'selesai' THEN 1 ELSE 0 END) as selesai"),
-                    DB::raw("SUM(CASE WHEN kegiatan.status = 'berjalan' THEN 1 ELSE 0 END) as berjalan"),
-                    DB::raw("SUM(CASE WHEN kegiatan.status = 'belum_mulai' THEN 1 ELSE 0 END) as belum_mulai"),
-                    DB::raw("SUM(CASE WHEN kegiatan.status = 'tertunda' THEN 1 ELSE 0 END) as tertunda"),
-                    DB::raw('AVG(kegiatan.progress) as rata_rata_progress')
+                    'categories.id',
+                    'categories.name',
+                    DB::raw('COUNT(tasks.id) as total_tasks'),
+                    DB::raw("SUM(CASE WHEN tasks.status = 'completed' THEN 1 ELSE 0 END) as completed"),
+                    DB::raw("SUM(CASE WHEN tasks.status = 'in_progress' THEN 1 ELSE 0 END) as in_progress"),
+                    DB::raw("SUM(CASE WHEN tasks.status = 'pending' THEN 1 ELSE 0 END) as pending"),
+                    DB::raw("SUM(CASE WHEN tasks.status = 'on_hold' THEN 1 ELSE 0 END) as on_hold"),
+                    DB::raw('AVG(tasks.progress) as average_progress')
                 )
-                ->whereNull('kegiatan.deleted_at')
-                ->groupBy('bidang.id', 'bidang.nama')
+                ->whereNull('tasks.deleted_at')
+                ->groupBy('categories.id', 'categories.name')
                 ->get();
         });
     }
 
     /**
-     * Get distribusi pelaku usaha per jenis usaha
+     * Get task distribution by priority
      */
-    public function getDistribusiPelakuUsaha(): Collection
+    public function getTasksByPriority(): Collection
     {
-        return Cache::remember('distribusi_pelaku_usaha', 1800, function () {
-            return DB::table('pelaku_usaha')
+        return Cache::remember('tasks_by_priority', 1800, function () {
+            return DB::table('tasks')
                 ->select(
-                    'jenis_usaha',
+                    'priority',
                     DB::raw('COUNT(*) as total'),
-                    DB::raw('SUM(COALESCE(luas_lahan, 0)) as total_luas_lahan'),
-                    DB::raw('SUM(COALESCE(jumlah_ternak, 0)) as total_ternak')
+                    DB::raw("SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed"),
+                    DB::raw("SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) as in_progress")
                 )
-                ->where('is_active', true)
                 ->whereNull('deleted_at')
-                ->groupBy('jenis_usaha')
-                ->orderByDesc('total')
+                ->groupBy('priority')
+                ->orderByRaw("CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END")
                 ->get()
                 ->map(function ($item) {
-                    $item->jenis_usaha_label = PelakuUsaha::JENIS_USAHA[$item->jenis_usaha] ?? $item->jenis_usaha;
+                    $item->priority_label = Task::PRIORITIES[$item->priority] ?? $item->priority;
                     return $item;
                 });
-        });
-    }
-
-    /**
-     * Get distribusi per kecamatan
-     */
-    public function getDistribusiPerKecamatan(): Collection
-    {
-        return Cache::remember('distribusi_kecamatan', 1800, function () {
-            return DB::table('pelaku_usaha')
-                ->select(
-                    'kecamatan',
-                    DB::raw('COUNT(*) as total'),
-                    DB::raw('COUNT(DISTINCT desa) as total_desa'),
-                    DB::raw('COUNT(DISTINCT kelompok_tani) as total_kelompok')
-                )
-                ->where('is_active', true)
-                ->whereNull('deleted_at')
-                ->groupBy('kecamatan')
-                ->orderBy('kecamatan')
-                ->get();
         });
     }
 
@@ -149,8 +131,8 @@ class DashboardService
      */
     public function getRecentActivities(int $limit = 10): Collection
     {
-        return Kegiatan::with(['program:id,nama,bidang_id', 'program.bidang:id,nama'])
-            ->select('id', 'program_id', 'nama', 'status', 'progress', 'updated_at')
+        return Task::with(['project:id,name,category_id', 'project.category:id,name'])
+            ->select('id', 'project_id', 'name', 'status', 'progress', 'updated_at')
             ->orderByDesc('updated_at')
             ->limit($limit)
             ->get();
@@ -162,14 +144,13 @@ class DashboardService
     public function clearCache(): void
     {
         Cache::forget('dashboard_overview');
-        Cache::forget('progress_kegiatan');
-        Cache::forget('distribusi_pelaku_usaha');
-        Cache::forget('distribusi_kecamatan');
-        
+        Cache::forget('task_progress');
+        Cache::forget('tasks_by_priority');
+
         // Clear year-specific caches
         $currentYear = now()->year;
         for ($year = $currentYear - 5; $year <= $currentYear + 1; $year++) {
-            Cache::forget("statistik_bidang_{$year}");
+            Cache::forget("statistics_category_{$year}");
         }
     }
 }
