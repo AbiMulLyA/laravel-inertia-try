@@ -2,254 +2,119 @@
 
 namespace Database\Seeders;
 
-use App\Models\Bidang;
-use App\Models\Program;
-use App\Models\Kegiatan;
-use App\Models\PelakuUsaha;
+use App\Models\Category;
+use App\Models\Project;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\LazyCollection;
 
+/**
+ * DatabaseSeeder
+ * 
+ * Seeds the database with sample data for development and testing.
+ * Customize this seeder for your specific needs.
+ */
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create admin user
+        // =============================================
+        // 1. Create Admin User
+        // =============================================
         User::create([
             'name' => 'Administrator',
-            'email' => 'admin@dinaspertanian.go.id',
+            'email' => 'admin@example.com',
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
 
-        // Create Bidang
-        $bidangData = [
-            ['kode' => 'PTN', 'nama' => 'Bidang Pertanian', 'deskripsi' => 'Mengelola urusan tanaman pangan dan hortikultura'],
-            ['kode' => 'PTK', 'nama' => 'Bidang Peternakan', 'deskripsi' => 'Mengelola urusan peternakan dan kesehatan hewan'],
-            ['kode' => 'KPG', 'nama' => 'Bidang Ketahanan Pangan', 'deskripsi' => 'Mengelola urusan ketahanan dan keamanan pangan'],
-            ['kode' => 'PKN', 'nama' => 'Bidang Perkebunan', 'deskripsi' => 'Mengelola urusan perkebunan'],
+        $this->command->info('✓ Admin user created (admin@example.com / password)');
+
+        // =============================================
+        // 2. Create Sample Categories
+        // =============================================
+        $categories = [
+            ['code' => 'DEV', 'name' => 'Development', 'description' => 'Software development projects'],
+            ['code' => 'MKT', 'name' => 'Marketing', 'description' => 'Marketing and promotional activities'],
+            ['code' => 'OPS', 'name' => 'Operations', 'description' => 'Operational and infrastructure projects'],
+            ['code' => 'RND', 'name' => 'Research & Development', 'description' => 'R&D and innovation initiatives'],
         ];
 
-        foreach ($bidangData as $data) {
-            Bidang::create([
+        foreach ($categories as $data) {
+            Category::create([
                 ...$data,
-                'kepala_bidang' => fake()->name(),
-                'nip_kepala' => fake()->numerify('##################'),
                 'is_active' => true,
             ]);
         }
 
-        $this->command->info('Bidang created!');
+        $this->command->info('✓ ' . count($categories) . ' categories created');
 
-        // Create Programs for each Bidang
-        $bidangs = Bidang::all();
-        $programCount = 0;
+        // =============================================
+        // 3. Create Sample Projects
+        // =============================================
+        $categoryIds = Category::pluck('id')->toArray();
+        $projectCount = 0;
 
-        foreach ($bidangs as $bidang) {
-            for ($i = 1; $i <= 5; $i++) {
-                $pagu = fake()->numberBetween(100000000, 5000000000);
-                Program::create([
-                    'bidang_id' => $bidang->id,
-                    'kode' => $bidang->kode . '-' . str_pad($i, 3, '0', STR_PAD_LEFT),
-                    'nama' => "Program {$bidang->nama} " . fake()->words(3, true),
-                    'deskripsi' => fake()->paragraph(),
-                    'tahun_anggaran' => now()->year,
-                    'pagu_anggaran' => $pagu,
-                    'realisasi_anggaran' => $pagu * fake()->randomFloat(2, 0.3, 0.9),
-                    'status' => fake()->randomElement(['draft', 'aktif', 'selesai']),
-                    'tanggal_mulai' => now()->startOfYear(),
-                    'tanggal_selesai' => now()->endOfYear(),
+        foreach ($categoryIds as $categoryId) {
+            for ($i = 1; $i <= 3; $i++) {
+                $budget = fake()->numberBetween(10000000, 500000000);
+                Project::create([
+                    'category_id' => $categoryId,
+                    'code' => "PRJ-" . str_pad((($categoryId - 1) * 3) + $i, 3, '0', STR_PAD_LEFT),
+                    'name' => fake()->sentence(3),
+                    'description' => fake()->paragraph(),
+                    'year' => now()->year,
+                    'budget' => $budget,
+                    'spent' => $budget * fake()->randomFloat(2, 0.2, 0.8),
+                    'status' => fake()->randomElement(['draft', 'active', 'completed']),
+                    'start_date' => now()->startOfYear(),
+                    'end_date' => now()->endOfYear(),
                 ]);
-                $programCount++;
+                $projectCount++;
             }
         }
 
-        $this->command->info("$programCount Programs created!");
+        $this->command->info("✓ {$projectCount} projects created");
 
-        // Create Kegiatan for each Program
-        $programs = Program::all();
-        $kegiatanCount = 0;
+        // =============================================
+        // 4. Create Sample Tasks
+        // =============================================
+        $projects = Project::all();
+        $taskCount = 0;
 
-        foreach ($programs as $program) {
-            for ($i = 1; $i <= 10; $i++) {
-                $target = fake()->numberBetween(100, 10000);
-                $anggaran = fake()->numberBetween(10000000, 500000000);
+        foreach ($projects as $project) {
+            $taskNum = fake()->numberBetween(3, 8);
 
-                Kegiatan::create([
-                    'program_id' => $program->id,
-                    'kode' => $program->kode . '-K' . str_pad($i, 2, '0', STR_PAD_LEFT),
-                    'nama' => "Kegiatan " . fake()->words(4, true),
-                    'deskripsi' => fake()->paragraph(),
-                    'lokasi' => fake()->address(),
-                    'kecamatan' => fake()->randomElement($this->getKecamatan()),
-                    'desa' => fake()->randomElement($this->getDesa()),
+            for ($i = 1; $i <= $taskNum; $i++) {
+                $target = fake()->numberBetween(10, 1000);
+                $budget = fake()->numberBetween(1000000, 50000000);
+
+                Task::create([
+                    'project_id' => $project->id,
+                    'code' => $project->code . '-T' . str_pad($i, 2, '0', STR_PAD_LEFT),
+                    'name' => fake()->sentence(4),
+                    'description' => fake()->paragraph(),
+                    'location' => fake()->city(),
                     'target' => $target,
-                    'realisasi' => $target * fake()->randomFloat(2, 0, 1),
-                    'satuan' => fake()->randomElement(['Ha', 'Ekor', 'Kg', 'Unit', 'Orang', 'Kelompok']),
-                    'anggaran' => $anggaran,
-                    'realisasi_anggaran' => $anggaran * fake()->randomFloat(2, 0.3, 0.9),
-                    'status' => fake()->randomElement(['belum_mulai', 'berjalan', 'selesai', 'tertunda']),
+                    'achieved' => $target * fake()->randomFloat(2, 0, 1),
+                    'unit' => fake()->randomElement(['units', 'items', 'hours', 'people', 'documents']),
+                    'budget' => $budget,
+                    'spent' => $budget * fake()->randomFloat(2, 0.2, 0.9),
+                    'status' => fake()->randomElement(['pending', 'in_progress', 'completed', 'on_hold']),
                     'progress' => fake()->numberBetween(0, 100),
-                    'tanggal_mulai' => fake()->dateTimeBetween('first day of January', 'last day of June'),
-                    'tanggal_selesai' => fake()->dateTimeBetween('first day of July', 'last day of December'),
+                    'priority' => fake()->randomElement(['low', 'medium', 'high']),
+                    'start_date' => fake()->dateTimeBetween('first day of January', 'last day of June'),
+                    'end_date' => fake()->dateTimeBetween('first day of July', 'last day of December'),
                 ]);
-                $kegiatanCount++;
+                $taskCount++;
             }
         }
 
-        $this->command->info("$kegiatanCount Kegiatan created!");
+        $this->command->info("✓ {$taskCount} tasks created");
 
-        // Generate Heavy Data - 100.000 Pelaku Usaha
-        $this->command->info('Generating 100,000 Pelaku Usaha... This may take a while.');
-
-        $this->generateHeavyPelakuUsaha(100000);
-
-        $this->command->info('Seeding completed!');
-    }
-
-    /**
-     * Generate heavy data using chunk insert
-     */
-    private function generateHeavyPelakuUsaha(int $total): void
-    {
-        $bidangIds = Bidang::pluck('id')->toArray();
-        $jenisUsaha = array_keys(PelakuUsaha::JENIS_USAHA);
-        $kecamatanList = $this->getKecamatan();
-        $desaList = $this->getDesa();
-        $kelompokTani = $this->getKelompokTani();
-
-        $batchSize = 1000;
-        $batches = ceil($total / $batchSize);
-
-        $progressBar = $this->command->getOutput()->createProgressBar($batches);
-        $progressBar->start();
-
-        // Gunakan LazyCollection untuk generate dan insert
-        LazyCollection::range(1, $total)
-            ->chunk($batchSize)
-            ->each(function ($chunk) use ($bidangIds, $jenisUsaha, $kecamatanList, $desaList, $kelompokTani, $progressBar) {
-                $records = [];
-                $now = now();
-
-                foreach ($chunk as $i) {
-                    $jenis = fake()->randomElement($jenisUsaha);
-
-                    $records[] = [
-                        'bidang_id' => fake()->randomElement($bidangIds),
-                        'nik' => fake()->unique()->numerify('################'),
-                        'nama' => fake()->name(),
-                        'jenis_kelamin' => fake()->randomElement(['L', 'P']),
-                        'alamat' => fake()->streetAddress(),
-                        'kecamatan' => fake()->randomElement($kecamatanList),
-                        'desa' => fake()->randomElement($desaList),
-                        'rt' => fake()->numberBetween(1, 20),
-                        'rw' => fake()->numberBetween(1, 10),
-                        'no_hp' => fake()->numerify('08##########'),
-                        'jenis_usaha' => $jenis,
-                        'luas_lahan' => in_array($jenis, ['petani_padi', 'petani_palawija', 'petani_hortikultura'])
-                            ? fake()->randomFloat(2, 0.1, 10)
-                            : null,
-                        'jumlah_ternak' => in_array($jenis, ['peternak_sapi', 'peternak_kambing', 'peternak_ayam', 'peternak_ikan'])
-                            ? fake()->numberBetween(5, 1000)
-                            : null,
-                        'komoditas' => json_encode(fake()->randomElements($this->getKomoditas($jenis), min(fake()->numberBetween(1, 3), count($this->getKomoditas($jenis))))),
-                        'kelompok_tani' => fake()->optional(0.7)->randomElement($kelompokTani),
-                        'is_active' => fake()->boolean(90),
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ];
-                }
-
-                // Bulk insert
-                DB::table('pelaku_usaha')->insert($records);
-
-                $progressBar->advance();
-
-                // Clear faker unique cache to prevent memory issues
-                fake()->unique(true);
-            });
-
-        $progressBar->finish();
         $this->command->newLine();
-    }
-
-    private function getKecamatan(): array
-    {
-        return [
-            'Ciamis',
-            'Cikoneng',
-            'Cijeungjing',
-            'Sadananya',
-            'Cidolog',
-            'Cihaurbeuti',
-            'Panumbangan',
-            'Panjalu',
-            'Kawali',
-            'Cipaku',
-            'Jatinagara',
-            'Rajadesa',
-            'Rancah',
-            'Tambaksari',
-            'Lakbok',
-        ];
-    }
-
-    private function getDesa(): array
-    {
-        return [
-            'Sukamaju',
-            'Sukamanah',
-            'Sukajadi',
-            'Sukasari',
-            'Sukarame',
-            'Mekarsari',
-            'Mekarjaya',
-            'Mekarmukti',
-            'Mekarwangi',
-            'Mekarmanik',
-            'Cintarasa',
-            'Cintaasih',
-            'Cintamulya',
-            'Cintajaya',
-            'Cintakarya',
-        ];
-    }
-
-    private function getKelompokTani(): array
-    {
-        return [
-            'Tani Makmur',
-            'Tani Jaya',
-            'Tani Mulya',
-            'Tani Sejahtera',
-            'Tani Mandiri',
-            'Sumber Rezeki',
-            'Mekar Tani',
-            'Harapan Tani',
-            'Maju Tani',
-            'Berkah Tani',
-            'Subur Jaya',
-            'Lestari Tani',
-            'Gemah Ripah',
-            'Sauyunan',
-            'Gotong Royong',
-        ];
-    }
-
-    private function getKomoditas(string $jenisUsaha): array
-    {
-        return match ($jenisUsaha) {
-            'petani_padi' => ['Padi IR64', 'Padi Ciherang', 'Padi Inpari', 'Padi Organik'],
-            'petani_palawija' => ['Jagung', 'Kedelai', 'Kacang Tanah', 'Ubi Kayu', 'Ubi Jalar'],
-            'petani_hortikultura' => ['Cabai', 'Tomat', 'Bawang Merah', 'Bawang Putih', 'Kentang', 'Wortel'],
-            'peternak_sapi' => ['Sapi Potong', 'Sapi Perah', 'Sapi Limosin', 'Sapi Brahman'],
-            'peternak_kambing' => ['Kambing Etawa', 'Kambing Jawa', 'Kambing Boer', 'Domba'],
-            'peternak_ayam' => ['Ayam Broiler', 'Ayam Petelur', 'Ayam Kampung', 'Ayam Arab'],
-            'peternak_ikan' => ['Lele', 'Nila', 'Gurame', 'Mas', 'Patin', 'Bawal'],
-            'pengolah_pangan' => ['Keripik', 'Tepung', 'Olahan Susu', 'Makanan Ringan'],
-            default => ['Lainnya'],
-        };
+        $this->command->info('🎉 Database seeding completed!');
+        $this->command->info('   Login with: admin@example.com / password');
     }
 }
