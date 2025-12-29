@@ -9,6 +9,7 @@ import {
     FileText,
     Palette,
     User,
+    Users,
     LogOut,
     ChevronUp
 } from 'lucide-react';
@@ -74,6 +75,7 @@ const navigation: NavigationItem[] = [
         name: 'Settings',
         icon: Settings,
         children: [
+            { name: 'User Management', href: '/settings/users', icon: Users },
             { name: 'Appearance', href: '/settings/appearance', icon: Palette },
         ]
     },
