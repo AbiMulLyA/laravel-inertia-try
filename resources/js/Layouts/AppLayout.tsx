@@ -1,16 +1,7 @@
-import { Link, usePage } from '@inertiajs/react';
-import { PropsWithChildren, useState } from 'react';
-import { 
-    LayoutDashboard, 
-    FolderKanban, 
-    ClipboardList,
-    Layers,
-    Menu,
-    X,
-    ChevronDown,
-    LogOut,
-    User
-} from 'lucide-react';
+import { usePage } from '@inertiajs/react';
+import { PropsWithChildren, useState, useEffect } from 'react';
+import { Sidebar } from '@/Components';
+import { Menu } from 'lucide-react';
 
 interface User {
     name: string;
@@ -29,164 +20,81 @@ interface PageProps {
 }
 
 /**
- * Navigation Items
- * 
- * Customize this array to add/remove menu items.
- * Each item requires: name, href, icon
- */
-const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Categories', href: '/categories', icon: Layers },
-    { name: 'Projects', href: '/projects', icon: FolderKanban },
-    { name: 'Tasks', href: '/tasks', icon: ClipboardList },
-    // Add more menu items here:
-    // { name: 'Users', href: '/users', icon: Users },
-];
-
-/**
  * AppLayout Component
  * 
- * Main layout with sidebar navigation and top bar.
- * Features:
- * - Responsive sidebar (collapsible on mobile)
- * - User dropdown menu
+ * Main application layout with:
+ * - Collapsible sidebar with tree navigation
+ * - No header bar - content goes full to top
  * - Flash message display
- * - Inertia.js prefetching for fast navigation
+ * - Dark mode support
  */
 export default function AppLayout({ children }: PropsWithChildren) {
-    const { auth, flash } = usePage<PageProps>().props;
-    const { url } = usePage();
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const { flash } = usePage<PageProps>().props;
+    
+    // Sidebar states
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('sidebar-collapsed') === 'true';
+        }
+        return false;
+    });
+    const [mobileOpen, setMobileOpen] = useState(false);
+
+    // Persist sidebar state
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('sidebar-collapsed', String(sidebarCollapsed));
+        }
+    }, [sidebarCollapsed]);
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            {/* Mobile sidebar backdrop */}
-            {sidebarOpen && (
-                <div 
-                    className="fixed inset-0 z-40 bg-black/50 lg:hidden animate-fade-in"
-                    onClick={() => setSidebarOpen(false)}
-                />
-            )}
-
+        <div className="min-h-screen bg-theme-secondary transition-colors duration-300">
             {/* Sidebar */}
-            <aside className={`
-                fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 
-                transform transition-transform duration-300 ease-in-out
-                lg:translate-x-0
-                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-            `}>
-                {/* Logo - Customize this section */}
-                <div className="h-16 flex items-center justify-between px-6 border-b">
-                    <Link 
-                        href="/dashboard" 
-                        className="flex items-center gap-2"
-                        prefetch="mount"
-                    >
-                        <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">KM</span>
-                        </div>
-                        <span className="font-semibold text-gray-900">Kominfo Base</span>
-                    </Link>
+            <Sidebar
+                collapsed={sidebarCollapsed}
+                onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+                mobileOpen={mobileOpen}
+                onMobileClose={() => setMobileOpen(false)}
+            />
+
+            {/* Main content - Full height, no header */}
+            <div className={`min-h-screen transition-all duration-300 ${sidebarCollapsed ? 'lg:pl-[72px]' : 'lg:pl-64'}`}>
+                {/* Mobile menu button - fixed at top */}
+                <div className="lg:hidden sticky top-0 z-30 p-4">
                     <button 
-                        className="lg:hidden p-1 text-gray-500 hover:text-gray-700"
-                        onClick={() => setSidebarOpen(false)}
+                        className="p-2 text-theme-muted hover:text-theme-primary rounded-lg bg-theme-primary shadow-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        onClick={() => setMobileOpen(true)}
                     >
-                        <X className="w-5 h-5" />
+                        <Menu className="w-5 h-5" />
                     </button>
                 </div>
 
-                {/* Navigation with prefetching */}
-                <nav className="p-4 space-y-1">
-                    {navigation.map((item) => {
-                        const isActive = url.startsWith(item.href);
-                        return (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                prefetch="hover"
-                                className={`
-                                    flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                                    transition-all duration-200
-                                    ${isActive 
-                                        ? 'bg-primary-50 text-primary-700' 
-                                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                                    }
-                                `}
-                            >
-                                <item.icon className={`w-5 h-5 ${isActive ? 'text-primary-600' : 'text-gray-400'}`} />
-                                {item.name}
-                            </Link>
-                        );
-                    })}
-                </nav>
-            </aside>
-
-            {/* Main content */}
-            <div className="lg:pl-64">
-                {/* Top bar */}
-                <header className="sticky top-0 z-30 h-16 bg-white border-b border-gray-200">
-                    <div className="h-full px-4 flex items-center justify-between">
-                        <button 
-                            className="lg:hidden p-2 text-gray-500 hover:text-gray-700"
-                            onClick={() => setSidebarOpen(true)}
-                        >
-                            <Menu className="w-5 h-5" />
-                        </button>
-
-                        {/* User dropdown */}
-                        <div className="relative ml-auto">
-                            <button
-                                className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100"
-                                onClick={() => setUserMenuOpen(!userMenuOpen)}
-                            >
-                                <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                                    <User className="w-4 h-4 text-primary-600" />
-                                </div>
-                                <span className="hidden sm:block text-sm font-medium text-gray-700">
-                                    {auth.user.name}
-                                </span>
-                                <ChevronDown className="w-4 h-4 text-gray-400" />
-                            </button>
-
-                            {userMenuOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-1">
-                                    <Link
-                                        href="/profile"
-                                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    >
-                                        <User className="w-4 h-4" />
-                                        Profile
-                                    </Link>
-                                    <Link
-                                        href="/logout"
-                                        method="post"
-                                        as="button"
-                                        className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                                    >
-                                        <LogOut className="w-4 h-4" />
-                                        Logout
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </header>
-
                 {/* Flash messages */}
-                {flash?.success && (
-                    <div className="mx-4 mt-4 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg">
-                        {flash.success}
-                    </div>
-                )}
-                {flash?.error && (
-                    <div className="mx-4 mt-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
-                        {flash.error}
-                    </div>
-                )}
+                <div className="px-4 lg:px-6">
+                    {flash?.success && (
+                        <div className="mb-4 p-4 bg-secondary-50 dark:bg-secondary-900/30 border border-secondary-200 dark:border-secondary-800 text-secondary-700 dark:text-secondary-300 rounded-xl flex items-start gap-3 animate-slide-down">
+                            <div className="w-5 h-5 bg-secondary-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <p>{flash.success}</p>
+                        </div>
+                    )}
+                    {flash?.error && (
+                        <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-xl flex items-start gap-3 animate-slide-down">
+                            <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </div>
+                            <p>{flash.error}</p>
+                        </div>
+                    )}
+                </div>
 
-                {/* Page content */}
-                <main className="p-4 lg:p-6">
+                {/* Page content - starts from top */}
+                <main className="p-4 lg:p-6 lg:pt-4">
                     {children}
                 </main>
             </div>
