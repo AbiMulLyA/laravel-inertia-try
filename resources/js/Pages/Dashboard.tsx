@@ -1,11 +1,11 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, router } from '@inertiajs/react';
+import { StatsCard, Card, CardHeader, PageHeader } from '@/Components';
 import { 
     Layers, 
     FolderKanban, 
     ClipboardList,
-    ArrowUpRight,
-    ArrowDownRight
+    CheckCircle2
 } from 'lucide-react';
 
 interface Overview {
@@ -54,8 +54,8 @@ function formatNumber(value: number): string {
 /**
  * Dashboard Page
  * 
- * Overview page with statistics cards, data tables, and activity feed.
- * Uses UI patterns that can be reused across other pages.
+ * Overview page with Filament-style stat cards and data display.
+ * Features Tasikmalaya brand colors.
  */
 export default function Dashboard({
     overview,
@@ -75,56 +75,54 @@ export default function Dashboard({
 
             <div className="space-y-6">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-                        <p className="text-gray-500">Application overview and statistics</p>
-                    </div>
+                <PageHeader 
+                    title="Dashboard" 
+                    subtitle="Application overview and statistics"
+                >
                     <select
                         value={year}
                         onChange={(e) => router.get('/dashboard', { year: e.target.value })}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                     >
                         {yearOptions.map((y) => (
                             <option key={y} value={y}>Year {y}</option>
                         ))}
                     </select>
-                </div>
+                </PageHeader>
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard
+                    <StatsCard
                         title="Categories"
                         value={overview.total_categories}
                         icon={Layers}
-                        color="blue"
+                        color="primary"
                     />
-                    <StatCard
+                    <StatsCard
                         title="Projects"
                         value={overview.total_projects}
                         icon={FolderKanban}
-                        color="green"
+                        color="secondary"
                     />
-                    <StatCard
+                    <StatsCard
                         title="Total Tasks"
                         value={overview.total_tasks}
                         icon={ClipboardList}
-                        color="purple"
+                        color="accent"
                     />
-                    <StatCard
+                    <StatsCard
                         title="Completed"
                         value={overview.tasks_completed}
-                        icon={ClipboardList}
-                        color="orange"
+                        icon={CheckCircle2}
+                        color="cyan"
                     />
                 </div>
 
-                {/* Budget Overview */}
+                {/* Budget Overview & Task Status */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    <div className="lg:col-span-2 bg-white rounded-xl border p-6">
-                        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Budget Overview
-                        </h2>
+                    {/* Budget Overview */}
+                    <Card className="lg:col-span-2">
+                        <CardHeader title="Budget Overview" />
                         <div className="grid grid-cols-2 gap-6">
                             <div>
                                 <p className="text-sm text-gray-500">Total Budget</p>
@@ -139,55 +137,54 @@ export default function Dashboard({
                                 </p>
                             </div>
                         </div>
-                        <div className="mt-4">
+                        <div className="mt-6">
                             <div className="flex items-center justify-between mb-2">
                                 <span className="text-sm text-gray-500">Progress</span>
-                                <span className="text-sm font-medium">{spentPercentage}%</span>
+                                <span className="text-sm font-semibold text-gray-700">{spentPercentage}%</span>
                             </div>
-                            <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                            <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
                                 <div 
-                                    className="h-full bg-primary-500 rounded-full transition-all duration-500"
+                                    className="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full transition-all duration-700 ease-out"
                                     style={{ width: `${Math.min(Number(spentPercentage), 100)}%` }}
                                 />
                             </div>
                         </div>
-                    </div>
+                    </Card>
 
-                    <div className="bg-white rounded-xl border p-6">
-                        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Task Status
-                        </h2>
+                    {/* Task Status */}
+                    <Card>
+                        <CardHeader title="Task Status" />
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 bg-blue-500 rounded-full" />
+                                <div className="flex items-center gap-3">
+                                    <div className="w-3 h-3 bg-primary-500 rounded-full" />
                                     <span className="text-sm text-gray-600">In Progress</span>
                                 </div>
-                                <span className="font-semibold">{overview.tasks_in_progress}</span>
+                                <span className="text-lg font-semibold text-gray-900">{overview.tasks_in_progress}</span>
                             </div>
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 bg-green-500 rounded-full" />
+                                <div className="flex items-center gap-3">
+                                    <div className="w-3 h-3 bg-secondary-500 rounded-full" />
                                     <span className="text-sm text-gray-600">Completed</span>
                                 </div>
-                                <span className="font-semibold">{overview.tasks_completed}</span>
+                                <span className="text-lg font-semibold text-gray-900">{overview.tasks_completed}</span>
                             </div>
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-3">
                                     <div className="w-3 h-3 bg-gray-300 rounded-full" />
                                     <span className="text-sm text-gray-600">Other</span>
                                 </div>
-                                <span className="font-semibold">
+                                <span className="text-lg font-semibold text-gray-900">
                                     {overview.total_tasks - overview.tasks_in_progress - overview.tasks_completed}
                                 </span>
                             </div>
                         </div>
-                    </div>
+                    </Card>
                 </div>
 
-                {/* Statistics per Category */}
-                <div className="bg-white rounded-xl border overflow-hidden">
-                    <div className="p-6 border-b">
+                {/* Statistics by Category */}
+                <Card padding="none">
+                    <div className="p-6 border-b border-gray-100">
                         <h2 className="text-lg font-semibold text-gray-900">
                             Statistics by Category
                         </h2>
@@ -196,30 +193,30 @@ export default function Dashboard({
                         <table className="w-full">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Category
                                     </th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Projects
                                     </th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Budget
                                     </th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Spent
                                     </th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Progress
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-200">
+                            <tbody className="divide-y divide-gray-100">
                                 {statisticsCategory.map((category) => (
-                                    <tr key={category.id} className="hover:bg-gray-50">
+                                    <tr key={category.id} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                                                    <span className="text-sm font-bold text-primary-600">
+                                                <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg flex items-center justify-center border border-primary-200">
+                                                    <span className="text-sm font-bold text-primary-700">
                                                         {category.code}
                                                     </span>
                                                 </div>
@@ -228,7 +225,7 @@ export default function Dashboard({
                                                 </span>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-right text-gray-600">
+                                        <td className="px-6 py-4 text-right text-gray-600 font-medium">
                                             {category.total_projects}
                                         </td>
                                         <td className="px-6 py-4 text-right text-gray-600">
@@ -238,14 +235,14 @@ export default function Dashboard({
                                             {formatCurrency(category.total_spent)}
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="flex items-center justify-end gap-2">
-                                                <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                            <div className="flex items-center justify-end gap-3">
+                                                <div className="w-20 h-2 bg-gray-100 rounded-full overflow-hidden">
                                                     <div 
-                                                        className="h-full bg-primary-500 rounded-full"
+                                                        className="h-full bg-gradient-to-r from-secondary-400 to-secondary-600 rounded-full"
                                                         style={{ width: `${category.spent_percentage}%` }}
                                                     />
                                                 </div>
-                                                <span className="text-sm text-gray-600 w-12 text-right">
+                                                <span className="text-sm font-medium text-gray-700 w-12 text-right">
                                                     {category.spent_percentage}%
                                                 </span>
                                             </div>
@@ -255,41 +252,39 @@ export default function Dashboard({
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </Card>
 
-                {/* Priority Distribution & Recent Activities */}
+                {/* Priority & Recent Activities */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="bg-white rounded-xl border p-6">
-                        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Tasks by Priority
-                        </h2>
+                    {/* Tasks by Priority */}
+                    <Card>
+                        <CardHeader title="Tasks by Priority" />
                         <div className="space-y-3">
                             {tasksByPriority.slice(0, 6).map((item, index) => (
-                                <div key={index} className="flex items-center justify-between">
+                                <div key={index} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                                     <span className="text-sm text-gray-600">
                                         {item.priority_label}
                                     </span>
-                                    <span className="font-semibold text-gray-900">
+                                    <span className="text-sm font-semibold text-gray-900 bg-gray-100 px-3 py-1 rounded-full">
                                         {formatNumber(item.total)}
                                     </span>
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </Card>
 
-                    <div className="bg-white rounded-xl border p-6">
-                        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Recent Activities
-                        </h2>
+                    {/* Recent Activities */}
+                    <Card>
+                        <CardHeader title="Recent Activities" />
                         <div className="space-y-3">
                             {recentActivities.slice(0, 5).map((activity) => (
-                                <div key={activity.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+                                <div key={activity.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
                                     <div className={`
-                                        w-2 h-2 rounded-full
-                                        ${activity.status === 'completed' ? 'bg-green-500' : ''}
-                                        ${activity.status === 'in_progress' ? 'bg-blue-500' : ''}
+                                        w-2.5 h-2.5 rounded-full flex-shrink-0
+                                        ${activity.status === 'completed' ? 'bg-secondary-500' : ''}
+                                        ${activity.status === 'in_progress' ? 'bg-primary-500' : ''}
                                         ${activity.status === 'pending' ? 'bg-gray-400' : ''}
-                                        ${activity.status === 'on_hold' ? 'bg-yellow-500' : ''}
+                                        ${activity.status === 'on_hold' ? 'bg-accent-500' : ''}
                                     `} />
                                     <div className="flex-1 min-w-0">
                                         <p className="text-sm font-medium text-gray-900 truncate">
@@ -299,55 +294,23 @@ export default function Dashboard({
                                             {activity.project?.category?.name}
                                         </p>
                                     </div>
-                                    <span className="text-sm text-gray-500">
-                                        {activity.progress}%
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-12 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                            <div 
+                                                className="h-full bg-primary-500 rounded-full"
+                                                style={{ width: `${activity.progress}%` }}
+                                            />
+                                        </div>
+                                        <span className="text-xs font-medium text-gray-500 w-8">
+                                            {activity.progress}%
+                                        </span>
+                                    </div>
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </Card>
                 </div>
             </div>
         </AppLayout>
-    );
-}
-
-// ============================================
-// Stat Card Component - Reusable UI Pattern
-// ============================================
-interface StatCardProps {
-    title: string;
-    value: string | number;
-    icon: React.ElementType;
-    color: 'blue' | 'green' | 'purple' | 'orange';
-    trend?: number;
-}
-
-function StatCard({ title, value, icon: Icon, color, trend }: StatCardProps) {
-    const colors = {
-        blue: 'bg-blue-50 text-blue-600',
-        green: 'bg-green-50 text-green-600',
-        purple: 'bg-purple-50 text-purple-600',
-        orange: 'bg-orange-50 text-orange-600',
-    };
-
-    return (
-        <div className="bg-white rounded-xl border p-6">
-            <div className="flex items-center justify-between">
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${colors[color]}`}>
-                    <Icon className="w-6 h-6" />
-                </div>
-                {trend !== undefined && (
-                    <div className={`flex items-center gap-1 text-sm ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {trend >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-                        {Math.abs(trend)}%
-                    </div>
-                )}
-            </div>
-            <div className="mt-4">
-                <p className="text-2xl font-bold text-gray-900">{value}</p>
-                <p className="text-sm text-gray-500 mt-1">{title}</p>
-            </div>
-        </div>
     );
 }
