@@ -3,8 +3,9 @@ import '../css/app.css';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { ThemeProvider } from './Contexts/ThemeContext';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Dinas Pertanian';
+const appName = import.meta.env.VITE_APP_NAME || 'Kominfo Admin';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -16,16 +17,21 @@ createInertiaApp({
         ),
     
     setup({ el, App, props }) {
-        // Inertia 2.x requires passing props to App component
+        const AppWithProviders = (
+            <ThemeProvider>
+                <App {...props} />
+            </ThemeProvider>
+        );
+
         if (import.meta.env.SSR) {
-            hydrateRoot(el, <App {...props} />);
+            hydrateRoot(el, AppWithProviders);
         } else {
-            createRoot(el).render(<App {...props} />);
+            createRoot(el).render(AppWithProviders);
         }
     },
     
     progress: {
-        color: '#16a34a', // Primary green color
+        color: '#2563EB', // Primary blue color (Tasikmalaya)
         showSpinner: true,
     },
 });

@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Kominfo Laravel Inertia Base - Web Routes
-| These routes are loaded by the RouteServiceProvider within the "web" middleware group.
 |
 */
 
@@ -21,30 +23,43 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // ================================================
     // Dashboard
+    // ================================================
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // ================================================
-    // Categories - Master Data Example
+    // Master Data
     // ================================================
     Route::resource('categories', CategoryController::class);
-
-    // ================================================
-    // Projects - Relational Data Example
-    // ================================================
     Route::resource('projects', ProjectController::class);
-
-    // ================================================
-    // Tasks - Full CRUD with Progress Example
-    // ================================================
     Route::resource('tasks', TaskController::class);
     Route::patch('/tasks/{task}/progress', [TaskController::class, 'updateProgress'])
         ->name('tasks.update-progress');
 
     // ================================================
-    // Add your custom routes here
+    // Reports
     // ================================================
-    // Route::resource('your-model', YourModelController::class);
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/budget', [ReportController::class, 'budget'])->name('budget');
+        Route::get('/spending', [ReportController::class, 'spending'])->name('spending');
+        Route::get('/project-progress', [ReportController::class, 'projectProgress'])->name('project-progress');
+        Route::get('/task-progress', [ReportController::class, 'taskProgress'])->name('task-progress');
+    });
+
+    // ================================================
+    // Settings
+    // ================================================
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/appearance', [SettingsController::class, 'appearance'])->name('appearance');
+    });
+
+    // ================================================
+    // Profile
+    // ================================================
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
 });
 
 require __DIR__ . '/auth.php';
