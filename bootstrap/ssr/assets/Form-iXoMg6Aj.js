@@ -3,7 +3,7 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { useForm, Head, Link } from "@inertiajs/react";
 import { ArrowLeft, User, Mail, Shield, Lock } from "lucide-react";
 import "react";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 function UserForm({ user, isEdit }) {
   const form = useForm({
     name: user?.name || "",

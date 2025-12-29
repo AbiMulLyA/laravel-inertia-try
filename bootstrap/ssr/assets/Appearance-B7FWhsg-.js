@@ -3,7 +3,7 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { Head } from "@inertiajs/react";
 import { Sun, Moon, Monitor, Check } from "lucide-react";
 import { useContext, createContext } from "react";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 const ThemeContext = createContext(void 0);
 function useTheme() {
   const context = useContext(ThemeContext);

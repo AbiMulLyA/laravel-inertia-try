@@ -3,8 +3,8 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { Head, Link } from "@inertiajs/react";
 import { FolderKanban, Clock, AlertCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import "react";
-import { S as StatsCard } from "./StatsCard-CnGFB2kC.js";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { S as StatsCard } from "./StatsCard-DQVB_KgP.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 function formatCurrency(value) {
   if (value >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
   if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;

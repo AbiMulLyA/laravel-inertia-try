@@ -115,25 +115,32 @@
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
 
-/* Dark mode */
+/* Dark mode - Modern, Clean Palette */
 .dark {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --bg-card: #1e293b;
-  --bg-sidebar: #0f172a;
-  --bg-input: #1e293b;
+  /* Background Hierarchy - Deep Navy/Slate */
+  --bg-primary: #0c1222;         /* Deepest - Page background */
+  --bg-secondary: #111827;       /* Cards, main content */
+  --bg-tertiary: #1e293b;        /* Table headers, elevated surfaces */
+  --bg-card: #131c2e;            /* Card surfaces */
+  --bg-sidebar: #0a0f1a;         /* Sidebar - Darkest */
+  --bg-input: #1a2744;           /* Input fields, interactive */
+  --bg-hover: #243656;           /* Hover states */
   
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #94a3b8;
-  --text-muted: #64748b;
+  /* Text Colors - High contrast but soft */
+  --text-primary: #f1f5f9;       /* Primary text - Slate 100 */
+  --text-secondary: #94a3b8;     /* Secondary text - Slate 400 */
+  --text-tertiary: #64748b;      /* Tertiary - Slate 500 */
+  --text-muted: #475569;         /* Muted - Slate 600 */
   
-  --border-primary: #334155;
-  --border-secondary: #1e293b;
+  /* Borders - Subtle but visible */
+  --border-primary: #1e3a5f;     /* Primary borders - Navy tint */
+  --border-secondary: #172544;   /* Subtle borders */
+  --border-focus: oklch(0.55 0.2 255 / 0.5); /* Focus ring color */
   
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  /* Shadows - Deeper for dark mode */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4);
 }
 
 /* Base Styles */

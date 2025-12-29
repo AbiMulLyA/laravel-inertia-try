@@ -8,7 +8,14 @@ function Card({ children, className = "", padding = "md" }) {
     md: "p-6",
     lg: "p-8"
   };
-  return /* @__PURE__ */ jsx("div", { className: `bg-white rounded-xl border border-gray-200 shadow-sm ${paddingStyles[padding]} ${className}`, children });
+  return /* @__PURE__ */ jsx("div", { className: `
+            bg-theme-card
+            rounded-xl 
+            border border-theme 
+            shadow-sm
+            transition-colors duration-200
+            ${paddingStyles[padding]} ${className}
+        `, children });
 }
 function CardHeader({ title, subtitle, action, children }) {
   if (children) {
@@ -16,8 +23,8 @@ function CardHeader({ title, subtitle, action, children }) {
   }
   return /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between mb-4", children: [
     /* @__PURE__ */ jsxs("div", { children: [
-      title && /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900", children: title }),
-      subtitle && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-500 mt-0.5", children: subtitle })
+      title && /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 dark:text-gray-100", children: title }),
+      subtitle && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-500 dark:text-gray-400 mt-0.5", children: subtitle })
     ] }),
     action && /* @__PURE__ */ jsx("div", { children: action })
   ] });

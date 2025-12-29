@@ -3,7 +3,7 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { useForm, Head } from "@inertiajs/react";
 import { User, Shield, Lock } from "lucide-react";
 import { useState } from "react";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 const SectionHeader = ({ icon: Icon, title, subtitle, variant = "primary" }) => {
   const variantStyles = {
     primary: "bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400",

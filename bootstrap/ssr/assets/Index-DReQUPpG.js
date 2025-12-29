@@ -3,8 +3,8 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { Head, Link, router } from "@inertiajs/react";
 import { Plus, Users, UserPlus, ShieldCheck, Search, Edit, Trash2, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
-import { S as StatsCard } from "./StatsCard-CnGFB2kC.js";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { S as StatsCard } from "./StatsCard-DQVB_KgP.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 function UsersIndex({ users, summary, filters }) {
   const [search, setSearch] = useState(filters.search || "");
   const handleSearch = (e) => {

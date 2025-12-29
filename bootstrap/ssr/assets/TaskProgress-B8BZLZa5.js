@@ -3,8 +3,8 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { Head, Link } from "@inertiajs/react";
 import { ClipboardList, Clock, CheckCircle2, Hourglass, ArrowRight } from "lucide-react";
 import "react";
-import { S as StatsCard } from "./StatsCard-CnGFB2kC.js";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { S as StatsCard } from "./StatsCard-DQVB_KgP.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 function TaskProgress({
   summary = { total: 0, in_progress: 0, completed: 0, pending: 0 },
   tasks = [],

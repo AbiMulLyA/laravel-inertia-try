@@ -1,10 +1,10 @@
 {
   "node_modules/laravel-vite-plugin/inertia-helpers/index.js": [],
   "resources/js/Components/Cards/Card.tsx": [
-    "/build/assets/PageHeader-D62FVbSQ.js"
+    "/build/assets/PageHeader-DAtmv7HV.js"
   ],
   "resources/js/Components/Cards/StatsCard.tsx": [
-    "/build/assets/StatsCard-CnGFB2kC.js"
+    "/build/assets/StatsCard-DQVB_KgP.js"
   ],
   "resources/js/Components/Navigation/NavItem.tsx": [
     "/build/assets/AppLayout-DKzRb6H5.js"
@@ -13,10 +13,10 @@
     "/build/assets/AppLayout-DKzRb6H5.js"
   ],
   "resources/js/Components/PageHeader.tsx": [
-    "/build/assets/PageHeader-D62FVbSQ.js"
+    "/build/assets/PageHeader-DAtmv7HV.js"
   ],
   "resources/js/Contexts/ThemeContext.tsx": [
-    "/build/assets/Appearance-DzVtQb74.js"
+    "/build/assets/Appearance-B7FWhsg-.js"
   ],
   "resources/js/Layouts/AppLayout.tsx": [
     "/build/assets/AppLayout-DKzRb6H5.js"
@@ -31,58 +31,58 @@
     "/build/assets/Form-BCtKbh00.js"
   ],
   "resources/js/Pages/Categories/Index.tsx": [
-    "/build/assets/Index-BBQONVPm.js"
+    "/build/assets/Index-Ds_OvTw6.js"
   ],
   "resources/js/Pages/Dashboard.tsx": [
-    "/build/assets/Dashboard-Cjw0yetm.js"
+    "/build/assets/Dashboard-DnL10aW2.js"
   ],
   "resources/js/Pages/Profile/Index.tsx": [
-    "/build/assets/Index-DruZH6Gk.js"
+    "/build/assets/Index-CUhgjMT1.js"
   ],
   "resources/js/Pages/Projects/Form.tsx": [
     "/build/assets/Form-DS7aUg2H.js"
   ],
   "resources/js/Pages/Projects/Index.tsx": [
-    "/build/assets/Index-CMlrMYYX.js"
+    "/build/assets/Index-BLR7T4CT.js"
   ],
   "resources/js/Pages/Reports/Budget.tsx": [
-    "/build/assets/Budget-DJWeij5V.js"
+    "/build/assets/Budget-C1LQlDsw.js"
   ],
   "resources/js/Pages/Reports/ProjectProgress.tsx": [
-    "/build/assets/ProjectProgress-BzGCqajY.js"
+    "/build/assets/ProjectProgress-Dk3GAvjy.js"
   ],
   "resources/js/Pages/Reports/Spending.tsx": [
-    "/build/assets/Spending-D_oSioen.js"
+    "/build/assets/Spending-CpZumXdA.js"
   ],
   "resources/js/Pages/Reports/TaskProgress.tsx": [
-    "/build/assets/TaskProgress-ChzlHW6X.js"
+    "/build/assets/TaskProgress-B8BZLZa5.js"
   ],
   "resources/js/Pages/Settings/Appearance.tsx": [
-    "/build/assets/Appearance-DzVtQb74.js"
+    "/build/assets/Appearance-B7FWhsg-.js"
   ],
   "resources/js/Pages/Settings/Permissions/Form.tsx": [
-    "/build/assets/Form-BJOqZJI6.js"
+    "/build/assets/Form-Dg7vkM79.js"
   ],
   "resources/js/Pages/Settings/Permissions/Index.tsx": [
-    "/build/assets/Index-BO7jVeCk.js"
+    "/build/assets/Index-DojhHmOx.js"
   ],
   "resources/js/Pages/Settings/Roles/Form.tsx": [
-    "/build/assets/Form-yLvGDTxJ.js"
+    "/build/assets/Form-Burs7NOd.js"
   ],
   "resources/js/Pages/Settings/Roles/Index.tsx": [
-    "/build/assets/Index-DcNBMN_7.js"
+    "/build/assets/Index-BViZ4F6N.js"
   ],
   "resources/js/Pages/Settings/Users/Form.tsx": [
-    "/build/assets/Form-B-rlrgnz.js"
+    "/build/assets/Form-iXoMg6Aj.js"
   ],
   "resources/js/Pages/Settings/Users/Index.tsx": [
-    "/build/assets/Index-CXP4Yo-E.js"
+    "/build/assets/Index-DReQUPpG.js"
   ],
   "resources/js/Pages/Tasks/Form.tsx": [
     "/build/assets/Form-BvbytIDE.js"
   ],
   "resources/js/Pages/Tasks/Index.tsx": [
-    "/build/assets/Index-AfpZ2lbp.js"
+    "/build/assets/Index-CLOFmxlt.js"
   ],
   "resources/js/ssr.tsx": []
 }

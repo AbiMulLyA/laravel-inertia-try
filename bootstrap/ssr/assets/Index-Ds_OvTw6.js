@@ -3,7 +3,7 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { Head, Link, router } from "@inertiajs/react";
 import { Plus, Edit, Trash2, Layers } from "lucide-react";
 import "react";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 function formatCurrency(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",

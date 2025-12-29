@@ -3,7 +3,7 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { useForm, Head, Link } from "@inertiajs/react";
 import { ArrowLeft, Key } from "lucide-react";
 import { useState } from "react";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 function PermissionForm({ permission, groups, isEdit }) {
   const [isNewGroup, setIsNewGroup] = useState(false);
   const [newGroup, setNewGroup] = useState("");

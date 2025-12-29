@@ -3,8 +3,8 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { Head, Link, router } from "@inertiajs/react";
 import { Plus, Key, Layers, Edit, Trash2 } from "lucide-react";
 import "react";
-import { S as StatsCard } from "./StatsCard-CnGFB2kC.js";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { S as StatsCard } from "./StatsCard-DQVB_KgP.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 function PermissionsIndex({ grouped, summary }) {
   const handleDelete = (permission) => {
     if (confirm(`Are you sure you want to delete "${permission.display_name}"?`)) {

@@ -3,8 +3,8 @@ import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { Head } from "@inertiajs/react";
 import { DollarSign, TrendingDown, TrendingUp, PieChart } from "lucide-react";
 import "react";
-import { S as StatsCard } from "./StatsCard-CnGFB2kC.js";
-import { P as PageHeader, C as Card } from "./PageHeader-D62FVbSQ.js";
+import { S as StatsCard } from "./StatsCard-DQVB_KgP.js";
+import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
 function formatCurrency(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
