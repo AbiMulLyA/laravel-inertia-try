@@ -1,5 +1,5 @@
 import { jsxs, jsx } from "react/jsx-runtime";
-import { A as AppLayout } from "./AppLayout-BRO-oidT.js";
+import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { Head } from "@inertiajs/react";
 import { DollarSign, Calendar, TrendingUp, Receipt } from "lucide-react";
 import "react";

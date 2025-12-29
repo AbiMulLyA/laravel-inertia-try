@@ -1,5 +1,5 @@
 import { jsxs, jsx } from "react/jsx-runtime";
-import { A as AppLayout } from "./AppLayout-BRO-oidT.js";
+import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
 import { useForm, Head } from "@inertiajs/react";
 import { User, Shield, Lock } from "lucide-react";
 import { useState } from "react";

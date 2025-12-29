@@ -7,19 +7,19 @@
     "/build/assets/StatsCard-CnGFB2kC.js"
   ],
   "resources/js/Components/Navigation/NavItem.tsx": [
-    "/build/assets/AppLayout-BRO-oidT.js"
+    "/build/assets/AppLayout-DKzRb6H5.js"
   ],
   "resources/js/Components/Navigation/Sidebar.tsx": [
-    "/build/assets/AppLayout-BRO-oidT.js"
+    "/build/assets/AppLayout-DKzRb6H5.js"
   ],
   "resources/js/Components/PageHeader.tsx": [
     "/build/assets/PageHeader-D62FVbSQ.js"
   ],
   "resources/js/Contexts/ThemeContext.tsx": [
-    "/build/assets/Appearance-DaoQPpYG.js"
+    "/build/assets/Appearance-DzVtQb74.js"
   ],
   "resources/js/Layouts/AppLayout.tsx": [
-    "/build/assets/AppLayout-BRO-oidT.js"
+    "/build/assets/AppLayout-DKzRb6H5.js"
   ],
   "resources/js/Pages/Auth/Login.tsx": [
     "/build/assets/Login-DlS3REK4.js"
@@ -28,49 +28,61 @@
     "/build/assets/Register-D0FPfwPf.js"
   ],
   "resources/js/Pages/Categories/Form.tsx": [
-    "/build/assets/Form-BZTIKEKx.js"
+    "/build/assets/Form-BCtKbh00.js"
   ],
   "resources/js/Pages/Categories/Index.tsx": [
-    "/build/assets/Index-DcoZQIGj.js"
+    "/build/assets/Index-BBQONVPm.js"
   ],
   "resources/js/Pages/Dashboard.tsx": [
-    "/build/assets/Dashboard-CMdffUXt.js"
+    "/build/assets/Dashboard-Cjw0yetm.js"
   ],
   "resources/js/Pages/Profile/Index.tsx": [
-    "/build/assets/Index-Bi-MlfIS.js"
+    "/build/assets/Index-DruZH6Gk.js"
   ],
   "resources/js/Pages/Projects/Form.tsx": [
-    "/build/assets/Form-DM8aV2M8.js"
+    "/build/assets/Form-DS7aUg2H.js"
   ],
   "resources/js/Pages/Projects/Index.tsx": [
-    "/build/assets/Index-DsG3YWCN.js"
+    "/build/assets/Index-CMlrMYYX.js"
   ],
   "resources/js/Pages/Reports/Budget.tsx": [
-    "/build/assets/Budget-CvXOY8IS.js"
+    "/build/assets/Budget-DJWeij5V.js"
   ],
   "resources/js/Pages/Reports/ProjectProgress.tsx": [
-    "/build/assets/ProjectProgress-B8m4zhOs.js"
+    "/build/assets/ProjectProgress-BzGCqajY.js"
   ],
   "resources/js/Pages/Reports/Spending.tsx": [
-    "/build/assets/Spending-CX06hXJ5.js"
+    "/build/assets/Spending-D_oSioen.js"
   ],
   "resources/js/Pages/Reports/TaskProgress.tsx": [
-    "/build/assets/TaskProgress-DGXtcr9P.js"
+    "/build/assets/TaskProgress-ChzlHW6X.js"
   ],
   "resources/js/Pages/Settings/Appearance.tsx": [
-    "/build/assets/Appearance-DaoQPpYG.js"
+    "/build/assets/Appearance-DzVtQb74.js"
+  ],
+  "resources/js/Pages/Settings/Permissions/Form.tsx": [
+    "/build/assets/Form-BJOqZJI6.js"
+  ],
+  "resources/js/Pages/Settings/Permissions/Index.tsx": [
+    "/build/assets/Index-BO7jVeCk.js"
+  ],
+  "resources/js/Pages/Settings/Roles/Form.tsx": [
+    "/build/assets/Form-yLvGDTxJ.js"
+  ],
+  "resources/js/Pages/Settings/Roles/Index.tsx": [
+    "/build/assets/Index-DcNBMN_7.js"
   ],
   "resources/js/Pages/Settings/Users/Form.tsx": [
-    "/build/assets/Form-CMjIih9m.js"
+    "/build/assets/Form-B-rlrgnz.js"
   ],
   "resources/js/Pages/Settings/Users/Index.tsx": [
-    "/build/assets/Index-BnRkbcN_.js"
+    "/build/assets/Index-CXP4Yo-E.js"
   ],
   "resources/js/Pages/Tasks/Form.tsx": [
-    "/build/assets/Form-BM_MI5sA.js"
+    "/build/assets/Form-BvbytIDE.js"
   ],
   "resources/js/Pages/Tasks/Index.tsx": [
-    "/build/assets/Index-JidSSTdj.js"
+    "/build/assets/Index-AfpZ2lbp.js"
   ],
   "resources/js/ssr.tsx": []
 }
