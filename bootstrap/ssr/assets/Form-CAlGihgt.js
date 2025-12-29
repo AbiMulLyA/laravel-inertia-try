@@ -1,5 +1,5 @@
 import { jsxs, jsx } from "react/jsx-runtime";
-import { A as AppLayout } from "./AppLayout-CbOP_oBK.js";
+import { A as AppLayout } from "./AppLayout-D7eJ8B4o.js";
 import { useForm, Head, Link } from "@inertiajs/react";
 import { ArrowLeft, Loader2, Save } from "lucide-react";
 import "react";
