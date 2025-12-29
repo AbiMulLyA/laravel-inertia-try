@@ -1,7 +1,7 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 import { usePage, Link } from "@inertiajs/react";
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, ChevronRight, ChevronLeft, X, LayoutDashboard, Database, FileText, Palette, Settings, User, LogOut, ChevronUp, Menu } from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronLeft, X, LayoutDashboard, Database, FileText, Users, Palette, Settings, User, LogOut, ChevronUp, Menu } from "lucide-react";
 function NavItem({ item, depth = 0, collapsed = false }) {
   const { url } = usePage();
   const hasChildren = item.children && item.children.length > 0;
@@ -157,6 +157,7 @@ const navigation = [
     name: "Settings",
     icon: Settings,
     children: [
+      { name: "User Management", href: "/settings/users", icon: Users },
       { name: "Appearance", href: "/settings/appearance", icon: Palette }
     ]
   }

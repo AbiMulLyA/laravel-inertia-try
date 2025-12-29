@@ -1,5 +1,5 @@
 import { jsxs, jsx } from "react/jsx-runtime";
-import { A as AppLayout } from "./AppLayout-D7eJ8B4o.js";
+import { A as AppLayout } from "./AppLayout-BRO-oidT.js";
 import { Head, router } from "@inertiajs/react";
 import { Layers, FolderKanban, ClipboardList, CheckCircle2 } from "lucide-react";
 import "react";
