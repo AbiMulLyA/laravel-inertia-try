@@ -10,6 +10,8 @@ import {
     Palette,
     User,
     Users,
+    Shield,
+    Key,
     LogOut,
     ChevronUp
 } from 'lucide-react';
@@ -75,7 +77,15 @@ const navigation: NavigationItem[] = [
         name: 'Settings',
         icon: Settings,
         children: [
-            { name: 'User Management', href: '/settings/users', icon: Users },
+            {
+                name: 'User Management',
+                icon: Users,
+                children: [
+                    { name: 'Users', href: '/settings/users', icon: User },
+                    { name: 'Roles', href: '/settings/roles', icon: Shield },
+                    { name: 'Permissions', href: '/settings/permissions', icon: Key },
+                ]
+            },
             { name: 'Appearance', href: '/settings/appearance', icon: Palette },
         ]
     },

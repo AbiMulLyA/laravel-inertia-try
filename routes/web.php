@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -52,10 +54,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Settings
     // ================================================
     Route::prefix('settings')->name('settings.')->group(function () {
+        // Appearance
         Route::get('/appearance', [SettingsController::class, 'appearance'])->name('appearance');
 
         // User Management
         Route::resource('users', UserController::class);
+        Route::resource('roles', RoleController::class);
+        Route::resource('permissions', PermissionController::class);
     });
 
     // ================================================
