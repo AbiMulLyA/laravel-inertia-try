@@ -1,6 +1,6 @@
 import { Head, useForm, Link } from '@inertiajs/react';
 import { FormEvent } from 'react';
-import { Sprout, Mail, Lock, Loader2 } from 'lucide-react';
+import { Landmark, Mail, Lock, Loader2 } from 'lucide-react';
 
 export default function Login() {
     const { data, setData, post, processing, errors } = useForm({
@@ -17,23 +17,26 @@ export default function Login() {
     return (
         <>
             <Head title="Login" />
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 px-4 py-12">
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-primary-50 px-4 py-12">
                 <div className="w-full max-w-md">
                     {/* Logo */}
                     <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-2xl mb-4">
-                            <Sprout className="w-8 h-8 text-white" />
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl mb-4 shadow-lg">
+                            <Landmark className="w-8 h-8 text-white" />
                         </div>
                         <h1 className="text-2xl font-bold text-gray-900">
-                            Dinas Pertanian
+                            Dishubkominfo
                         </h1>
-                        <p className="text-gray-500 mt-1">
+                        <p className="text-primary-600 font-medium text-sm">
+                            Base Framework Web
+                        </p>
+                        <p className="text-gray-500 mt-2">
                             Masuk ke akun Anda
                         </p>
                     </div>
 
                     {/* Login Form */}
-                    <div className="bg-white rounded-2xl shadow-xl border p-8">
+                    <div className="bg-white rounded-2xl shadow-xl border border-primary-100 p-8">
                         <form onSubmit={handleSubmit} className="space-y-5">
                             {/* Email */}
                             <div>
@@ -42,7 +45,7 @@ export default function Login() {
                                 </label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Mail className="h-5 w-5 text-gray-400" />
+                                        <Mail className="h-5 w-5 text-primary-400" />
                                     </div>
                                     <input
                                         type="email"
@@ -50,7 +53,7 @@ export default function Login() {
                                         onChange={(e) => setData('email', e.target.value)}
                                         className={`
                                             block w-full pl-10 pr-4 py-3 rounded-xl border 
-                                            focus:ring-2 focus:ring-green-500 focus:border-green-500
+                                            focus:ring-2 focus:ring-primary-500 focus:border-primary-500
                                             ${errors.email ? 'border-red-500' : 'border-gray-300'}
                                         `}
                                         placeholder="nama@email.com"
@@ -68,7 +71,7 @@ export default function Login() {
                                 </label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Lock className="h-5 w-5 text-gray-400" />
+                                        <Lock className="h-5 w-5 text-primary-400" />
                                     </div>
                                     <input
                                         type="password"
@@ -76,7 +79,7 @@ export default function Login() {
                                         onChange={(e) => setData('password', e.target.value)}
                                         className={`
                                             block w-full pl-10 pr-4 py-3 rounded-xl border 
-                                            focus:ring-2 focus:ring-green-500 focus:border-green-500
+                                            focus:ring-2 focus:ring-primary-500 focus:border-primary-500
                                             ${errors.password ? 'border-red-500' : 'border-gray-300'}
                                         `}
                                         placeholder="••••••••"
@@ -94,7 +97,7 @@ export default function Login() {
                                         type="checkbox"
                                         checked={data.remember}
                                         onChange={(e) => setData('remember', e.target.checked)}
-                                        className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                                        className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                                     />
                                     <span className="text-sm text-gray-600">Ingat saya</span>
                                 </label>
@@ -104,7 +107,7 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
                             >
                                 {processing ? (
                                     <>
@@ -121,7 +124,7 @@ export default function Login() {
                         <div className="mt-6 text-center">
                             <p className="text-sm text-gray-600">
                                 Belum punya akun?{' '}
-                                <Link href="/register" className="text-green-600 font-medium hover:text-green-700">
+                                <Link href="/register" className="text-primary-600 font-medium hover:text-primary-700">
                                     Daftar sekarang
                                 </Link>
                             </p>
@@ -130,7 +133,7 @@ export default function Login() {
 
                     {/* Footer */}
                     <p className="text-center text-sm text-gray-500 mt-6">
-                        © {new Date().getFullYear()} Dinas Pertanian. All rights reserved.
+                        © {new Date().getFullYear()} Dishubkominfo Kab. Tasikmalaya. All rights reserved.
                     </p>
                 </div>
             </div>
