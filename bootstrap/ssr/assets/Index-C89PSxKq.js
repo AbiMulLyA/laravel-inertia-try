@@ -1,9 +1,11 @@
 import { jsxs, jsx } from "react/jsx-runtime";
-import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
+import { A as AppLayout, T as Table } from "./AppLayout-ClUKwJTp.js";
 import { Head, router, Link } from "@inertiajs/react";
 import { Plus, FolderKanban, Activity, CheckCircle2, FileEdit, Search, Filter, Edit, Trash2 } from "lucide-react";
 import "react";
+import { S as StatsCard } from "./StatsCard-DQVB_KgP.js";
 import { P as PageHeader, C as Card } from "./PageHeader-DAtmv7HV.js";
+import { P as Pagination } from "./Pagination-0C2komkt.js";
 function formatCurrency(value) {
   if (value >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
   if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
@@ -57,63 +59,43 @@ function ProjectsIndex({
           }
         }
       ),
-      /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-2 sm:grid-cols-4 gap-4", children: [
-        /* @__PURE__ */ jsx(
-          "div",
+      /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4", children: [
+        /* @__PURE__ */ jsx("div", { onClick: () => router.get("/projects", {}), children: /* @__PURE__ */ jsx(
+          StatsCard,
           {
-            className: "bg-theme-card rounded-xl border border-theme p-4 cursor-pointer hover:shadow-md transition-all",
-            onClick: () => router.get("/projects", {}),
-            children: /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
-              /* @__PURE__ */ jsx("div", { className: "w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsx(FolderKanban, { className: "w-5 h-5 text-theme-secondary" }) }),
-              /* @__PURE__ */ jsxs("div", { children: [
-                /* @__PURE__ */ jsx("p", { className: "text-2xl font-bold text-theme-primary", children: summary.total }),
-                /* @__PURE__ */ jsx("p", { className: "text-xs text-theme-secondary", children: "Total" })
-              ] })
-            ] })
+            title: "Total Projects",
+            value: summary.total,
+            icon: FolderKanban,
+            color: "secondary"
           }
-        ),
-        /* @__PURE__ */ jsx(
-          "div",
+        ) }),
+        /* @__PURE__ */ jsx("div", { onClick: () => handleFilterChange("status", "active"), children: /* @__PURE__ */ jsx(
+          StatsCard,
           {
-            className: "bg-theme-card rounded-xl border border-theme p-4 cursor-pointer hover:shadow-md transition-all",
-            onClick: () => handleFilterChange("status", "active"),
-            children: /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
-              /* @__PURE__ */ jsx("div", { className: "w-10 h-10 bg-primary-50 dark:bg-primary-500/20 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsx(Activity, { className: "w-5 h-5 text-primary-600 dark:text-primary-400" }) }),
-              /* @__PURE__ */ jsxs("div", { children: [
-                /* @__PURE__ */ jsx("p", { className: "text-2xl font-bold text-primary-600 dark:text-primary-400", children: summary.active }),
-                /* @__PURE__ */ jsx("p", { className: "text-xs text-theme-secondary", children: "Active" })
-              ] })
-            ] })
+            title: "Active",
+            value: summary.active,
+            icon: Activity,
+            color: "primary"
           }
-        ),
-        /* @__PURE__ */ jsx(
-          "div",
+        ) }),
+        /* @__PURE__ */ jsx("div", { onClick: () => handleFilterChange("status", "completed"), children: /* @__PURE__ */ jsx(
+          StatsCard,
           {
-            className: "bg-theme-card rounded-xl border border-theme p-4 cursor-pointer hover:shadow-md transition-all",
-            onClick: () => handleFilterChange("status", "completed"),
-            children: /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
-              /* @__PURE__ */ jsx("div", { className: "w-10 h-10 bg-secondary-50 dark:bg-secondary-500/20 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsx(CheckCircle2, { className: "w-5 h-5 text-secondary-600 dark:text-secondary-400" }) }),
-              /* @__PURE__ */ jsxs("div", { children: [
-                /* @__PURE__ */ jsx("p", { className: "text-2xl font-bold text-secondary-600 dark:text-secondary-400", children: summary.completed }),
-                /* @__PURE__ */ jsx("p", { className: "text-xs text-theme-secondary", children: "Completed" })
-              ] })
-            ] })
+            title: "Completed",
+            value: summary.completed,
+            icon: CheckCircle2,
+            color: "cyan"
           }
-        ),
-        /* @__PURE__ */ jsx(
-          "div",
+        ) }),
+        /* @__PURE__ */ jsx("div", { onClick: () => handleFilterChange("status", "draft"), children: /* @__PURE__ */ jsx(
+          StatsCard,
           {
-            className: "bg-theme-card rounded-xl border border-theme p-4 cursor-pointer hover:shadow-md transition-all",
-            onClick: () => handleFilterChange("status", "draft"),
-            children: /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
-              /* @__PURE__ */ jsx("div", { className: "w-10 h-10 bg-accent-50 dark:bg-accent-500/20 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsx(FileEdit, { className: "w-5 h-5 text-accent-600 dark:text-accent-400" }) }),
-              /* @__PURE__ */ jsxs("div", { children: [
-                /* @__PURE__ */ jsx("p", { className: "text-2xl font-bold text-accent-600 dark:text-accent-400", children: summary.draft }),
-                /* @__PURE__ */ jsx("p", { className: "text-xs text-theme-secondary", children: "Draft" })
-              ] })
-            ] })
+            title: "Draft",
+            value: summary.draft,
+            icon: FileEdit,
+            color: "accent"
           }
-        )
+        ) })
       ] }),
       /* @__PURE__ */ jsx(Card, { padding: "sm", children: /* @__PURE__ */ jsxs("div", { className: "flex flex-col sm:flex-row gap-4", children: [
         /* @__PURE__ */ jsx("form", { onSubmit: handleSearch, className: "flex-1", children: /* @__PURE__ */ jsxs("div", { className: "relative", children: [
@@ -158,29 +140,29 @@ function ProjectsIndex({
         ] })
       ] }) }),
       /* @__PURE__ */ jsxs(Card, { padding: "none", className: "overflow-hidden", children: [
-        /* @__PURE__ */ jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxs("table", { className: "w-full", children: [
-          /* @__PURE__ */ jsx("thead", { className: "bg-gray-50 dark:bg-[#1a2744] border-b border-gray-100 dark:border-[#1e3a5f]", children: /* @__PURE__ */ jsxs("tr", { children: [
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Project" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Category" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Budget" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Progress" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Status" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Actions" })
+        /* @__PURE__ */ jsxs(Table, { children: [
+          /* @__PURE__ */ jsx(Table.Thead, { children: /* @__PURE__ */ jsxs(Table.Tr, { children: [
+            /* @__PURE__ */ jsx(Table.Th, { children: "Project" }),
+            /* @__PURE__ */ jsx(Table.Th, { children: "Category" }),
+            /* @__PURE__ */ jsx(Table.Th, { align: "right", children: "Budget" }),
+            /* @__PURE__ */ jsx(Table.Th, { children: "Progress" }),
+            /* @__PURE__ */ jsx(Table.Th, { children: "Status" }),
+            /* @__PURE__ */ jsx(Table.Th, { align: "right", children: "Actions" })
           ] }) }),
-          /* @__PURE__ */ jsx("tbody", { className: "divide-y divide-gray-100 dark:divide-[#1e3a5f]", children: projects.data.map((item) => /* @__PURE__ */ jsxs("tr", { className: "hover:bg-gray-50 dark:hover:bg-[#1a2744] transition-colors", children: [
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4", children: /* @__PURE__ */ jsxs("div", { children: [
+          /* @__PURE__ */ jsx(Table.Tbody, { children: projects.data.map((item) => /* @__PURE__ */ jsxs(Table.Tr, { children: [
+            /* @__PURE__ */ jsx(Table.Td, { children: /* @__PURE__ */ jsxs("div", { children: [
               /* @__PURE__ */ jsx("p", { className: "text-sm font-medium text-gray-900 dark:text-white", children: item.name }),
               /* @__PURE__ */ jsx("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5", children: item.code })
             ] }) }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4", children: /* @__PURE__ */ jsx("span", { className: "inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-primary-50 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 border border-primary-200 dark:border-primary-500/30", children: item.category?.code || "-" }) }),
-            /* @__PURE__ */ jsxs("td", { className: "px-6 py-4 text-right", children: [
+            /* @__PURE__ */ jsx(Table.Td, { children: /* @__PURE__ */ jsx("span", { className: "inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-primary-50 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 border border-primary-200 dark:border-primary-500/30", children: item.category?.code || "-" }) }),
+            /* @__PURE__ */ jsxs(Table.Td, { align: "right", children: [
               /* @__PURE__ */ jsx("p", { className: "text-sm font-medium text-gray-900 dark:text-white", children: formatCurrency(item.budget) }),
               /* @__PURE__ */ jsxs("p", { className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5", children: [
                 "Spent: ",
                 formatCurrency(item.spent)
               ] })
             ] }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4", children: /* @__PURE__ */ jsxs("div", { className: "w-28", children: [
+            /* @__PURE__ */ jsx(Table.Td, { children: /* @__PURE__ */ jsxs("div", { className: "w-28", children: [
               /* @__PURE__ */ jsx("div", { className: "flex justify-between text-xs mb-1", children: /* @__PURE__ */ jsxs("span", { className: "font-medium text-gray-700 dark:text-gray-300", children: [
                 item.spent_percentage,
                 "%"
@@ -193,8 +175,8 @@ function ProjectsIndex({
                 }
               ) })
             ] }) }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4", children: /* @__PURE__ */ jsx("span", { className: `inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`, children: item.status_label }) }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-end gap-1", children: [
+            /* @__PURE__ */ jsx(Table.Td, { children: /* @__PURE__ */ jsx("span", { className: `inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`, children: item.status_label }) }),
+            /* @__PURE__ */ jsx(Table.Td, { align: "right", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-end gap-1", children: [
               /* @__PURE__ */ jsx(
                 Link,
                 {
@@ -213,7 +195,7 @@ function ProjectsIndex({
               )
             ] }) })
           ] }, item.id)) })
-        ] }) }),
+        ] }),
         projects.data.length === 0 && /* @__PURE__ */ jsxs("div", { className: "p-12 text-center", children: [
           /* @__PURE__ */ jsx("div", { className: "w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsx(FolderKanban, { className: "w-8 h-8 text-gray-400" }) }),
           /* @__PURE__ */ jsx("h3", { className: "text-lg font-medium text-gray-900 dark:text-white mb-2", children: "No projects yet" }),
@@ -230,25 +212,15 @@ function ProjectsIndex({
             }
           )
         ] }),
-        projects.last_page > 1 && /* @__PURE__ */ jsxs("div", { className: "px-6 py-4 border-t border-gray-100 dark:border-[#1e3a5f] flex items-center justify-between bg-gray-50 dark:bg-[#1a2744]", children: [
-          /* @__PURE__ */ jsxs("p", { className: "text-sm text-gray-500 dark:text-gray-400", children: [
-            "Showing ",
-            /* @__PURE__ */ jsx("span", { className: "font-medium", children: (projects.current_page - 1) * projects.per_page + 1 }),
-            " - ",
-            /* @__PURE__ */ jsx("span", { className: "font-medium", children: Math.min(projects.current_page * projects.per_page, projects.total) }),
-            " of ",
-            /* @__PURE__ */ jsx("span", { className: "font-medium", children: projects.total })
-          ] }),
-          /* @__PURE__ */ jsx("div", { className: "flex items-center gap-1", children: projects.links.map((link, index) => /* @__PURE__ */ jsx(
-            Link,
-            {
-              href: link.url || "#",
-              className: `px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${link.active ? "bg-primary-600 text-white" : link.url ? "text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-[#243656]" : "text-gray-400 dark:text-gray-600 cursor-not-allowed"}`,
-              dangerouslySetInnerHTML: { __html: link.label }
-            },
-            index
-          )) })
-        ] })
+        /* @__PURE__ */ jsx(
+          Pagination,
+          {
+            links: projects.links,
+            from: (projects.current_page - 1) * projects.per_page + 1,
+            to: Math.min(projects.current_page * projects.per_page, projects.total),
+            total: projects.total
+          }
+        )
       ] })
     ] })
   ] });

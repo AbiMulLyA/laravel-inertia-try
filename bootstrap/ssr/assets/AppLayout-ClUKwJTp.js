@@ -1,6 +1,6 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 import { usePage, Link } from "@inertiajs/react";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, ChevronRight, ChevronLeft, X, LayoutDashboard, Database, FileText, User, Shield, Key, Users, Palette, Settings, LogOut, ChevronUp, Menu } from "lucide-react";
 function NavItem({ item, depth = 0, collapsed = false }) {
   const { url } = usePage();
@@ -300,6 +300,47 @@ function Sidebar({
     ] })
   ] });
 }
+const TableContext = React.createContext({});
+function Table({ children, className = "" }) {
+  return /* @__PURE__ */ jsx(TableContext.Provider, { value: {}, children: /* @__PURE__ */ jsx("div", { className: `overflow-x-auto ${className}`, children: /* @__PURE__ */ jsx("table", { className: "w-full text-left border-collapse", children }) }) });
+}
+function Thead({ children, className = "" }) {
+  return /* @__PURE__ */ jsx("thead", { className: `bg-gray-50 dark:bg-[#1a2744] border-b border-gray-100 dark:border-[#1e3a5f] ${className}`, children });
+}
+function Tbody({ children, className = "" }) {
+  return /* @__PURE__ */ jsx("tbody", { className: `divide-y divide-gray-100 dark:divide-[#1e3a5f] ${className}`, children });
+}
+function Tr({ children, className = "", onClick }) {
+  return /* @__PURE__ */ jsx(
+    "tr",
+    {
+      className: `transition-colors hover:bg-gray-50 dark:hover:bg-[#1a2744] ${onClick ? "cursor-pointer" : ""} ${className}`,
+      onClick,
+      children
+    }
+  );
+}
+function Th({ children, className = "", align = "left" }) {
+  const alignClass = {
+    left: "text-left",
+    center: "text-center",
+    right: "text-right"
+  }[align];
+  return /* @__PURE__ */ jsx("th", { className: `px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider ${alignClass} ${className}`, children });
+}
+function Td({ children, className = "", align = "left" }) {
+  const alignClass = {
+    left: "text-left",
+    center: "text-center",
+    right: "text-right"
+  }[align];
+  return /* @__PURE__ */ jsx("td", { className: `px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white ${alignClass} ${className}`, children });
+}
+Table.Thead = Thead;
+Table.Tbody = Tbody;
+Table.Tr = Tr;
+Table.Th = Th;
+Table.Td = Td;
 function AppLayout({ children }) {
   const { flash } = usePage().props;
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
@@ -348,5 +389,6 @@ function AppLayout({ children }) {
   ] });
 }
 export {
-  AppLayout as A
+  AppLayout as A,
+  Table as T
 };

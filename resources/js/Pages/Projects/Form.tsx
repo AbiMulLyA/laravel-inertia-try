@@ -1,6 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
+import { FormInput, FormSelect, FormTextarea, FormSection } from '@/Components';
 
 interface Category {
     id: number;
@@ -82,172 +83,131 @@ export default function ProjectForm({ project, categories, statuses }: Props) {
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="bg-white rounded-xl border p-6 space-y-6">
-                    {/* Category Selection */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Category <span className="text-red-500">*</span>
-                        </label>
-                        <select
+                <form onSubmit={handleSubmit} className="bg-white rounded-xl border p-6">
+                    <FormSection 
+                        title="Basic Information" 
+                        description="General details about the project."
+                        className="mb-8"
+                    >
+                        {/* Category Selection */}
+                        <FormSelect
+                            label="Category"
+                            required
                             value={data.category_id}
                             onChange={(e) => setData('category_id', e.target.value)}
-                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                errors.category_id ? 'border-red-500' : 'border-gray-300'
-                            }`}
+                            error={errors.category_id}
+                            placeholder="Select Category"
                         >
-                            <option value="">Select Category</option>
                             {categories.map((c) => (
                                 <option key={c.id} value={c.id}>
                                     [{c.code}] {c.name}
                                 </option>
                             ))}
-                        </select>
-                        {errors.category_id && <p className="mt-1 text-sm text-red-500">{errors.category_id}</p>}
-                    </div>
+                        </FormSelect>
 
-                    {/* Basic Info */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Code <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
+                        {/* Basic Info */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <FormInput
+                                label="Code"
+                                required
                                 value={data.code}
                                 onChange={(e) => setData('code', e.target.value.toUpperCase())}
-                                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                    errors.code ? 'border-red-500' : 'border-gray-300'
-                                }`}
+                                error={errors.code}
                                 placeholder="e.g., PRJ-001"
                             />
-                            {errors.code && <p className="mt-1 text-sm text-red-500">{errors.code}</p>}
-                        </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Status <span className="text-red-500">*</span>
-                            </label>
-                            <select
+                            <FormSelect
+                                label="Status"
+                                required
                                 value={data.status}
                                 onChange={(e) => setData('status', e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                            >
-                                {Object.entries(statuses).map(([key, label]) => (
-                                    <option key={key} value={key}>{label}</option>
-                                ))}
-                            </select>
+                                error={errors.status as string} // Type assertion if needed based on inertia types
+                                options={Object.entries(statuses).map(([key, label]) => ({
+                                    value: key,
+                                    label: label
+                                }))}
+                            />
                         </div>
-                    </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
+                        <FormInput
+                            label="Name"
+                            required
                             value={data.name}
                             onChange={(e) => setData('name', e.target.value)}
-                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                errors.name ? 'border-red-500' : 'border-gray-300'
-                            }`}
+                            error={errors.name}
                             placeholder="Project name"
                         />
-                        {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
-                    </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Description
-                        </label>
-                        <textarea
+                        <FormTextarea
+                            label="Description"
                             value={data.description}
                             onChange={(e) => setData('description', e.target.value)}
                             rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                             placeholder="Project description..."
+                            error={errors.description}
                         />
-                    </div>
+                    </FormSection>
 
                     {/* Budget Section */}
-                    <div className="border-t pt-6">
-                        <h3 className="text-sm font-medium text-gray-900 mb-4">Budget & Timeline</h3>
+                    <FormSection 
+                        title="Budget & Timeline" 
+                        description="Financial and scheduling details."
+                        className="border-t pt-6"
+                    >
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Year <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="number"
-                                    value={data.year}
-                                    onChange={(e) => setData('year', e.target.value)}
-                                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                        errors.year ? 'border-red-500' : 'border-gray-300'
-                                    }`}
-                                    min="2020"
-                                    max="2100"
-                                />
-                                {errors.year && <p className="mt-1 text-sm text-red-500">{errors.year}</p>}
-                            </div>
+                            <FormInput
+                                label="Year"
+                                type="number"
+                                required
+                                value={data.year}
+                                onChange={(e) => setData('year', e.target.value)}
+                                error={errors.year}
+                                min="2020"
+                                max="2100"
+                            />
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Budget <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="number"
-                                    value={data.budget}
-                                    onChange={(e) => setData('budget', e.target.value)}
-                                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                        errors.budget ? 'border-red-500' : 'border-gray-300'
-                                    }`}
-                                    placeholder="0"
-                                    min="0"
-                                />
-                                {errors.budget && <p className="mt-1 text-sm text-red-500">{errors.budget}</p>}
-                            </div>
+                            <FormInput
+                                label="Budget"
+                                type="number"
+                                required
+                                value={data.budget}
+                                onChange={(e) => setData('budget', e.target.value)}
+                                error={errors.budget}
+                                placeholder="0"
+                                min="0"
+                            />
 
                             {isEdit && (
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Spent
-                                    </label>
-                                    <input
-                                        type="number"
-                                        value={data.spent}
-                                        onChange={(e) => setData('spent', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                                        placeholder="0"
-                                        min="0"
-                                    />
-                                </div>
+                                <FormInput
+                                    label="Spent"
+                                    type="number"
+                                    value={data.spent}
+                                    onChange={(e) => setData('spent', e.target.value)}
+                                    placeholder="0"
+                                    min="0"
+                                    error={errors.spent as string}
+                                />
                             )}
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Start Date
-                                </label>
-                                <input
-                                    type="date"
-                                    value={data.start_date}
-                                    onChange={(e) => setData('start_date', e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    End Date
-                                </label>
-                                <input
-                                    type="date"
-                                    value={data.end_date}
-                                    onChange={(e) => setData('end_date', e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                                />
-                            </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <FormInput
+                                label="Start Date"
+                                type="date"
+                                value={data.start_date}
+                                onChange={(e) => setData('start_date', e.target.value)}
+                                error={errors.start_date as string}
+                            />
+                            
+                            <FormInput
+                                label="End Date"
+                                type="date"
+                                value={data.end_date}
+                                onChange={(e) => setData('end_date', e.target.value)}
+                                error={errors.end_date as string}
+                            />
                         </div>
-                    </div>
+                    </FormSection>
 
                     {/* Actions */}
                     <div className="flex items-center justify-end gap-3 pt-4 border-t">

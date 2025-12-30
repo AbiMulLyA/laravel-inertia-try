@@ -1,6 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, router } from '@inertiajs/react';
-import { StatsCard, Card, CardHeader, PageHeader } from '@/Components';
+import { StatsCard, Card, CardHeader, PageHeader, Table } from '@/Components';
 import { 
     Layers, 
     FolderKanban, 
@@ -189,69 +189,63 @@ export default function Dashboard({
                             Statistics by Category
                         </h2>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50 dark:bg-[#1a2744]">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        Category
-                                    </th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        Projects
-                                    </th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        Budget
-                                    </th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        Spent
-                                    </th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        Progress
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100 dark:divide-[#1e3a5f]">
-                                {statisticsCategory.map((category) => (
-                                    <tr key={category.id} className="hover:bg-gray-50 dark:hover:bg-[#1a2744] transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-500/30 dark:to-primary-500/10 rounded-lg flex items-center justify-center border border-primary-200 dark:border-primary-500/30">
-                                                    <span className="text-sm font-bold text-primary-700 dark:text-primary-400">
-                                                        {category.code}
-                                                    </span>
-                                                </div>
-                                                <span className="font-medium text-gray-900 dark:text-white">
-                                                    {category.name}
+                    <Table>
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>Category</Table.Th>
+                                <Table.Th align="right">Projects</Table.Th>
+                                <Table.Th align="right">Budget</Table.Th>
+                                <Table.Th align="right">Spent</Table.Th>
+                                <Table.Th align="right">Progress</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>
+                            {statisticsCategory.map((category) => (
+                                <Table.Tr key={category.id}>
+                                    <Table.Td>
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-500/30 dark:to-primary-500/10 rounded-lg flex items-center justify-center border border-primary-200 dark:border-primary-500/30">
+                                                <span className="text-sm font-bold text-primary-700 dark:text-primary-400">
+                                                    {category.code}
                                                 </span>
                                             </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-right text-gray-600 dark:text-gray-400 font-medium">
+                                            <span className="font-medium text-gray-900 dark:text-white">
+                                                {category.name}
+                                            </span>
+                                        </div>
+                                    </Table.Td>
+                                    <Table.Td align="right">
+                                        <div className="font-medium text-gray-600 dark:text-gray-400">
                                             {category.total_projects}
-                                        </td>
-                                        <td className="px-6 py-4 text-right text-gray-600 dark:text-gray-400">
+                                        </div>
+                                    </Table.Td>
+                                    <Table.Td align="right">
+                                        <div className="text-gray-600 dark:text-gray-400">
                                             {formatCurrency(category.total_budget)}
-                                        </td>
-                                        <td className="px-6 py-4 text-right text-gray-600 dark:text-gray-400">
+                                        </div>
+                                    </Table.Td>
+                                    <Table.Td align="right">
+                                        <div className="text-gray-600 dark:text-gray-400">
                                             {formatCurrency(category.total_spent)}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center justify-end gap-3">
-                                                <div className="w-20 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                                                    <div 
-                                                        className="h-full bg-gradient-to-r from-secondary-400 to-secondary-600 rounded-full"
-                                                        style={{ width: `${category.spent_percentage}%` }}
-                                                    />
-                                                </div>
-                                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-12 text-right">
-                                                    {category.spent_percentage}%
-                                                </span>
+                                        </div>
+                                    </Table.Td>
+                                    <Table.Td align="right">
+                                        <div className="flex items-center justify-end gap-3">
+                                            <div className="w-20 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                <div 
+                                                    className="h-full bg-gradient-to-r from-secondary-400 to-secondary-600 rounded-full"
+                                                    style={{ width: `${category.spent_percentage}%` }}
+                                                />
                                             </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-12 text-right">
+                                                {category.spent_percentage}%
+                                            </span>
+                                        </div>
+                                    </Table.Td>
+                                </Table.Tr>
+                            ))}
+                        </Table.Tbody>
+                    </Table>
                 </Card>
 
                 {/* Priority & Recent Activities */}

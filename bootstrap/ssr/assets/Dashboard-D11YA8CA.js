@@ -1,5 +1,5 @@
 import { jsxs, jsx } from "react/jsx-runtime";
-import { A as AppLayout } from "./AppLayout-DKzRb6H5.js";
+import { A as AppLayout, T as Table } from "./AppLayout-ClUKwJTp.js";
 import { Head, router } from "@inertiajs/react";
 import { Layers, FolderKanban, ClipboardList, CheckCircle2 } from "lucide-react";
 import "react";
@@ -144,23 +144,23 @@ function Dashboard({
       ] }),
       /* @__PURE__ */ jsxs(Card, { padding: "none", children: [
         /* @__PURE__ */ jsx("div", { className: "p-6 border-b border-gray-100 dark:border-[#1e3a5f]", children: /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-900 dark:text-white", children: "Statistics by Category" }) }),
-        /* @__PURE__ */ jsx("div", { className: "overflow-x-auto", children: /* @__PURE__ */ jsxs("table", { className: "w-full", children: [
-          /* @__PURE__ */ jsx("thead", { className: "bg-gray-50 dark:bg-[#1a2744]", children: /* @__PURE__ */ jsxs("tr", { children: [
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Category" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Projects" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Budget" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Spent" }),
-            /* @__PURE__ */ jsx("th", { className: "px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider", children: "Progress" })
+        /* @__PURE__ */ jsxs(Table, { children: [
+          /* @__PURE__ */ jsx(Table.Thead, { children: /* @__PURE__ */ jsxs(Table.Tr, { children: [
+            /* @__PURE__ */ jsx(Table.Th, { children: "Category" }),
+            /* @__PURE__ */ jsx(Table.Th, { align: "right", children: "Projects" }),
+            /* @__PURE__ */ jsx(Table.Th, { align: "right", children: "Budget" }),
+            /* @__PURE__ */ jsx(Table.Th, { align: "right", children: "Spent" }),
+            /* @__PURE__ */ jsx(Table.Th, { align: "right", children: "Progress" })
           ] }) }),
-          /* @__PURE__ */ jsx("tbody", { className: "divide-y divide-gray-100 dark:divide-[#1e3a5f]", children: statisticsCategory.map((category) => /* @__PURE__ */ jsxs("tr", { className: "hover:bg-gray-50 dark:hover:bg-[#1a2744] transition-colors", children: [
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsx(Table.Tbody, { children: statisticsCategory.map((category) => /* @__PURE__ */ jsxs(Table.Tr, { children: [
+            /* @__PURE__ */ jsx(Table.Td, { children: /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
               /* @__PURE__ */ jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-500/30 dark:to-primary-500/10 rounded-lg flex items-center justify-center border border-primary-200 dark:border-primary-500/30", children: /* @__PURE__ */ jsx("span", { className: "text-sm font-bold text-primary-700 dark:text-primary-400", children: category.code }) }),
               /* @__PURE__ */ jsx("span", { className: "font-medium text-gray-900 dark:text-white", children: category.name })
             ] }) }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600 dark:text-gray-400 font-medium", children: category.total_projects }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600 dark:text-gray-400", children: formatCurrency(category.total_budget) }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4 text-right text-gray-600 dark:text-gray-400", children: formatCurrency(category.total_spent) }),
-            /* @__PURE__ */ jsx("td", { className: "px-6 py-4", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-end gap-3", children: [
+            /* @__PURE__ */ jsx(Table.Td, { align: "right", children: /* @__PURE__ */ jsx("div", { className: "font-medium text-gray-600 dark:text-gray-400", children: category.total_projects }) }),
+            /* @__PURE__ */ jsx(Table.Td, { align: "right", children: /* @__PURE__ */ jsx("div", { className: "text-gray-600 dark:text-gray-400", children: formatCurrency(category.total_budget) }) }),
+            /* @__PURE__ */ jsx(Table.Td, { align: "right", children: /* @__PURE__ */ jsx("div", { className: "text-gray-600 dark:text-gray-400", children: formatCurrency(category.total_spent) }) }),
+            /* @__PURE__ */ jsx(Table.Td, { align: "right", children: /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-end gap-3", children: [
               /* @__PURE__ */ jsx("div", { className: "w-20 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden", children: /* @__PURE__ */ jsx(
                 "div",
                 {
@@ -174,7 +174,7 @@ function Dashboard({
               ] })
             ] }) })
           ] }, category.id)) })
-        ] }) })
+        ] })
       ] }),
       /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-4", children: [
         /* @__PURE__ */ jsxs(Card, { children: [

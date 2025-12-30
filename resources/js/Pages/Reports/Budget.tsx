@@ -1,6 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head } from '@inertiajs/react';
-import { PageHeader, Card, StatsCard } from '@/Components';
+import { PageHeader, Card, StatsCard, Table } from '@/Components';
 import { 
     DollarSign, 
     TrendingUp, 
@@ -94,67 +94,65 @@ export default function BudgetReport({
                         <h2 className="text-lg font-semibold text-theme-primary">Budget by Category</h2>
                         <p className="text-sm text-theme-secondary mt-1">Breakdown of budget allocation and spending</p>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50 dark:bg-gray-800/50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-theme-secondary uppercase tracking-wider">Category</th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-theme-secondary uppercase tracking-wider">Budget</th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-theme-secondary uppercase tracking-wider">Spent</th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-theme-secondary uppercase tracking-wider">Remaining</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-theme-secondary uppercase tracking-wider">Usage</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                                {categories.map((category) => (
-                                    <tr key={category.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-900/50 dark:to-primary-800/30 rounded-lg flex items-center justify-center border border-primary-200 dark:border-primary-700">
-                                                    <span className="text-sm font-bold text-primary-700 dark:text-primary-300">
-                                                        {category.code}
-                                                    </span>
-                                                </div>
-                                                <span className="font-medium text-theme-primary">{category.name}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-right font-medium text-theme-primary">
-                                            {formatCurrency(category.budget)}
-                                        </td>
-                                        <td className="px-6 py-4 text-right text-accent-600 dark:text-accent-400">
-                                            {formatCurrency(category.spent)}
-                                        </td>
-                                        <td className="px-6 py-4 text-right text-secondary-600 dark:text-secondary-400">
-                                            {formatCurrency(category.remaining)}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-24 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                                                    <div 
-                                                        className={`h-full rounded-full ${
-                                                            category.percentage > 90 
-                                                                ? 'bg-red-500' 
-                                                                : category.percentage > 70 
-                                                                    ? 'bg-accent-500' 
-                                                                    : 'bg-secondary-500'
-                                                        }`}
-                                                        style={{ width: `${Math.min(category.percentage, 100)}%` }}
-                                                    />
-                                                </div>
-                                                <span className={`text-sm font-medium w-12 ${
-                                                    category.percentage > 90 
-                                                        ? 'text-red-600 dark:text-red-400' 
-                                                        : 'text-theme-secondary'
-                                                }`}>
-                                                    {category.percentage.toFixed(1)}%
+                    <Table>
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>Category</Table.Th>
+                                <Table.Th align="right">Budget</Table.Th>
+                                <Table.Th align="right">Spent</Table.Th>
+                                <Table.Th align="right">Remaining</Table.Th>
+                                <Table.Th>Usage</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>
+                            {categories.map((category) => (
+                                <Table.Tr key={category.id}>
+                                    <Table.Td>
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-900/50 dark:to-primary-800/30 rounded-lg flex items-center justify-center border border-primary-200 dark:border-primary-700">
+                                                <span className="text-sm font-bold text-primary-700 dark:text-primary-300">
+                                                    {category.code}
                                                 </span>
                                             </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                            <span className="font-medium text-theme-primary">{category.name}</span>
+                                        </div>
+                                    </Table.Td>
+                                    <Table.Td align="right" className="font-medium text-theme-primary">
+                                        {formatCurrency(category.budget)}
+                                    </Table.Td>
+                                    <Table.Td align="right" className="text-accent-600 dark:text-accent-400">
+                                        {formatCurrency(category.spent)}
+                                    </Table.Td>
+                                    <Table.Td align="right" className="text-secondary-600 dark:text-secondary-400">
+                                        {formatCurrency(category.remaining)}
+                                    </Table.Td>
+                                    <Table.Td>
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-24 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                                <div 
+                                                    className={`h-full rounded-full ${
+                                                        category.percentage > 90 
+                                                            ? 'bg-red-500' 
+                                                            : category.percentage > 70 
+                                                                ? 'bg-accent-500' 
+                                                                : 'bg-secondary-500'
+                                                    }`}
+                                                    style={{ width: `${Math.min(category.percentage, 100)}%` }}
+                                                />
+                                            </div>
+                                            <span className={`text-sm font-medium w-12 ${
+                                                category.percentage > 90 
+                                                    ? 'text-red-600 dark:text-red-400' 
+                                                    : 'text-theme-secondary'
+                                            }`}>
+                                                {category.percentage.toFixed(1)}%
+                                            </span>
+                                        </div>
+                                    </Table.Td>
+                                </Table.Tr>
+                            ))}
+                        </Table.Tbody>
+                    </Table>
 
                     {categories.length === 0 && (
                         <div className="p-12 text-center">

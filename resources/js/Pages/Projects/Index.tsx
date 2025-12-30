@@ -1,6 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, Link, router } from '@inertiajs/react';
-import { PageHeader, Card } from '@/Components';
+import { PageHeader, Card, StatsCard, Table, Pagination } from '@/Components';
 import { 
     Plus, 
     Edit, 
@@ -125,62 +125,38 @@ export default function ProjectsIndex({
                 />
 
                 {/* Summary Cards */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div 
-                        className="bg-theme-card rounded-xl border border-theme p-4 cursor-pointer hover:shadow-md transition-all"
-                        onClick={() => router.get('/projects', {})}
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                                <FolderKanban className="w-5 h-5 text-theme-secondary" />
-                            </div>
-                            <div>
-                                <p className="text-2xl font-bold text-theme-primary">{summary.total}</p>
-                                <p className="text-xs text-theme-secondary">Total</p>
-                            </div>
-                        </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div onClick={() => router.get('/projects', {})}>
+                        <StatsCard
+                            title="Total Projects"
+                            value={summary.total}
+                            icon={FolderKanban}
+                            color="secondary"
+                        />
                     </div>
-                    <div 
-                        className="bg-theme-card rounded-xl border border-theme p-4 cursor-pointer hover:shadow-md transition-all"
-                        onClick={() => handleFilterChange('status', 'active')}
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-primary-50 dark:bg-primary-500/20 rounded-lg flex items-center justify-center">
-                                <Activity className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                            </div>
-                            <div>
-                                <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">{summary.active}</p>
-                                <p className="text-xs text-theme-secondary">Active</p>
-                            </div>
-                        </div>
+                    <div onClick={() => handleFilterChange('status', 'active')}>
+                        <StatsCard
+                            title="Active"
+                            value={summary.active}
+                            icon={Activity}
+                            color="primary"
+                        />
                     </div>
-                    <div 
-                        className="bg-theme-card rounded-xl border border-theme p-4 cursor-pointer hover:shadow-md transition-all"
-                        onClick={() => handleFilterChange('status', 'completed')}
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-secondary-50 dark:bg-secondary-500/20 rounded-lg flex items-center justify-center">
-                                <CheckCircle2 className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
-                            </div>
-                            <div>
-                                <p className="text-2xl font-bold text-secondary-600 dark:text-secondary-400">{summary.completed}</p>
-                                <p className="text-xs text-theme-secondary">Completed</p>
-                            </div>
-                        </div>
+                    <div onClick={() => handleFilterChange('status', 'completed')}>
+                        <StatsCard
+                            title="Completed"
+                            value={summary.completed}
+                            icon={CheckCircle2}
+                            color="cyan"
+                        />
                     </div>
-                    <div 
-                        className="bg-theme-card rounded-xl border border-theme p-4 cursor-pointer hover:shadow-md transition-all"
-                        onClick={() => handleFilterChange('status', 'draft')}
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-accent-50 dark:bg-accent-500/20 rounded-lg flex items-center justify-center">
-                                <FileEdit className="w-5 h-5 text-accent-600 dark:text-accent-400" />
-                            </div>
-                            <div>
-                                <p className="text-2xl font-bold text-accent-600 dark:text-accent-400">{summary.draft}</p>
-                                <p className="text-xs text-theme-secondary">Draft</p>
-                            </div>
-                        </div>
+                    <div onClick={() => handleFilterChange('status', 'draft')}>
+                        <StatsCard
+                            title="Draft"
+                            value={summary.draft}
+                            icon={FileEdit}
+                            color="accent"
+                        />
                     </div>
                 </div>
 
@@ -227,75 +203,73 @@ export default function ProjectsIndex({
 
                 {/* Projects Table */}
                 <Card padding="none" className="overflow-hidden">
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50 dark:bg-[#1a2744] border-b border-gray-100 dark:border-[#1e3a5f]">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Project</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Category</th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Budget</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Progress</th>
-                                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100 dark:divide-[#1e3a5f]">
-                                {projects.data.map((item) => (
-                                    <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-[#1a2744] transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-900 dark:text-white">{item.name}</p>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{item.code}</p>
+                    <Table>
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>Project</Table.Th>
+                                <Table.Th>Category</Table.Th>
+                                <Table.Th align="right">Budget</Table.Th>
+                                <Table.Th>Progress</Table.Th>
+                                <Table.Th>Status</Table.Th>
+                                <Table.Th align="right">Actions</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>
+                            {projects.data.map((item) => (
+                                <Table.Tr key={item.id}>
+                                    <Table.Td>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-900 dark:text-white">{item.name}</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{item.code}</p>
+                                        </div>
+                                    </Table.Td>
+                                    <Table.Td>
+                                        <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-primary-50 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 border border-primary-200 dark:border-primary-500/30">
+                                            {item.category?.code || '-'}
+                                        </span>
+                                    </Table.Td>
+                                    <Table.Td align="right">
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(item.budget)}</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Spent: {formatCurrency(item.spent)}</p>
+                                    </Table.Td>
+                                    <Table.Td>
+                                        <div className="w-28">
+                                            <div className="flex justify-between text-xs mb-1">
+                                                <span className="font-medium text-gray-700 dark:text-gray-300">{item.spent_percentage}%</span>
                                             </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-primary-50 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 border border-primary-200 dark:border-primary-500/30">
-                                                {item.category?.code || '-'}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <p className="text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(item.budget)}</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Spent: {formatCurrency(item.spent)}</p>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="w-28">
-                                                <div className="flex justify-between text-xs mb-1">
-                                                    <span className="font-medium text-gray-700 dark:text-gray-300">{item.spent_percentage}%</span>
-                                                </div>
-                                                <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                                                    <div 
-                                                        className="h-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600"
-                                                        style={{ width: `${Math.min(item.spent_percentage, 100)}%` }}
-                                                    />
-                                                </div>
+                                            <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                                                <div 
+                                                    className="h-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600"
+                                                    style={{ width: `${Math.min(item.spent_percentage, 100)}%` }}
+                                                />
                                             </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
-                                                {item.status_label}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex items-center justify-end gap-1">
-                                                <Link
-                                                    href={`/projects/${item.id}/edit`}
-                                                    className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/20 rounded-lg transition-colors"
-                                                >
-                                                    <Edit className="w-4 h-4" />
-                                                </Link>
-                                                <button
-                                                    onClick={() => handleDelete(item.id, item.name)}
-                                                    className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/20 rounded-lg transition-colors"
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                        </div>
+                                    </Table.Td>
+                                    <Table.Td>
+                                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
+                                            {item.status_label}
+                                        </span>
+                                    </Table.Td>
+                                    <Table.Td align="right">
+                                        <div className="flex items-center justify-end gap-1">
+                                            <Link
+                                                href={`/projects/${item.id}/edit`}
+                                                className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/20 rounded-lg transition-colors"
+                                            >
+                                                <Edit className="w-4 h-4" />
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(item.id, item.name)}
+                                                className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/20 rounded-lg transition-colors"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </Table.Td>
+                                </Table.Tr>
+                            ))}
+                        </Table.Tbody>
+                    </Table>
 
                     {projects.data.length === 0 && (
                         <div className="p-12 text-center">
@@ -315,29 +289,12 @@ export default function ProjectsIndex({
                     )}
 
                     {/* Pagination */}
-                    {projects.last_page > 1 && (
-                        <div className="px-6 py-4 border-t border-gray-100 dark:border-[#1e3a5f] flex items-center justify-between bg-gray-50 dark:bg-[#1a2744]">
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                Showing <span className="font-medium">{(projects.current_page - 1) * projects.per_page + 1}</span> - <span className="font-medium">{Math.min(projects.current_page * projects.per_page, projects.total)}</span> of <span className="font-medium">{projects.total}</span>
-                            </p>
-                            <div className="flex items-center gap-1">
-                                {projects.links.map((link, index) => (
-                                    <Link
-                                        key={index}
-                                        href={link.url || '#'}
-                                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                                            link.active
-                                                ? 'bg-primary-600 text-white'
-                                                : link.url
-                                                ? 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-[#243656]'
-                                                : 'text-gray-400 dark:text-gray-600 cursor-not-allowed'
-                                        }`}
-                                        dangerouslySetInnerHTML={{ __html: link.label }}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                    <Pagination 
+                        links={projects.links}
+                        from={(projects.current_page - 1) * projects.per_page + 1}
+                        to={Math.min(projects.current_page * projects.per_page, projects.total)}
+                        total={projects.total}
+                    />
                 </Card>
             </div>
         </AppLayout>

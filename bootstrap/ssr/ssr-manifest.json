@@ -6,20 +6,38 @@
   "resources/js/Components/Cards/StatsCard.tsx": [
     "/build/assets/StatsCard-DQVB_KgP.js"
   ],
+  "resources/js/Components/Form/FormInput.tsx": [
+    "/build/assets/Form-KWQ9iQES.js"
+  ],
+  "resources/js/Components/Form/FormSection.tsx": [
+    "/build/assets/Form-KWQ9iQES.js"
+  ],
+  "resources/js/Components/Form/FormSelect.tsx": [
+    "/build/assets/Form-KWQ9iQES.js"
+  ],
+  "resources/js/Components/Form/FormTextarea.tsx": [
+    "/build/assets/Form-KWQ9iQES.js"
+  ],
   "resources/js/Components/Navigation/NavItem.tsx": [
-    "/build/assets/AppLayout-DKzRb6H5.js"
+    "/build/assets/AppLayout-ClUKwJTp.js"
   ],
   "resources/js/Components/Navigation/Sidebar.tsx": [
-    "/build/assets/AppLayout-DKzRb6H5.js"
+    "/build/assets/AppLayout-ClUKwJTp.js"
   ],
   "resources/js/Components/PageHeader.tsx": [
     "/build/assets/PageHeader-DAtmv7HV.js"
   ],
+  "resources/js/Components/Table/Pagination.tsx": [
+    "/build/assets/Pagination-0C2komkt.js"
+  ],
+  "resources/js/Components/Table/Table.tsx": [
+    "/build/assets/AppLayout-ClUKwJTp.js"
+  ],
   "resources/js/Contexts/ThemeContext.tsx": [
-    "/build/assets/Appearance-B7FWhsg-.js"
+    "/build/assets/Appearance-DZ65K0W9.js"
   ],
   "resources/js/Layouts/AppLayout.tsx": [
-    "/build/assets/AppLayout-DKzRb6H5.js"
+    "/build/assets/AppLayout-ClUKwJTp.js"
   ],
   "resources/js/Pages/Auth/Login.tsx": [
     "/build/assets/Login-jOlAWwG0.js"
@@ -28,61 +46,61 @@
     "/build/assets/Register-BtKCtVaz.js"
   ],
   "resources/js/Pages/Categories/Form.tsx": [
-    "/build/assets/Form-BCtKbh00.js"
+    "/build/assets/Form-BBjNrkDu.js"
   ],
   "resources/js/Pages/Categories/Index.tsx": [
-    "/build/assets/Index-Ds_OvTw6.js"
+    "/build/assets/Index-Dk7889Ag.js"
   ],
   "resources/js/Pages/Dashboard.tsx": [
-    "/build/assets/Dashboard-DnL10aW2.js"
+    "/build/assets/Dashboard-D11YA8CA.js"
   ],
   "resources/js/Pages/Profile/Index.tsx": [
-    "/build/assets/Index-CUhgjMT1.js"
+    "/build/assets/Index-BDaZ9n0H.js"
   ],
   "resources/js/Pages/Projects/Form.tsx": [
-    "/build/assets/Form-DS7aUg2H.js"
+    "/build/assets/Form-KWQ9iQES.js"
   ],
   "resources/js/Pages/Projects/Index.tsx": [
-    "/build/assets/Index-BLR7T4CT.js"
+    "/build/assets/Index-C89PSxKq.js"
   ],
   "resources/js/Pages/Reports/Budget.tsx": [
-    "/build/assets/Budget-C1LQlDsw.js"
+    "/build/assets/Budget-_u0VXp_M.js"
   ],
   "resources/js/Pages/Reports/ProjectProgress.tsx": [
-    "/build/assets/ProjectProgress-Dk3GAvjy.js"
+    "/build/assets/ProjectProgress-DMqzUYT4.js"
   ],
   "resources/js/Pages/Reports/Spending.tsx": [
-    "/build/assets/Spending-CpZumXdA.js"
+    "/build/assets/Spending-PQZ_RfWm.js"
   ],
   "resources/js/Pages/Reports/TaskProgress.tsx": [
-    "/build/assets/TaskProgress-B8BZLZa5.js"
+    "/build/assets/TaskProgress-i6rMF0p3.js"
   ],
   "resources/js/Pages/Settings/Appearance.tsx": [
-    "/build/assets/Appearance-B7FWhsg-.js"
+    "/build/assets/Appearance-DZ65K0W9.js"
   ],
   "resources/js/Pages/Settings/Permissions/Form.tsx": [
-    "/build/assets/Form-Dg7vkM79.js"
+    "/build/assets/Form-CiQU3Zyh.js"
   ],
   "resources/js/Pages/Settings/Permissions/Index.tsx": [
-    "/build/assets/Index-DojhHmOx.js"
+    "/build/assets/Index-CEdFwsP6.js"
   ],
   "resources/js/Pages/Settings/Roles/Form.tsx": [
-    "/build/assets/Form-Burs7NOd.js"
+    "/build/assets/Form-B3NBxyiN.js"
   ],
   "resources/js/Pages/Settings/Roles/Index.tsx": [
-    "/build/assets/Index-BViZ4F6N.js"
+    "/build/assets/Index-CAocBLQx.js"
   ],
   "resources/js/Pages/Settings/Users/Form.tsx": [
-    "/build/assets/Form-iXoMg6Aj.js"
+    "/build/assets/Form-BuAPjS7s.js"
   ],
   "resources/js/Pages/Settings/Users/Index.tsx": [
-    "/build/assets/Index-DReQUPpG.js"
+    "/build/assets/Index-CvPDiZSm.js"
   ],
   "resources/js/Pages/Tasks/Form.tsx": [
-    "/build/assets/Form-BvbytIDE.js"
+    "/build/assets/Form-DaTdhfTi.js"
   ],
   "resources/js/Pages/Tasks/Index.tsx": [
-    "/build/assets/Index-CLOFmxlt.js"
+    "/build/assets/Index-rLls9iCY.js"
   ],
   "resources/js/ssr.tsx": []
 }
