@@ -3,7 +3,7 @@ import createServer from '@inertiajs/react/server';
 import { renderToString } from 'react-dom/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Dinas Pertanian';
+const appName = import.meta.env.VITE_APP_NAME || 'Kominfo Base Laravel Inertia';
 
 createServer((page) =>
     createInertiaApp({
