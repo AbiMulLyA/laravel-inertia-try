@@ -72,13 +72,16 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Users retrieved successfully", "data": [{"id": 1, "name": "John Doe", "email": "john@example.com", "role": "Admin", "email_verified_at": "2024-01-01T00:00:00.000000Z", "created_at": "2024-01-01T00:00:00.000000Z"}], "meta": {"current_page": 1, "per_page": 10, "total": 50, "last_page": 5}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -118,13 +121,16 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "User summary retrieved successfully", "data": {"total": 100, "this_month": 10, "verified": 90, "unverified": 10}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -188,13 +194,22 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "User retrieved successfully", "data": {"id": 1, "name": "John Doe", "email": "john@example.com", "role": "Admin", "email_verified_at": "2024-01-01T00:00:00.000000Z", "created_at": "2024-01-01T00:00:00.000000Z", "updated_at": "2024-01-01T00:00:00.000000Z"}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "User not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers
@@ -291,7 +306,31 @@ endpoints:
       role: Admin
       password_confirmation: password123
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"code": 201, "message": "User created successfully", "data": {"id": 10, "name": "John Doe", "email": "john@example.com", "role": "Admin", "created_at": "2024-01-01T00:00:00.000000Z"}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"email": ["The email has already been taken."]}}'
+        headers: []
+        description: 'email exists'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"password": ["The password field must be at least 8 characters."]}}'
+        headers: []
+        description: 'password too short'
     responseFields: []
     auth:
       - headers
@@ -353,53 +392,90 @@ endpoints:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'Full name.'
         required: true
-        example: b
+        example: 'John Doe'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       email:
         custom: []
         name: email
-        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        description: 'Email address.'
         required: true
-        example: zbailey@example.net
+        example: john@example.com
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       password:
         custom: []
         name: password
-        description: ''
+        description: 'optional New password (min 8 chars).'
         required: false
-        example: null
+        example: newpassword123
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       role:
         custom: []
         name: role
-        description: 'Must not be greater than 50 characters.'
+        description: 'optional User role.'
         required: false
-        example: i
+        example: Admin
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
+      password_confirmation:
+        custom: []
+        name: password_confirmation
+        description: 'optional Password confirmation (required if password provided).'
+        required: false
+        example: newpassword123
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
     cleanBodyParameters:
-      name: b
-      email: zbailey@example.net
-      role: i
+      name: 'John Doe'
+      email: john@example.com
+      password: newpassword123
+      role: Admin
+      password_confirmation: newpassword123
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "User updated successfully", "data": {"id": 1, "name": "John Doe Updated", "email": "john@example.com", "role": "Admin", "updated_at": "2024-01-01T00:00:00.000000Z"}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "User not found"}'
+        headers: []
+        description: 'not found'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"email": ["The email has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -460,7 +536,31 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "User deleted successfully"}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 403
+        content: '{"code": 403, "message": "You cannot delete your own account"}'
+        headers: []
+        description: 'delete self'
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "User not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers

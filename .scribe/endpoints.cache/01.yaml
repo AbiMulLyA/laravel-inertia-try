@@ -49,15 +49,21 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "success": true,
-            "data": [
-              {"id": 1, "code": "CAT001", "name": "Category 1", "description": "Description", "is_active": true}
-            ]
-          }
+        content: '{"code": 200, "message": "Categories retrieved successfully", "data": [{"id": 1, "code": "CAT001", "name": "Category 1", "description": "Description", "is_active": true}]}'
         headers: []
-        description: ''
+        description: success
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Categories retrieved successfully", "data": [{"id": 1, "code": "CAT001", "name": "Category 1", "description": "Description", "is_active": true, "total_projects": 5, "total_budget": 100000000, "total_spent": 50000000}]}'
+        headers: []
+        description: 'with stats'
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -122,13 +128,21 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "success": true,
-            "data": {"id": 1, "code": "CAT001", "name": "Category 1"}
-          }
+        content: '{"code": 200, "message": "Category retrieved successfully", "data": {"id": 1, "code": "CAT001", "name": "Category 1", "description": "Description", "is_active": true}}'
         headers: []
-        description: ''
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Category not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers
@@ -217,14 +231,21 @@ endpoints:
       -
         custom: []
         status: 201
-        content: |-
-          {
-            "success": true,
-            "message": "Category created successfully",
-            "data": {"id": 1, "code": "CAT001", "name": "Infrastructure"}
-          }
+        content: '{"code": 201, "message": "Category created successfully", "data": {"id": 1, "code": "CAT001", "name": "Infrastructure", "description": "Infrastructure projects", "is_active": true}}'
         headers: []
-        description: ''
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"code": ["The code has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -286,53 +307,78 @@ endpoints:
       code:
         custom: []
         name: code
-        description: ''
-        required: false
-        example: null
+        description: 'Category code, max 20 chars, unique.'
+        required: true
+        example: CAT001
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'Category name, max 255 chars.'
         required: true
-        example: b
+        example: Infrastructure
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       description:
         custom: []
         name: description
-        description: ''
+        description: 'optional Description.'
         required: false
-        example: 'Eius et animi quos velit et.'
+        example: 'Infrastructure projects'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       is_active:
         custom: []
         name: is_active
-        description: ''
+        description: 'optional Active status.'
         required: false
         example: true
         type: boolean
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: b
-      description: 'Eius et animi quos velit et.'
+      code: CAT001
+      name: Infrastructure
+      description: 'Infrastructure projects'
       is_active: true
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Category updated successfully", "data": {"id": 1, "code": "CAT001", "name": "Infrastructure Updated", "description": "Updated description", "is_active": true}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Category not found"}'
+        headers: []
+        description: 'not found'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"code": ["The code has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -397,23 +443,27 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "success": true,
-            "message": "Category deleted successfully"
-          }
+        content: '{"code": 200, "message": "Category deleted successfully"}'
         headers: []
-        description: ''
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Category not found"}'
+        headers: []
+        description: 'not found'
       -
         custom: []
         status: 409
-        content: |-
-          {
-            "success": false,
-            "message": "Cannot delete category with associated projects"
-          }
+        content: '{"code": 409, "message": "Cannot delete category with associated projects"}'
         headers: []
-        description: ''
+        description: 'has relations'
     responseFields: []
     auth:
       - headers

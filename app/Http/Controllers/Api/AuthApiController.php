@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\ApiResponse;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,6 +18,8 @@ use PHPOpenSourceSaver\JWTAuth\JWTGuard;
  */
 class AuthApiController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get the JWT guard instance.
      *
@@ -40,19 +43,9 @@ class AuthApiController extends Controller
      * @bodyParam email string required The user's email address. Example: user@example.com
      * @bodyParam password string required The user's password. Example: password123
      *
-     * @response 200 {
-     *   "success": true,
-     *   "data": {
-     *     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-     *     "token_type": "bearer",
-     *     "expires_in": 3600,
-     *     "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}
-     *   }
-     * }
-     * @response 422 {
-     *   "message": "Email atau password salah.",
-     *   "errors": {"email": ["Email atau password salah."]}
-     * }
+     * @response 200 scenario="success" {"code": 200, "message": "Login successful", "data": {"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...", "token_type": "bearer", "expires_in": 3600, "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}}}
+     * @response 422 scenario="validation error" {"code": 422, "message": "Email atau password salah.", "errors": {"email": ["Email atau password salah."]}}
+     * @response 422 scenario="invalid email format" {"code": 422, "message": "Validation error", "errors": {"email": ["The email field must be a valid email address."]}}
      */
     public function login(Request $request): JsonResponse
     {
@@ -69,7 +62,7 @@ class AuthApiController extends Controller
             ]);
         }
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($token, 'Login successful');
     }
 
     /**
@@ -82,16 +75,9 @@ class AuthApiController extends Controller
      * @bodyParam password string required The user's password (min 8 characters). Example: password123
      * @bodyParam password_confirmation string required Password confirmation. Example: password123
      *
-     * @response 201 {
-     *   "success": true,
-     *   "message": "Registrasi berhasil",
-     *   "data": {
-     *     "user": {"id": 1, "name": "John Doe", "email": "user@example.com"},
-     *     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-     *     "token_type": "bearer",
-     *     "expires_in": 3600
-     *   }
-     * }
+     * @response 201 scenario="success" {"code": 201, "message": "Registration successful", "data": {"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...", "token_type": "bearer", "expires_in": 3600, "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}}}
+     * @response 422 scenario="email already exists" {"code": 422, "message": "Validation error", "errors": {"email": ["The email has already been taken."]}}
+     * @response 422 scenario="password too short" {"code": 422, "message": "Validation error", "errors": {"password": ["The password field must be at least 8 characters."]}}
      */
     public function register(Request $request): JsonResponse
     {
@@ -110,13 +96,13 @@ class AuthApiController extends Controller
         $token = $this->guard()->login($user);
 
         return response()->json([
-            'success' => true,
-            'message' => 'Registrasi berhasil',
+            'code' => 201,
+            'message' => 'Registration successful',
             'data' => [
-                'user' => $user,
-                'token' => $token,
+                'access_token' => $token,
                 'token_type' => 'bearer',
-                'expires_in' => $this->guard()->factory()->getTTL() * 60
+                'expires_in' => $this->guard()->factory()->getTTL() * 60,
+                'user' => $user
             ],
         ], 201);
     }
@@ -128,17 +114,12 @@ class AuthApiController extends Controller
      *
      * @authenticated
      *
-     * @response 200 {
-     *   "success": true,
-     *   "data": {"id": 1, "name": "John Doe", "email": "user@example.com"}
-     * }
+     * @response 200 scenario="success" {"code": 200, "message": "User data retrieved", "data": {"id": 1, "name": "John Doe", "email": "user@example.com"}}
+     * @response 401 scenario="unauthenticated" {"code": 401, "message": "Unauthenticated"}
      */
     public function user(): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'data' => $this->guard()->user(),
-        ]);
+        return $this->successResponse($this->guard()->user(), 'User data retrieved');
     }
 
     /**
@@ -148,19 +129,14 @@ class AuthApiController extends Controller
      *
      * @authenticated
      *
-     * @response 200 {
-     *   "success": true,
-     *   "message": "Logout berhasil"
-     * }
+     * @response 200 scenario="success" {"code": 200, "message": "Logout successful"}
+     * @response 401 scenario="unauthenticated" {"code": 401, "message": "Unauthenticated"}
      */
     public function logout(): JsonResponse
     {
         $this->guard()->logout();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Logout berhasil',
-        ]);
+        return $this->successResponse(null, 'Logout successful');
     }
 
     /**
@@ -170,37 +146,28 @@ class AuthApiController extends Controller
      *
      * @authenticated
      *
-     * @response 200 {
-     *   "success": true,
-     *   "data": {
-     *     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-     *     "token_type": "bearer",
-     *     "expires_in": 3600,
-     *     "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}
-     *   }
-     * }
+     * @response 200 scenario="success" {"code": 200, "message": "Token refreshed", "data": {"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...", "token_type": "bearer", "expires_in": 3600, "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}}}
+     * @response 401 scenario="unauthenticated" {"code": 401, "message": "Unauthenticated"}
      */
     public function refresh(): JsonResponse
     {
-        return $this->respondWithToken($this->guard()->refresh());
+        return $this->respondWithToken($this->guard()->refresh(), 'Token refreshed');
     }
 
     /**
      * Get the token array structure.
      *
      * @param string $token The JWT token
+     * @param string $message Response message
      * @return JsonResponse
      */
-    protected function respondWithToken(string $token): JsonResponse
+    protected function respondWithToken(string $token, string $message = 'Success'): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'access_token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => $this->guard()->factory()->getTTL() * 60,
-                'user' => $this->guard()->user()
-            ]
-        ]);
+        return $this->successResponse([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $this->guard()->factory()->getTTL() * 60,
+            'user' => $this->guard()->user()
+        ], $message);
     }
 }

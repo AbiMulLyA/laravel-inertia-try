@@ -36,13 +36,16 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Roles retrieved successfully", "data": [{"id": 1, "name": "admin", "display_name": "Administrator", "description": "Full access", "color": "#EF4444", "is_default": false, "users_count": 5, "permissions_count": 20}]}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -82,13 +85,16 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Permissions retrieved successfully", "data": {"Users": [{"id": 1, "name": "users.view", "display_name": "View Users"}], "Projects": [{"id": 2, "name": "projects.view", "display_name": "View Projects"}]}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -152,13 +158,22 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Role retrieved successfully", "data": {"id": 1, "name": "admin", "display_name": "Administrator", "description": "Full access", "color": "#EF4444", "is_default": false, "permissions": [1, 2, 3]}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Role not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers
@@ -220,7 +235,7 @@ endpoints:
         name: description
         description: 'optional Description.'
         required: false
-        example: 'Manager role'
+        example: 'Manager role with limited access'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -240,7 +255,7 @@ endpoints:
       is_default:
         custom: []
         name: is_default
-        description: 'optional Set as default.'
+        description: 'optional Set as default role for new users.'
         required: false
         example: false
         type: boolean
@@ -265,7 +280,7 @@ endpoints:
     cleanBodyParameters:
       name: manager
       display_name: Manager
-      description: 'Manager role'
+      description: 'Manager role with limited access'
       color: '#3B82F6'
       is_default: false
       permissions:
@@ -273,7 +288,25 @@ endpoints:
         - 2
         - 3
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"code": 201, "message": "Role created successfully", "data": {"id": 2, "name": "manager", "display_name": "Manager", "description": "Manager role with limited access", "color": "#3B82F6", "is_default": false}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"name": ["The name has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -335,77 +368,108 @@ endpoints:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 50 characters.'
+        description: 'Unique role name.'
         required: true
-        example: b
+        example: manager
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       display_name:
         custom: []
         name: display_name
-        description: 'Must not be greater than 100 characters.'
+        description: 'Display name.'
         required: true
-        example: 'n'
+        example: Manager
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       description:
         custom: []
         name: description
-        description: 'Must not be greater than 500 characters.'
+        description: 'optional Description.'
         required: false
-        example: 'Animi quos velit et fugiat.'
+        example: 'Manager role with limited access'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       color:
         custom: []
         name: color
-        description: 'Must not be greater than 7 characters.'
+        description: 'Hex color code.'
         required: true
-        example: dljnikh
+        example: '#3B82F6'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       is_default:
         custom: []
         name: is_default
-        description: ''
+        description: 'optional Set as default role for new users.'
         required: false
-        example: true
+        example: false
         type: boolean
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       permissions:
         custom: []
         name: permissions
-        description: 'The <code>id</code> of an existing record in the permissions table.'
+        description: 'optional Array of permission IDs.'
         required: false
-        example: null
+        example:
+          - 1
+          - 2
+          - 3
         type: 'string[]'
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: b
-      display_name: 'n'
-      description: 'Animi quos velit et fugiat.'
-      color: dljnikh
-      is_default: true
+      name: manager
+      display_name: Manager
+      description: 'Manager role with limited access'
+      color: '#3B82F6'
+      is_default: false
+      permissions:
+        - 1
+        - 2
+        - 3
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Role updated successfully", "data": {"id": 2, "name": "manager", "display_name": "Manager Updated", "description": "Updated description", "color": "#3B82F6", "is_default": false}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Role not found"}'
+        headers: []
+        description: 'not found'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"name": ["The name has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -466,7 +530,31 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Role deleted successfully"}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Role not found"}'
+        headers: []
+        description: 'not found'
+      -
+        custom: []
+        status: 409
+        content: '{"code": 409, "message": "Cannot delete role with assigned users"}'
+        headers: []
+        description: 'has users'
     responseFields: []
     auth:
       - headers

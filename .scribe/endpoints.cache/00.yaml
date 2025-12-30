@@ -60,28 +60,21 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "success": true,
-            "data": {
-              "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-              "token_type": "bearer",
-              "expires_in": 3600,
-              "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}
-            }
-          }
+        content: '{"code": 200, "message": "Login successful", "data": {"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...", "token_type": "bearer", "expires_in": 3600, "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}}}'
         headers: []
-        description: ''
+        description: success
       -
         custom: []
         status: 422
-        content: |-
-          {
-            "message": "Email atau password salah.",
-            "errors": {"email": ["Email atau password salah."]}
-          }
+        content: '{"code": 422, "message": "Email atau password salah.", "errors": {"email": ["Email atau password salah."]}}'
         headers: []
-        description: ''
+        description: 'validation error'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"email": ["The email field must be a valid email address."]}}'
+        headers: []
+        description: 'invalid email format'
     responseFields: []
     auth: []
     controller: null
@@ -166,19 +159,21 @@ endpoints:
       -
         custom: []
         status: 201
-        content: |-
-          {
-            "success": true,
-            "message": "Registrasi berhasil",
-            "data": {
-              "user": {"id": 1, "name": "John Doe", "email": "user@example.com"},
-              "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-              "token_type": "bearer",
-              "expires_in": 3600
-            }
-          }
+        content: '{"code": 201, "message": "Registration successful", "data": {"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...", "token_type": "bearer", "expires_in": 3600, "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}}}'
         headers: []
-        description: ''
+        description: success
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"email": ["The email has already been taken."]}}'
+        headers: []
+        description: 'email already exists'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"password": ["The password field must be at least 8 characters."]}}'
+        headers: []
+        description: 'password too short'
     responseFields: []
     auth: []
     controller: null
@@ -216,13 +211,15 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "success": true,
-            "message": "Logout berhasil"
-          }
+        content: '{"code": 200, "message": "Logout successful"}'
         headers: []
-        description: ''
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -263,18 +260,15 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "success": true,
-            "data": {
-              "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-              "token_type": "bearer",
-              "expires_in": 3600,
-              "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}
-            }
-          }
+        content: '{"code": 200, "message": "Token refreshed", "data": {"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...", "token_type": "bearer", "expires_in": 3600, "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}}}'
         headers: []
-        description: ''
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -315,13 +309,15 @@ endpoints:
       -
         custom: []
         status: 200
-        content: |-
-          {
-            "success": true,
-            "data": {"id": 1, "name": "John Doe", "email": "user@example.com"}
-          }
+        content: '{"code": 200, "message": "User data retrieved", "data": {"id": 1, "name": "John Doe", "email": "user@example.com"}}'
         headers: []
-        description: ''
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers

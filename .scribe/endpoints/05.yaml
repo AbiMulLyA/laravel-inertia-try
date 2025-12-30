@@ -46,13 +46,22 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Permissions retrieved successfully", "data": [{"id": 1, "name": "users.view", "display_name": "View Users", "description": "Can view users list", "group": "Users", "roles_count": 3}]}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Permissions retrieved successfully", "data": {"Users": [{"id": 1, "name": "users.view", "display_name": "View Users"}], "Projects": [{"id": 2, "name": "projects.view", "display_name": "View Projects"}]}}'
+        headers: []
+        description: grouped
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -92,13 +101,16 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Permission groups retrieved successfully", "data": ["Users", "Projects", "Tasks", "Categories", "Roles", "Permissions"]}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -162,13 +174,22 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Permission retrieved successfully", "data": {"id": 1, "name": "users.view", "display_name": "View Users", "description": "Can view users list", "group": "Users"}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Permission not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers
@@ -208,7 +229,7 @@ endpoints:
         name: name
         description: 'Unique permission name.'
         required: true
-        example: users.create
+        example: users.export
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -219,7 +240,7 @@ endpoints:
         name: display_name
         description: 'Display name.'
         required: true
-        example: 'Create Users'
+        example: 'Export Users'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -230,7 +251,7 @@ endpoints:
         name: description
         description: 'optional Description.'
         required: false
-        example: 'Allows creating new users'
+        example: 'Allows exporting users to CSV'
         type: string
         enumValues: []
         exampleWasSpecified: true
@@ -248,12 +269,30 @@ endpoints:
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: users.create
-      display_name: 'Create Users'
-      description: 'Allows creating new users'
+      name: users.export
+      display_name: 'Export Users'
+      description: 'Allows exporting users to CSV'
       group: Users
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"code": 201, "message": "Permission created successfully", "data": {"id": 10, "name": "users.export", "display_name": "Export Users", "description": "Allows exporting users to CSV", "group": "Users"}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"name": ["The name has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -315,54 +354,78 @@ endpoints:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 100 characters.'
+        description: 'Unique permission name.'
         required: true
-        example: b
+        example: users.export
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       display_name:
         custom: []
         name: display_name
-        description: 'Must not be greater than 100 characters.'
+        description: 'Display name.'
         required: true
-        example: 'n'
+        example: 'Export Users'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       description:
         custom: []
         name: description
-        description: 'Must not be greater than 500 characters.'
+        description: 'optional Description.'
         required: false
-        example: 'Animi quos velit et fugiat.'
+        example: 'Allows exporting users to CSV'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       group:
         custom: []
         name: group
-        description: 'Must not be greater than 50 characters.'
+        description: 'Permission group.'
         required: true
-        example: d
+        example: Users
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: b
-      display_name: 'n'
-      description: 'Animi quos velit et fugiat.'
-      group: d
+      name: users.export
+      display_name: 'Export Users'
+      description: 'Allows exporting users to CSV'
+      group: Users
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Permission updated successfully", "data": {"id": 1, "name": "users.export", "display_name": "Export Users Updated", "description": "Updated description", "group": "Users"}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Permission not found"}'
+        headers: []
+        description: 'not found'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"name": ["The name has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -423,7 +486,25 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Permission deleted successfully"}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Permission not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers

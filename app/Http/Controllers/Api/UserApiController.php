@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\ApiResponse;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,6 +17,8 @@ use Illuminate\Validation\Rules\Password;
  */
 class UserApiController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Get all users with pagination
      *
@@ -24,6 +27,9 @@ class UserApiController extends Controller
      * @queryParam page int Page number. Example: 1
      * @queryParam per_page int Items per page. Example: 10
      * @queryParam search string Search by name or email. Example: admin
+     *
+     * @response 200 scenario="success" {"code": 200, "message": "Users retrieved successfully", "data": [{"id": 1, "name": "John Doe", "email": "john@example.com", "role": "Admin", "email_verified_at": "2024-01-01T00:00:00.000000Z", "created_at": "2024-01-01T00:00:00.000000Z"}], "meta": {"current_page": 1, "per_page": 10, "total": 50, "last_page": 5}}
+     * @response 401 scenario="unauthenticated" {"code": 401, "message": "Unauthenticated"}
      */
     public function index(Request $request): JsonResponse
     {
@@ -42,16 +48,7 @@ class UserApiController extends Controller
         $users = $query->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
-        return response()->json([
-            'success' => true,
-            'data' => $users->items(),
-            'meta' => [
-                'current_page' => $users->currentPage(),
-                'per_page' => $users->perPage(),
-                'total' => $users->total(),
-                'last_page' => $users->lastPage(),
-            ],
-        ]);
+        return $this->paginatedResponse($users, 'Users retrieved successfully');
     }
 
     /**
@@ -60,21 +57,22 @@ class UserApiController extends Controller
      * @authenticated
      *
      * @urlParam user int required The user ID. Example: 1
+     *
+     * @response 200 scenario="success" {"code": 200, "message": "User retrieved successfully", "data": {"id": 1, "name": "John Doe", "email": "john@example.com", "role": "Admin", "email_verified_at": "2024-01-01T00:00:00.000000Z", "created_at": "2024-01-01T00:00:00.000000Z", "updated_at": "2024-01-01T00:00:00.000000Z"}}
+     * @response 401 scenario="unauthenticated" {"code": 401, "message": "Unauthenticated"}
+     * @response 404 scenario="not found" {"code": 404, "message": "User not found"}
      */
     public function show(User $user): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role ?? 'User',
-                'email_verified_at' => $user->email_verified_at,
-                'created_at' => $user->created_at,
-                'updated_at' => $user->updated_at,
-            ],
-        ]);
+        return $this->successResponse([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role ?? 'User',
+            'email_verified_at' => $user->email_verified_at,
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+        ], 'User retrieved successfully');
     }
 
     /**
@@ -87,6 +85,11 @@ class UserApiController extends Controller
      * @bodyParam password string required Password (min 8 chars). Example: password123
      * @bodyParam password_confirmation string required Password confirmation. Example: password123
      * @bodyParam role string optional User role. Example: Admin
+     *
+     * @response 201 scenario="success" {"code": 201, "message": "User created successfully", "data": {"id": 10, "name": "John Doe", "email": "john@example.com", "role": "Admin", "created_at": "2024-01-01T00:00:00.000000Z"}}
+     * @response 401 scenario="unauthenticated" {"code": 401, "message": "Unauthenticated"}
+     * @response 422 scenario="email exists" {"code": 422, "message": "Validation error", "errors": {"email": ["The email has already been taken."]}}
+     * @response 422 scenario="password too short" {"code": 422, "message": "Validation error", "errors": {"password": ["The password field must be at least 8 characters."]}}
      */
     public function store(Request $request): JsonResponse
     {
@@ -101,17 +104,13 @@ class UserApiController extends Controller
 
         $user = User::create($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User created successfully',
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'created_at' => $user->created_at,
-            ],
-        ], 201);
+        return $this->createdResponse([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'created_at' => $user->created_at,
+        ], 'User created successfully');
     }
 
     /**
@@ -120,6 +119,16 @@ class UserApiController extends Controller
      * @authenticated
      *
      * @urlParam user int required The user ID. Example: 1
+     * @bodyParam name string required Full name. Example: John Doe
+     * @bodyParam email string required Email address. Example: john@example.com
+     * @bodyParam password string optional New password (min 8 chars). Example: newpassword123
+     * @bodyParam password_confirmation string optional Password confirmation (required if password provided). Example: newpassword123
+     * @bodyParam role string optional User role. Example: Admin
+     *
+     * @response 200 scenario="success" {"code": 200, "message": "User updated successfully", "data": {"id": 1, "name": "John Doe Updated", "email": "john@example.com", "role": "Admin", "updated_at": "2024-01-01T00:00:00.000000Z"}}
+     * @response 401 scenario="unauthenticated" {"code": 401, "message": "Unauthenticated"}
+     * @response 404 scenario="not found" {"code": 404, "message": "User not found"}
+     * @response 422 scenario="validation error" {"code": 422, "message": "Validation error", "errors": {"email": ["The email has already been taken."]}}
      */
     public function update(Request $request, User $user): JsonResponse
     {
@@ -138,17 +147,13 @@ class UserApiController extends Controller
 
         $user->update($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User updated successfully',
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'updated_at' => $user->updated_at,
-            ],
-        ]);
+        return $this->successResponse([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+            'updated_at' => $user->updated_at,
+        ], 'User updated successfully');
     }
 
     /**
@@ -157,29 +162,31 @@ class UserApiController extends Controller
      * @authenticated
      *
      * @urlParam user int required The user ID. Example: 1
+     *
+     * @response 200 scenario="success" {"code": 200, "message": "User deleted successfully"}
+     * @response 401 scenario="unauthenticated" {"code": 401, "message": "Unauthenticated"}
+     * @response 403 scenario="delete self" {"code": 403, "message": "You cannot delete your own account"}
+     * @response 404 scenario="not found" {"code": 404, "message": "User not found"}
      */
     public function destroy(Request $request, User $user): JsonResponse
     {
         // Prevent deleting self
         if ($user->id === auth('api')->id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You cannot delete your own account',
-            ], 403);
+            return $this->forbiddenResponse('You cannot delete your own account');
         }
 
         $user->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User deleted successfully',
-        ]);
+        return $this->successResponse(null, 'User deleted successfully');
     }
 
     /**
      * Get user summary statistics
      *
      * @authenticated
+     *
+     * @response 200 scenario="success" {"code": 200, "message": "User summary retrieved successfully", "data": {"total": 100, "this_month": 10, "verified": 90, "unverified": 10}}
+     * @response 401 scenario="unauthenticated" {"code": 401, "message": "Unauthenticated"}
      */
     public function summary(): JsonResponse
     {
@@ -190,9 +197,6 @@ class UserApiController extends Controller
             'unverified' => User::whereNull('email_verified_at')->count(),
         ];
 
-        return response()->json([
-            'success' => true,
-            'data' => $summary,
-        ]);
+        return $this->successResponse($summary, 'User summary retrieved successfully');
     }
 }

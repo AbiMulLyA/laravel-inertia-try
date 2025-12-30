@@ -108,13 +108,16 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Tasks retrieved successfully", "data": [{"id": 1, "code": "TSK001", "name": "Task 1", "status": "in_progress", "priority": "high", "project": {"id": 1, "code": "PRJ001", "name": "Project 1"}}], "meta": {"current_page": 1, "per_page": 20, "total": 100, "last_page": 5}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -154,13 +157,16 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Task summary retrieved successfully", "data": {"total": 100, "in_progress": 30, "completed": 50, "pending": 15, "on_hold": 5, "high_priority": 20}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -224,13 +230,22 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Task retrieved successfully", "data": {"id": 1, "code": "TSK001", "name": "Task 1", "status": "in_progress", "priority": "high", "progress": 50, "project": {"id": 1, "code": "PRJ001", "name": "Project 1", "category": {"id": 1, "code": "CAT001", "name": "Category 1"}}}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Task not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers
@@ -268,157 +283,168 @@ endpoints:
       project_id:
         custom: []
         name: project_id
-        description: 'The <code>id</code> of an existing record in the projects table.'
+        description: 'Project ID.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       code:
         custom: []
         name: code
-        description: 'Must not be greater than 30 characters.'
+        description: 'Task code, max 30 chars, unique.'
         required: true
-        example: 'n'
+        example: TSK001
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'Task name, max 255 chars.'
         required: true
-        example: g
+        example: 'Build Foundation'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       description:
         custom: []
         name: description
-        description: ''
+        description: 'optional Description.'
         required: false
-        example: 'Eius et animi quos velit et.'
+        example: 'Task description'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       location:
         custom: []
         name: location
-        description: 'Must not be greater than 255 characters.'
+        description: 'optional Location.'
         required: false
-        example: v
+        example: 'Site A'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       target:
         custom: []
         name: target
-        description: 'Must be at least 0.'
+        description: 'Target amount.'
         required: true
-        example: 42
-        type: number
+        example: '100'
+        type: numeric
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       unit:
         custom: []
         name: unit
-        description: 'Must not be greater than 50 characters.'
+        description: 'Unit of measurement.'
         required: true
-        example: l
+        example: m2
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       budget:
         custom: []
         name: budget
-        description: 'Must be at least 0.'
+        description: 'Budget amount.'
         required: true
-        example: 9
-        type: number
+        example: '50000000'
+        type: numeric
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       status:
         custom: []
         name: status
-        description: ''
+        description: 'Status (pending, in_progress, completed, on_hold).'
         required: true
         example: pending
         type: string
-        enumValues:
-          - pending
-          - in_progress
-          - completed
-          - on_hold
-        exampleWasSpecified: false
+        enumValues: []
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       priority:
         custom: []
         name: priority
-        description: ''
+        description: 'Priority (low, medium, high).'
         required: true
-        example: low
+        example: high
         type: string
-        enumValues:
-          - low
-          - medium
-          - high
-        exampleWasSpecified: false
+        enumValues: []
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       start_date:
         custom: []
         name: start_date
-        description: 'Must be a valid date.'
+        description: 'optional Start date.'
         required: false
-        example: '2025-12-30T01:48:09'
-        type: string
+        example: '2024-01-01'
+        type: date
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       end_date:
         custom: []
         name: end_date
-        description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
+        description: 'optional End date.'
         required: false
-        example: '2052-01-23'
-        type: string
+        example: '2024-03-31'
+        type: date
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      project_id: architecto
-      code: 'n'
-      name: g
-      description: 'Eius et animi quos velit et.'
-      location: v
-      target: 42
-      unit: l
-      budget: 9
+      project_id: 1
+      code: TSK001
+      name: 'Build Foundation'
+      description: 'Task description'
+      location: 'Site A'
+      target: '100'
+      unit: m2
+      budget: '50000000'
       status: pending
-      priority: low
-      start_date: '2025-12-30T01:48:09'
-      end_date: '2052-01-23'
+      priority: high
+      start_date: '2024-01-01'
+      end_date: '2024-03-31'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"code": 201, "message": "Task created successfully", "data": {"id": 1, "code": "TSK001", "name": "Build Foundation", "status": "pending", "priority": "high", "project": {"id": 1, "code": "PRJ001", "name": "Project 1"}}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"code": ["The code has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -480,204 +506,222 @@ endpoints:
       project_id:
         custom: []
         name: project_id
-        description: 'The <code>id</code> of an existing record in the projects table.'
+        description: 'Project ID.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       code:
         custom: []
         name: code
-        description: ''
-        required: false
-        example: null
+        description: 'Task code, max 30 chars, unique.'
+        required: true
+        example: TSK001
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'Task name, max 255 chars.'
         required: true
-        example: 'n'
+        example: 'Build Foundation'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       description:
         custom: []
         name: description
-        description: ''
+        description: 'optional Description.'
         required: false
-        example: 'Eius et animi quos velit et.'
+        example: 'Task description'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       location:
         custom: []
         name: location
-        description: 'Must not be greater than 255 characters.'
+        description: 'optional Location.'
         required: false
-        example: v
+        example: 'Site A'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       target:
         custom: []
         name: target
-        description: 'Must be at least 0.'
+        description: 'Target amount.'
         required: true
-        example: 42
-        type: number
+        example: '100'
+        type: numeric
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       achieved:
         custom: []
         name: achieved
-        description: 'Must be at least 0.'
+        description: 'optional Achieved amount.'
         required: false
-        example: 37
-        type: number
+        example: '50'
+        type: numeric
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       unit:
         custom: []
         name: unit
-        description: 'Must not be greater than 50 characters.'
+        description: 'Unit of measurement.'
         required: true
-        example: j
+        example: m2
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       budget:
         custom: []
         name: budget
-        description: 'Must be at least 0.'
+        description: 'Budget amount.'
         required: true
-        example: 52
-        type: number
+        example: '50000000'
+        type: numeric
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       spent:
         custom: []
         name: spent
-        description: 'Must be at least 0.'
+        description: 'optional Amount spent.'
         required: false
-        example: 8
-        type: number
+        example: '25000000'
+        type: numeric
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       status:
         custom: []
         name: status
-        description: ''
+        description: 'Status (pending, in_progress, completed, on_hold).'
         required: true
         example: in_progress
         type: string
-        enumValues:
-          - pending
-          - in_progress
-          - completed
-          - on_hold
-        exampleWasSpecified: false
+        enumValues: []
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       progress:
         custom: []
         name: progress
-        description: 'Must be at least 0. Must not be greater than 100.'
+        description: 'optional Progress percentage (0-100).'
         required: false
-        example: 8
+        example: 50
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       priority:
         custom: []
         name: priority
-        description: ''
+        description: 'Priority (low, medium, high).'
         required: true
-        example: low
+        example: high
         type: string
-        enumValues:
-          - low
-          - medium
-          - high
-        exampleWasSpecified: false
+        enumValues: []
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       start_date:
         custom: []
         name: start_date
-        description: 'Must be a valid date.'
+        description: 'optional Start date.'
         required: false
-        example: '2025-12-30T01:48:09'
-        type: string
+        example: '2024-01-01'
+        type: date
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       end_date:
         custom: []
         name: end_date
-        description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
+        description: 'optional End date.'
         required: false
-        example: '2052-01-23'
-        type: string
+        example: '2024-03-31'
+        type: date
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       notes:
         custom: []
         name: notes
-        description: ''
+        description: 'optional Notes.'
         required: false
-        example: architecto
+        example: 'On track'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      project_id: architecto
-      name: 'n'
-      description: 'Eius et animi quos velit et.'
-      location: v
-      target: 42
-      achieved: 37
-      unit: j
-      budget: 52
-      spent: 8
+      project_id: 1
+      code: TSK001
+      name: 'Build Foundation'
+      description: 'Task description'
+      location: 'Site A'
+      target: '100'
+      achieved: '50'
+      unit: m2
+      budget: '50000000'
+      spent: '25000000'
       status: in_progress
-      progress: 8
-      priority: low
-      start_date: '2025-12-30T01:48:09'
-      end_date: '2052-01-23'
-      notes: architecto
+      progress: 50
+      priority: high
+      start_date: '2024-01-01'
+      end_date: '2024-03-31'
+      notes: 'On track'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Task updated successfully", "data": {"id": 1, "code": "TSK001", "name": "Build Foundation Updated", "status": "in_progress", "progress": 50, "project": {"id": 1, "code": "PRJ001", "name": "Project 1"}}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Task not found"}'
+        headers: []
+        description: 'not found'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"code": ["The code has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -752,7 +796,7 @@ endpoints:
         name: achieved
         description: 'optional Achieved amount.'
         required: false
-        example: '50'
+        example: '75'
         type: numeric
         enumValues: []
         exampleWasSpecified: true
@@ -763,7 +807,7 @@ endpoints:
         name: spent
         description: 'optional Amount spent.'
         required: false
-        example: '1000000'
+        example: '37500000'
         type: numeric
         enumValues: []
         exampleWasSpecified: true
@@ -782,11 +826,35 @@ endpoints:
         deprecated: false
     cleanBodyParameters:
       progress: 75
-      achieved: '50'
-      spent: '1000000'
+      achieved: '75'
+      spent: '37500000'
       notes: 'Task is 75% complete'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Task progress updated successfully", "data": {"id": 1, "code": "TSK001", "name": "Build Foundation", "progress": 75, "achieved": 75, "spent": 37500000, "notes": "Task is 75% complete"}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Task not found"}'
+        headers: []
+        description: 'not found'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"progress": ["The progress field must be between 0 and 100."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -847,7 +915,25 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Task deleted successfully"}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Task not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers

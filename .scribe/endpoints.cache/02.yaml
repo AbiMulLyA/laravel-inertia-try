@@ -108,13 +108,16 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Projects retrieved successfully", "data": [{"id": 1, "code": "PRJ001", "name": "Project 1", "status": "active", "category": {"id": 1, "code": "CAT001", "name": "Category 1"}}], "meta": {"current_page": 1, "per_page": 15, "total": 50, "last_page": 4}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -154,13 +157,16 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Project summary retrieved successfully", "data": {"total": 50, "active": 20, "completed": 25, "draft": 5, "total_budget": 5000000000, "total_spent": 2500000000}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
     responseFields: []
     auth:
       - headers
@@ -224,13 +230,22 @@ endpoints:
     responses:
       -
         custom: []
+        status: 200
+        content: '{"code": 200, "message": "Project retrieved successfully", "data": {"id": 1, "code": "PRJ001", "name": "Project 1", "status": "active", "budget": 100000000, "spent": 50000000, "category": {"id": 1, "code": "CAT001", "name": "Category 1"}, "tasks": []}}'
+        headers: []
+        description: success
+      -
+        custom: []
         status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Project not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers
@@ -268,117 +283,132 @@ endpoints:
       category_id:
         custom: []
         name: category_id
-        description: 'The <code>id</code> of an existing record in the categories table.'
+        description: 'Category ID.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       code:
         custom: []
         name: code
-        description: 'Must not be greater than 30 characters.'
+        description: 'Project code, max 30 chars, unique.'
         required: true
-        example: 'n'
+        example: PRJ001
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'Project name, max 255 chars.'
         required: true
-        example: g
+        example: 'Infrastructure Project'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       description:
         custom: []
         name: description
-        description: ''
+        description: 'optional Description.'
         required: false
-        example: 'Eius et animi quos velit et.'
+        example: 'Project description'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       year:
         custom: []
         name: year
-        description: 'Must be at least 2020. Must not be greater than 2100.'
+        description: 'Year (2020-2100).'
         required: true
-        example: 1
+        example: 2024
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       budget:
         custom: []
         name: budget
-        description: 'Must be at least 0.'
+        description: 'Budget amount.'
         required: true
-        example: 42
-        type: number
+        example: '100000000'
+        type: numeric
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       status:
         custom: []
         name: status
-        description: ''
+        description: 'Status (draft, active, completed).'
         required: true
-        example: active
+        example: draft
         type: string
-        enumValues:
-          - draft
-          - active
-          - completed
-        exampleWasSpecified: false
+        enumValues: []
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       start_date:
         custom: []
         name: start_date
-        description: 'Must be a valid date.'
+        description: 'optional Start date.'
         required: false
-        example: '2025-12-30T01:48:09'
-        type: string
+        example: '2024-01-01'
+        type: date
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       end_date:
         custom: []
         name: end_date
-        description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
+        description: 'optional End date.'
         required: false
-        example: '2052-01-23'
-        type: string
+        example: '2024-12-31'
+        type: date
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      category_id: architecto
-      code: 'n'
-      name: g
-      description: 'Eius et animi quos velit et.'
-      year: 1
-      budget: 42
-      status: active
-      start_date: '2025-12-30T01:48:09'
-      end_date: '2052-01-23'
+      category_id: 1
+      code: PRJ001
+      name: 'Infrastructure Project'
+      description: 'Project description'
+      year: 2024
+      budget: '100000000'
+      status: draft
+      start_date: '2024-01-01'
+      end_date: '2024-12-31'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: '{"code": 201, "message": "Project created successfully", "data": {"id": 1, "code": "PRJ001", "name": "Infrastructure Project", "status": "draft", "budget": 100000000, "category": {"id": 1, "code": "CAT001", "name": "Category 1"}}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"code": ["The code has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -440,128 +470,150 @@ endpoints:
       category_id:
         custom: []
         name: category_id
-        description: 'The <code>id</code> of an existing record in the categories table.'
+        description: 'Category ID.'
         required: true
-        example: architecto
-        type: string
+        example: 1
+        type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       code:
         custom: []
         name: code
-        description: ''
-        required: false
-        example: null
+        description: 'Project code, max 30 chars, unique.'
+        required: true
+        example: PRJ001
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: 'Project name, max 255 chars.'
         required: true
-        example: 'n'
+        example: 'Infrastructure Project'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       description:
         custom: []
         name: description
-        description: ''
+        description: 'optional Description.'
         required: false
-        example: 'Eius et animi quos velit et.'
+        example: 'Project description'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       year:
         custom: []
         name: year
-        description: 'Must be at least 2020. Must not be greater than 2100.'
+        description: 'Year (2020-2100).'
         required: true
-        example: 1
+        example: 2024
         type: integer
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       budget:
         custom: []
         name: budget
-        description: 'Must be at least 0.'
+        description: 'Budget amount.'
         required: true
-        example: 42
-        type: number
+        example: '100000000'
+        type: numeric
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       spent:
         custom: []
         name: spent
-        description: 'Must be at least 0.'
+        description: 'optional Amount spent.'
         required: false
-        example: 37
-        type: number
+        example: '50000000'
+        type: numeric
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       status:
         custom: []
         name: status
-        description: ''
+        description: 'Status (draft, active, completed).'
         required: true
         example: active
         type: string
-        enumValues:
-          - draft
-          - active
-          - completed
-        exampleWasSpecified: false
+        enumValues: []
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       start_date:
         custom: []
         name: start_date
-        description: 'Must be a valid date.'
+        description: 'optional Start date.'
         required: false
-        example: '2025-12-30T01:48:09'
-        type: string
+        example: '2024-01-01'
+        type: date
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
       end_date:
         custom: []
         name: end_date
-        description: 'Must be a valid date. Must be a date after or equal to <code>start_date</code>.'
+        description: 'optional End date.'
         required: false
-        example: '2052-01-23'
-        type: string
+        example: '2024-12-31'
+        type: date
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: true
         deprecated: false
     cleanBodyParameters:
-      category_id: architecto
-      name: 'n'
-      description: 'Eius et animi quos velit et.'
-      year: 1
-      budget: 42
-      spent: 37
+      category_id: 1
+      code: PRJ001
+      name: 'Infrastructure Project'
+      description: 'Project description'
+      year: 2024
+      budget: '100000000'
+      spent: '50000000'
       status: active
-      start_date: '2025-12-30T01:48:09'
-      end_date: '2052-01-23'
+      start_date: '2024-01-01'
+      end_date: '2024-12-31'
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Project updated successfully", "data": {"id": 1, "code": "PRJ001", "name": "Updated Project", "status": "active", "category": {"id": 1, "code": "CAT001", "name": "Category 1"}}}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Project not found"}'
+        headers: []
+        description: 'not found'
+      -
+        custom: []
+        status: 422
+        content: '{"code": 422, "message": "Validation error", "errors": {"code": ["The code has already been taken."]}}'
+        headers: []
+        description: 'validation error'
     responseFields: []
     auth:
       - headers
@@ -622,7 +674,25 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"code": 200, "message": "Project deleted successfully"}'
+        headers: []
+        description: success
+      -
+        custom: []
+        status: 401
+        content: '{"code": 401, "message": "Unauthenticated"}'
+        headers: []
+        description: unauthenticated
+      -
+        custom: []
+        status: 404
+        content: '{"code": 404, "message": "Project not found"}'
+        headers: []
+        description: 'not found'
     responseFields: []
     auth:
       - headers
