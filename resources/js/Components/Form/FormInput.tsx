@@ -19,11 +19,12 @@ export default function FormInput({ label, error, description, className = '', i
             
             <input
                 id={inputId}
-                className={`w-full px-4 py-2 bg-white dark:bg-[#1a2744] border rounded-lg focus:ring-2 focus:ring-primary-500 transition-shadow ${
+                className={`w-full px-4 py-2.5 bg-white dark:bg-[#1a2744] border rounded-xl focus:ring-4 transition-all duration-200 ${
                     error 
-                        ? 'border-red-500 focus:border-red-500 focus:ring-red-500' 
-                        : 'border-gray-300 dark:border-[#1e3a5f] focus:border-primary-500'
+                        ? 'border-red-300 focus:border-red-500 focus:ring-red-100 dark:focus:ring-red-900/30' 
+                        : 'border-gray-200 dark:border-gray-700 focus:border-primary-500 focus:ring-primary-100 dark:focus:ring-primary-900/30'
                 } text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500`}
+
                 {...props}
             />
             

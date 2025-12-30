@@ -1,7 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
-import { FormInput, FormSelect, FormTextarea, FormSection } from '@/Components';
+import { FormInput, FormSelect, FormTextarea, FormSection, FormCard } from '@/Components';
 
 interface Category {
     id: number;
@@ -83,7 +83,8 @@ export default function ProjectForm({ project, categories, statuses }: Props) {
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="bg-white rounded-xl border p-6">
+                <FormCard>
+                    <form onSubmit={handleSubmit}>
                     <FormSection 
                         title="Basic Information" 
                         description="General details about the project."
@@ -230,7 +231,8 @@ export default function ProjectForm({ project, categories, statuses }: Props) {
                             {isEdit ? 'Save Changes' : 'Add Project'}
                         </button>
                     </div>
-                </form>
+                    </form>
+                </FormCard>
             </div>
         </AppLayout>
     );

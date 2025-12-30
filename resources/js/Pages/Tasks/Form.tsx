@@ -1,6 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
+import { FormInput, FormSelect, FormTextarea, FormCard } from '@/Components';
 
 interface Category {
     id: number;
@@ -103,287 +104,203 @@ export default function TaskForm({ task, projects, statuses, priorities }: Props
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="bg-white rounded-xl border p-6 space-y-6">
-                    {/* Project Selection */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Project <span className="text-red-500">*</span>
-                        </label>
-                        <select
+                <FormCard>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Project Selection */}
+                        <FormSelect
+                            label="Project"
+                            required
                             value={data.project_id}
                             onChange={(e) => setData('project_id', e.target.value)}
-                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                errors.project_id ? 'border-red-500' : 'border-gray-300'
-                            }`}
+                            error={errors.project_id}
+                            placeholder="Select Project"
                         >
-                            <option value="">Select Project</option>
                             {projects.map((p) => (
                                 <option key={p.id} value={p.id}>
                                     [{p.category.code}] {p.name}
                                 </option>
                             ))}
-                        </select>
-                        {errors.project_id && <p className="mt-1 text-sm text-red-500">{errors.project_id}</p>}
-                    </div>
+                        </FormSelect>
 
-                    {/* Basic Info */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Code <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
+                        {/* Basic Info */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                            <FormInput
+                                label="Code"
+                                required
                                 value={data.code}
                                 onChange={(e) => setData('code', e.target.value.toUpperCase())}
-                                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                    errors.code ? 'border-red-500' : 'border-gray-300'
-                                }`}
+                                error={errors.code}
                                 placeholder="e.g., TSK-001"
                             />
-                            {errors.code && <p className="mt-1 text-sm text-red-500">{errors.code}</p>}
-                        </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Status <span className="text-red-500">*</span>
-                            </label>
-                            <select
+                            <FormSelect
+                                label="Status"
+                                required
                                 value={data.status}
                                 onChange={(e) => setData('status', e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                            >
-                                {Object.entries(statuses).map(([key, label]) => (
-                                    <option key={key} value={key}>{label}</option>
-                                ))}
-                            </select>
-                        </div>
+                                options={Object.entries(statuses).map(([key, label]) => ({
+                                    value: key,
+                                    label: label
+                                }))}
+                            />
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Priority <span className="text-red-500">*</span>
-                            </label>
-                            <select
+                            <FormSelect
+                                label="Priority"
+                                required
                                 value={data.priority}
                                 onChange={(e) => setData('priority', e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                            >
-                                {Object.entries(priorities).map(([key, label]) => (
-                                    <option key={key} value={key}>{label}</option>
-                                ))}
-                            </select>
+                                options={Object.entries(priorities).map(([key, label]) => ({
+                                    value: key,
+                                    label: label
+                                }))}
+                            />
                         </div>
-                    </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Name <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
+                        <FormInput
+                            label="Name"
+                            required
                             value={data.name}
                             onChange={(e) => setData('name', e.target.value)}
-                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                errors.name ? 'border-red-500' : 'border-gray-300'
-                            }`}
+                            error={errors.name}
                             placeholder="Task name"
                         />
-                        {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
-                    </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Description
-                        </label>
-                        <textarea
+                        <FormTextarea
+                            label="Description"
                             value={data.description}
                             onChange={(e) => setData('description', e.target.value)}
                             rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                             placeholder="Task description..."
                         />
-                    </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Location
-                        </label>
-                        <input
-                            type="text"
+                        <FormInput
+                            label="Location"
                             value={data.location}
                             onChange={(e) => setData('location', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                             placeholder="Location..."
                         />
-                    </div>
 
-                    {/* Target & Budget */}
-                    <div className="border-t pt-6">
-                        <h3 className="text-sm font-medium text-gray-900 mb-4">Target & Budget</h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Target <span className="text-red-500">*</span>
-                                </label>
-                                <input
+                        {/* Target & Budget */}
+                        <div className="border-t border-gray-100 dark:border-gray-700 pt-6">
+                            <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4">Target & Budget</h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                <FormInput
+                                    label="Target"
                                     type="number"
+                                    required
                                     value={data.target}
                                     onChange={(e) => setData('target', e.target.value)}
-                                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                        errors.target ? 'border-red-500' : 'border-gray-300'
-                                    }`}
+                                    error={errors.target as string} // inertia type workaround
                                     placeholder="0"
                                     min="0"
                                     step="0.01"
                                 />
-                                {errors.target && <p className="mt-1 text-sm text-red-500">{errors.target}</p>}
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Unit <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="text"
+                                <FormInput
+                                    label="Unit"
+                                    required
                                     value={data.unit}
                                     onChange={(e) => setData('unit', e.target.value)}
-                                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                        errors.unit ? 'border-red-500' : 'border-gray-300'
-                                    }`}
+                                    error={errors.unit}
                                     placeholder="e.g., units, hours"
                                 />
-                                {errors.unit && <p className="mt-1 text-sm text-red-500">{errors.unit}</p>}
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Budget <span className="text-red-500">*</span>
-                                </label>
-                                <input
+                                <FormInput
+                                    label="Budget"
                                     type="number"
+                                    required
                                     value={data.budget}
                                     onChange={(e) => setData('budget', e.target.value)}
-                                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 ${
-                                        errors.budget ? 'border-red-500' : 'border-gray-300'
-                                    }`}
+                                    error={errors.budget}
                                     placeholder="0"
                                     min="0"
                                 />
-                                {errors.budget && <p className="mt-1 text-sm text-red-500">{errors.budget}</p>}
                             </div>
-                        </div>
 
-                        {isEdit && (
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Achieved
-                                    </label>
-                                    <input
+                            {isEdit && (
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
+                                    <FormInput
+                                        label="Achieved"
                                         type="number"
                                         value={data.achieved}
                                         onChange={(e) => setData('achieved', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                                         placeholder="0"
                                         min="0"
                                         step="0.01"
                                     />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Progress (%)
-                                    </label>
-                                    <input
+                                    <FormInput
+                                        label="Progress (%)"
                                         type="number"
                                         value={data.progress}
                                         onChange={(e) => setData('progress', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                                         placeholder="0"
                                         min="0"
                                         max="100"
                                     />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Spent
-                                    </label>
-                                    <input
+                                    <FormInput
+                                        label="Spent"
                                         type="number"
                                         value={data.spent}
                                         onChange={(e) => setData('spent', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                                         placeholder="0"
                                         min="0"
                                     />
                                 </div>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
 
-                    {/* Timeline */}
-                    <div className="border-t pt-6">
-                        <h3 className="text-sm font-medium text-gray-900 mb-4">Timeline</h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Start Date
-                                </label>
-                                <input
+                        {/* Timeline */}
+                        <div className="border-t border-gray-100 dark:border-gray-700 pt-6">
+                            <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4">Timeline</h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <FormInput
+                                    label="Start Date"
                                     type="date"
                                     value={data.start_date}
                                     onChange={(e) => setData('start_date', e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                                 />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    End Date
-                                </label>
-                                <input
+                                <FormInput
+                                    label="End Date"
                                     type="date"
                                     value={data.end_date}
                                     onChange={(e) => setData('end_date', e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                                 />
                             </div>
                         </div>
-                    </div>
 
-                    {isEdit && (
-                        <div className="border-t pt-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Notes
-                            </label>
-                            <textarea
-                                value={data.notes}
-                                onChange={(e) => setData('notes', e.target.value)}
-                                rows={3}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                                placeholder="Additional notes..."
-                            />
+                        {isEdit && (
+                            <div className="border-t border-gray-100 dark:border-gray-700 pt-6">
+                                <FormTextarea
+                                    label="Notes"
+                                    value={data.notes}
+                                    onChange={(e) => setData('notes', e.target.value)}
+                                    rows={3}
+                                    placeholder="Additional notes..."
+                                />
+                            </div>
+                        )}
+
+                        {/* Actions */}
+                        <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-100 dark:border-gray-700">
+                            <Link
+                                href="/tasks"
+                                className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            >
+                                Cancel
+                            </Link>
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50 shadow-sm shadow-primary-600/20"
+                            >
+                                {processing ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Save className="w-4 h-4" />
+                                )}
+                                {isEdit ? 'Save Changes' : 'Add Task'}
+                            </button>
                         </div>
-                    )}
-
-                    {/* Actions */}
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t">
-                        <Link
-                            href="/tasks"
-                            className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        >
-                            Cancel
-                        </Link>
-                        <button
-                            type="submit"
-                            disabled={processing}
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50"
-                        >
-                            {processing ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                                <Save className="w-4 h-4" />
-                            )}
-                            {isEdit ? 'Save Changes' : 'Add Task'}
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </FormCard>
             </div>
         </AppLayout>
     );

@@ -20,3 +20,4 @@ export { default as FormInput } from './Form/FormInput';
 export { default as FormSelect } from './Form/FormSelect';
 export { default as FormTextarea } from './Form/FormTextarea';
 export { default as FormSection } from './Form/FormSection';
+export { default as FormCard } from './Form/FormCard';
