@@ -3,7 +3,7 @@
 name: Authentication
 description: |-
 
-  API untuk autentikasi dan manajemen token
+  API untuk autentikasi dan manajemen token menggunakan JWT
 endpoints:
   -
     custom: []
@@ -15,11 +15,11 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        API untuk autentikasi dan manajemen token
+        API untuk autentikasi dan manajemen token menggunakan JWT
       subgroup: ''
       subgroupDescription: ''
       title: 'Login and get access token'
-      description: ''
+      description: 'Authenticate user with email and password, returns JWT token on success.'
       authenticated: false
       deprecated: false
     headers:
@@ -33,42 +33,55 @@ endpoints:
       email:
         custom: []
         name: email
-        description: 'Must be a valid email address.'
+        description: "The user's email address."
         required: true
-        example: gbailey@example.net
+        example: user@example.com
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       password:
         custom: []
         name: password
-        description: ''
+        description: "The user's password."
         required: true
-        example: '|]|{+-'
+        example: password123
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
-      device_name:
-        custom: []
-        name: device_name
-        description: 'Must not be greater than 255 characters.'
-        required: false
-        example: v
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
     cleanBodyParameters:
-      email: gbailey@example.net
-      password: '|]|{+-'
-      device_name: v
+      email: user@example.com
+      password: password123
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {
+              "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+              "token_type": "bearer",
+              "expires_in": 3600,
+              "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}
+            }
+          }
+        headers: []
+        description: ''
+      -
+        custom: []
+        status: 422
+        content: |-
+          {
+            "message": "Email atau password salah.",
+            "errors": {"email": ["Email atau password salah."]}
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -84,11 +97,11 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        API untuk autentikasi dan manajemen token
+        API untuk autentikasi dan manajemen token menggunakan JWT
       subgroup: ''
       subgroupDescription: ''
       title: 'Register new user'
-      description: ''
+      description: 'Create a new user account and return JWT token.'
       authenticated: false
       deprecated: false
     headers:
@@ -102,54 +115,70 @@ endpoints:
       name:
         custom: []
         name: name
-        description: 'Must not be greater than 255 characters.'
+        description: "The user's full name."
         required: true
-        example: b
+        example: 'John Doe'
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       email:
         custom: []
         name: email
-        description: 'Must be a valid email address.'
+        description: "The user's email address."
         required: true
-        example: zbailey@example.net
+        example: user@example.com
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
       password:
         custom: []
         name: password
-        description: 'Must be at least 8 characters.'
+        description: "The user's password (min 8 characters)."
         required: true
-        example: '-0pBNvYgxw'
+        example: password123
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
-      device_name:
+      password_confirmation:
         custom: []
-        name: device_name
-        description: 'Must not be greater than 255 characters.'
-        required: false
-        example: a
+        name: password_confirmation
+        description: 'Password confirmation.'
+        required: true
+        example: password123
         type: string
         enumValues: []
-        exampleWasSpecified: false
-        nullable: true
+        exampleWasSpecified: true
+        nullable: false
         deprecated: false
     cleanBodyParameters:
-      name: b
-      email: zbailey@example.net
-      password: '-0pBNvYgxw'
-      device_name: a
+      name: 'John Doe'
+      email: user@example.com
+      password: password123
+      password_confirmation: password123
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 201
+        content: |-
+          {
+            "success": true,
+            "message": "Registrasi berhasil",
+            "data": {
+              "user": {"id": 1, "name": "John Doe", "email": "user@example.com"},
+              "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+              "token_type": "bearer",
+              "expires_in": 3600
+            }
+          }
+        headers: []
+        description: ''
     responseFields: []
     auth: []
     controller: null
@@ -165,14 +194,15 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        API untuk autentikasi dan manajemen token
+        API untuk autentikasi dan manajemen token menggunakan JWT
       subgroup: ''
       subgroupDescription: ''
-      title: 'Logout and revoke token'
-      description: ''
-      authenticated: false
+      title: 'Log the user out (Invalidate the token)'
+      description: 'Invalidates the current JWT token.'
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -182,9 +212,74 @@ endpoints:
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "message": "Logout berhasil"
+          }
+        headers: []
+        description: ''
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/auth/refresh
+    metadata:
+      custom: []
+      groupName: Authentication
+      groupDescription: |-
+
+        API untuk autentikasi dan manajemen token menggunakan JWT
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Refresh a token'
+      description: 'Get a new token using the current valid token.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {
+              "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+              "token_type": "bearer",
+              "expires_in": 3600,
+              "user": {"id": 1, "name": "John Doe", "email": "user@example.com"}
+            }
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -198,14 +293,15 @@ endpoints:
       groupName: Authentication
       groupDescription: |-
 
-        API untuk autentikasi dan manajemen token
+        API untuk autentikasi dan manajemen token menggunakan JWT
       subgroup: ''
       subgroupDescription: ''
-      title: 'Get current authenticated user'
-      description: ''
-      authenticated: false
+      title: 'Get the authenticated User'
+      description: "Returns the currently authenticated user's information."
+      authenticated: true
       deprecated: false
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -218,74 +314,19 @@ endpoints:
     responses:
       -
         custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/auth/tokens
-    metadata:
-      custom: []
-      groupName: Authentication
-      groupDescription: |-
-
-        API untuk autentikasi dan manajemen token
-      subgroup: ''
-      subgroupDescription: ''
-      title: 'Create a new API token'
-      description: ''
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      token_name:
-        custom: []
-        name: token_name
-        description: 'Must not be greater than 255 characters.'
-        required: true
-        example: b
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      abilities:
-        custom: []
-        name: abilities
+        status: 200
+        content: |-
+          {
+            "success": true,
+            "data": {"id": 1, "name": "John Doe", "email": "user@example.com"}
+          }
+        headers: []
         description: ''
-        required: false
-        example:
-          - architecto
-        type: 'string[]'
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      token_name: b
-      abilities:
-        - architecto
-    fileParameters: []
-    responses: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

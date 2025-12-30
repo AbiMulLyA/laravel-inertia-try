@@ -1,13 +1,13 @@
 # Introduction
 
-REST API untuk mengakses data Dinas Pertanian termasuk Bidang, Program, Kegiatan, dan Pelaku Usaha.
+REST API untuk mengakses data aplikasi termasuk Categories, Projects, Tasks, Users, Roles, dan Permissions.
 
 <aside>
     <strong>Base URL</strong>: <code>http://localhost:8000</code>
 </aside>
 
-    This documentation aims to provide all the information you need to work with our API.
+    Dokumentasi ini menyediakan informasi lengkap untuk menggunakan API.
 
-    <aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-    You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+    <aside>Semua endpoint (kecuali login/register) memerlukan autentikasi menggunakan Bearer Token JWT.
+    Gunakan endpoint <code>POST /api/v1/auth/login</code> untuk mendapatkan token.</aside>
 

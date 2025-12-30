@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Dinas Pertanian API Documentation</title>
+    <title>Kominfo Laravel Inertia Base - API Documentation</title>
     <meta charset="utf-8"/>
     <meta
         name="viewport"

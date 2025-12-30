@@ -9,17 +9,17 @@ use function Knuckles\Scribe\Config\{removeStrategies, configureStrategy};
 
 return [
     // The HTML <title> for the generated documentation.
-    'title' => 'Dinas Pertanian API Documentation',
+    'title' => 'Kominfo Laravel Inertia Base - API Documentation',
 
     // A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
-    'description' => 'REST API untuk mengakses data Dinas Pertanian termasuk Bidang, Program, Kegiatan, dan Pelaku Usaha.',
+    'description' => 'REST API untuk mengakses data aplikasi termasuk Categories, Projects, Tasks, Users, Roles, dan Permissions.',
 
     // Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
     'intro_text' => <<<INTRO
-        This documentation aims to provide all the information you need to work with our API.
+        Dokumentasi ini menyediakan informasi lengkap untuk menggunakan API.
 
-        <aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-        You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+        <aside>Semua endpoint (kecuali login/register) memerlukan autentikasi menggunakan Bearer Token JWT.
+        Gunakan endpoint <code>POST /api/v1/auth/login</code> untuk mendapatkan token.</aside>
     INTRO,
 
     // The base URL displayed in the docs.
