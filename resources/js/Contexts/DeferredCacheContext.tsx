@@ -16,8 +16,8 @@ interface DeferredCacheContextValue {
 
 const DeferredCacheContext = createContext<DeferredCacheContextValue | null>(null);
 
-// Default TTL: 5 minutes
-const DEFAULT_TTL = 5 * 60 * 1000;
+// Default TTL: 30 seconds
+const DEFAULT_TTL = 30 * 1000;
 
 interface DeferredCacheProviderProps {
     children: React.ReactNode;
@@ -112,9 +112,19 @@ export function DeferredCacheProvider({
 
     // Auto-invalidate on successful mutations (POST, PUT, PATCH, DELETE)
     useEffect(() => {
-        const handleSuccess = (event: CustomEvent<{ visit: { method: string; url: URL } }>) => {
-            const method = event.detail.visit.method.toUpperCase();
-            const url = event.detail.visit.url.pathname;
+        const handleSuccess = (event: Event) => {
+            // Safely access the Inertia event details
+            const detail = (event as CustomEvent)?.detail;
+            const visit = detail?.visit;
+            
+            if (!visit?.method || !visit?.url) {
+                return; // Not a valid Inertia visit event
+            }
+
+            const method = visit.method.toUpperCase();
+            const url = typeof visit.url === 'string' 
+                ? visit.url 
+                : visit.url?.pathname || '';
 
             // Invalidate cache on mutations
             if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
@@ -137,9 +147,9 @@ export function DeferredCacheProvider({
             }
         };
 
-        document.addEventListener('inertia:success', handleSuccess as unknown as EventListener);
+        document.addEventListener('inertia:success', handleSuccess);
         return () => {
-            document.removeEventListener('inertia:success', handleSuccess as unknown as EventListener);
+            document.removeEventListener('inertia:success', handleSuccess);
         };
     }, [invalidate]);
 
