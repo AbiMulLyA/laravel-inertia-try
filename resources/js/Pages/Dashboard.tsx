@@ -1,6 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout';
-import { Deferred, Head, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { StatsCard, Card, CardHeader, PageHeader, Table, Shimmer } from '@/Components';
+import { useCachedDeferred } from '@/Contexts/DeferredCacheContext';
 import { 
     Layers, 
     FolderKanban, 
@@ -54,17 +55,23 @@ function formatNumber(value: number): string {
 /**
  * Dashboard Page
  * 
- * Overview page with deferred loading for better UX.
- * Uses Shimmer components as loading placeholders.
+ * Uses deferred props with client-side caching for optimal UX.
+ * Data is cached for 5 minutes to avoid re-fetching on rapid navigation.
  */
 export default function Dashboard({
-    overview,
-    statisticsCategory,
-    tasksByPriority,
-    recentActivities,
+    overview: rawOverview,
+    statisticsCategory: rawStats,
+    tasksByPriority: rawPriority,
+    recentActivities: rawActivities,
     year,
     yearOptions,
 }: Props) {
+    // Use cached data - if cache hit, skip shimmer entirely
+    const { data: overview, isLoading: overviewLoading } = useCachedDeferred('dashboard.overview', rawOverview);
+    const { data: statisticsCategory, isLoading: statsLoading } = useCachedDeferred('dashboard.statisticsCategory', rawStats);
+    const { data: tasksByPriority, isLoading: priorityLoading } = useCachedDeferred('dashboard.tasksByPriority', rawPriority);
+    const { data: recentActivities, isLoading: activitiesLoading } = useCachedDeferred('dashboard.recentActivities', rawActivities);
+
     return (
         <AppLayout>
             <Head title="Dashboard" />
@@ -86,59 +93,61 @@ export default function Dashboard({
                     </select>
                 </PageHeader>
 
-                {/* Stats Cards - Deferred */}
-                <Deferred data="overview" fallback={<Shimmer.StatsCards count={4} />}>
-                    <StatsCardsSection overview={overview!} />
-                </Deferred>
+                {/* Stats Cards */}
+                {overviewLoading ? (
+                    <Shimmer.StatsCards count={4} />
+                ) : overview && (
+                    <StatsCardsSection overview={overview} />
+                )}
 
-                {/* Budget Overview & Task Status - Deferred */}
-                <Deferred data="overview" fallback={
+                {/* Budget Overview & Task Status */}
+                {overviewLoading ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <Shimmer.BudgetOverview className="lg:col-span-2" />
                         <Shimmer.Card />
                     </div>
-                }>
-                    <BudgetAndTaskSection overview={overview!} />
-                </Deferred>
+                ) : overview && (
+                    <BudgetAndTaskSection overview={overview} />
+                )}
 
-                {/* Statistics by Category - Deferred */}
-                <Deferred data="statisticsCategory" fallback={
+                {/* Statistics by Category */}
+                {statsLoading ? (
                     <Card padding="none">
                         <div className="p-6 border-b border-gray-100 dark:border-[#1e3a5f]">
                             <Shimmer.Line width="w-48" />
                         </div>
                         <Shimmer.Table rows={5} cols={5} />
                     </Card>
-                }>
-                    <CategoryStatisticsSection statisticsCategory={statisticsCategory!} />
-                </Deferred>
+                ) : statisticsCategory && (
+                    <CategoryStatisticsSection statisticsCategory={statisticsCategory} />
+                )}
 
-                {/* Priority & Recent Activities - Deferred */}
+                {/* Priority & Recent Activities */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <Deferred data="tasksByPriority" fallback={
+                    {priorityLoading ? (
                         <Card>
                             <CardHeader title="Tasks by Priority" />
                             <Shimmer.List items={6} />
                         </Card>
-                    }>
-                        <TasksByPrioritySection tasksByPriority={tasksByPriority!} />
-                    </Deferred>
+                    ) : tasksByPriority && (
+                        <TasksByPrioritySection tasksByPriority={tasksByPriority} />
+                    )}
 
-                    <Deferred data="recentActivities" fallback={
+                    {activitiesLoading ? (
                         <Card>
                             <CardHeader title="Recent Activities" />
                             <Shimmer.List items={5} />
                         </Card>
-                    }>
-                        <RecentActivitiesSection recentActivities={recentActivities!} />
-                    </Deferred>
+                    ) : recentActivities && (
+                        <RecentActivitiesSection recentActivities={recentActivities} />
+                    )}
                 </div>
             </div>
         </AppLayout>
     );
 }
 
-// --- Sub-components for cleaner Deferred usage ---
+// --- Sub-components ---
 
 function StatsCardsSection({ overview }: { overview: Overview }) {
     return (
@@ -178,7 +187,6 @@ function BudgetAndTaskSection({ overview }: { overview: Overview }) {
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Budget Overview */}
             <Card className="lg:col-span-2">
                 <CardHeader title="Budget Overview" />
                 <div className="grid grid-cols-2 gap-6">
@@ -209,7 +217,6 @@ function BudgetAndTaskSection({ overview }: { overview: Overview }) {
                 </div>
             </Card>
 
-            {/* Task Status */}
             <Card>
                 <CardHeader title="Task Status" />
                 <div className="space-y-4">
