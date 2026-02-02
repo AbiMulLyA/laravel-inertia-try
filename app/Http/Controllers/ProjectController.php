@@ -25,65 +25,63 @@ class ProjectController extends Controller
         $status = $request->input('status');
         $search = $request->input('search');
 
-        $query = Project::with('category:id,code,name');
-
-        if ($categoryId) {
-            $query->where('category_id', $categoryId);
-        }
-
-        if ($status) {
-            $query->where('status', $status);
-        }
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('code', 'like', "%{$search}%");
-            });
-        }
-
-        $projects = $query->orderBy('created_at', 'desc')
-            ->paginate(15)
-            ->through(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'code' => $item->code,
-                    'name' => $item->name,
-                    'category' => $item->category,
-                    'year' => $item->year,
-                    'budget' => $item->budget,
-                    'spent' => $item->spent,
-                    'spent_percentage' => $item->spent_percentage,
-                    'status' => $item->status,
-                    'status_label' => $item->status_label,
-                    'start_date' => $item->start_date?->format('Y-m-d'),
-                    'end_date' => $item->end_date?->format('Y-m-d'),
-                ];
-            });
-
-        $categories = Category::active()
-            ->select('id', 'code', 'name')
-            ->orderBy('name')
-            ->get();
-
-        // Summary statistics
-        $summary = [
-            'total' => Project::count(),
-            'active' => Project::where('status', 'active')->count(),
-            'completed' => Project::where('status', 'completed')->count(),
-            'draft' => Project::where('status', 'draft')->count(),
-        ];
-
         return Inertia::render('Projects/Index', [
-            'projects' => $projects,
-            'categories' => $categories,
+            // Lightweight data - sync (for filters UI shell)
             'filters' => [
                 'category_id' => $categoryId,
                 'status' => $status,
                 'search' => $search,
             ],
-            'summary' => $summary,
             'statuses' => Project::STATUSES,
+
+            // Heavy data - deferred (loaded after page render)
+            'projects' => Inertia::defer(function () use ($categoryId, $status, $search) {
+                $query = Project::with('category:id,code,name');
+
+                if ($categoryId) {
+                    $query->where('category_id', $categoryId);
+                }
+
+                if ($status) {
+                    $query->where('status', $status);
+                }
+
+                if ($search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%")
+                            ->orWhere('code', 'like', "%{$search}%");
+                    });
+                }
+
+                return $query->orderBy('created_at', 'desc')
+                    ->paginate(15)
+                    ->through(function ($item) {
+                        return [
+                            'id' => $item->id,
+                            'code' => $item->code,
+                            'name' => $item->name,
+                            'category' => $item->category,
+                            'year' => $item->year,
+                            'budget' => $item->budget,
+                            'spent' => $item->spent,
+                            'spent_percentage' => $item->spent_percentage,
+                            'status' => $item->status,
+                            'status_label' => $item->status_label,
+                            'start_date' => $item->start_date?->format('Y-m-d'),
+                            'end_date' => $item->end_date?->format('Y-m-d'),
+                        ];
+                    });
+            }),
+            'categories' => Inertia::defer(fn() => Category::active()
+                ->select('id', 'code', 'name')
+                ->orderBy('name')
+                ->get()),
+            'summary' => Inertia::defer(fn() => [
+                'total' => Project::count(),
+                'active' => Project::where('status', 'active')->count(),
+                'completed' => Project::where('status', 'completed')->count(),
+                'draft' => Project::where('status', 'draft')->count(),
+            ]),
         ]);
     }
 

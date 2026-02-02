@@ -165,7 +165,6 @@ export default function Sidebar({
                     <Link 
                         href="/dashboard" 
                         className="flex items-center gap-3"
-                        prefetch="mount"
                     >
                         <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center">
                             <span className="text-white font-bold text-sm">KM</span>

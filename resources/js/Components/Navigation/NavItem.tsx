@@ -150,7 +150,6 @@ export default function NavItem({ item, depth = 0, collapsed = false }: NavItemP
                 // Leaf item (link)
                 <Link
                     href={item.href || '#'}
-                    prefetch="hover"
                     className={`
                         flex items-center gap-3 py-2 rounded-lg text-sm font-medium
                         transition-all duration-200

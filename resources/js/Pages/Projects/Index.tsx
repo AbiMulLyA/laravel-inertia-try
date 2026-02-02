@@ -1,6 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout';
-import { Head, Link, router } from '@inertiajs/react';
-import { PageHeader, Card, StatsCard, Table, Pagination } from '@/Components';
+import { Deferred, Head, Link, router } from '@inertiajs/react';
+import { PageHeader, Card, StatsCard, Table, Pagination, Shimmer } from '@/Components';
 import { 
     Plus, 
     Edit, 
@@ -47,20 +47,22 @@ interface PaginatedData {
     }>;
 }
 
+interface Summary {
+    total: number;
+    active: number;
+    completed: number;
+    draft: number;
+}
+
 interface Props {
-    projects: PaginatedData;
-    categories: Category[];
+    projects?: PaginatedData;
+    categories?: Category[];
     filters: {
         category_id: string | null;
         status: string | null;
         search: string | null;
     };
-    summary: {
-        total: number;
-        active: number;
-        completed: number;
-        draft: number;
-    };
+    summary?: Summary;
     statuses: Record<string, string>;
 }
 
@@ -74,13 +76,13 @@ function formatCurrency(value: number): string {
 /**
  * Projects Index Page
  * 
- * Filament-style list page with filtering, search, and pagination.
+ * Filament-style list page with deferred loading for better UX.
  */
 export default function ProjectsIndex({ 
-    projects = { data: [], current_page: 1, last_page: 1, per_page: 15, total: 0, links: [] },
-    categories = [],
+    projects,
+    categories,
     filters = { category_id: null, status: null, search: null },
-    summary = { total: 0, active: 0, completed: 0, draft: 0 },
+    summary,
     statuses = {}
 }: Props) {
     const handleDelete = (id: number, name: string) => {
@@ -113,7 +115,7 @@ export default function ProjectsIndex({
             <Head title="Projects" />
 
             <div className="space-y-6">
-                {/* Header */}
+                {/* Header - Always visible */}
                 <PageHeader 
                     title="Projects" 
                     subtitle="Manage projects and track progress"
@@ -124,43 +126,15 @@ export default function ProjectsIndex({
                     }}
                 />
 
-                {/* Summary Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div onClick={() => router.get('/projects', {})}>
-                        <StatsCard
-                            title="Total Projects"
-                            value={summary.total}
-                            icon={FolderKanban}
-                            color="secondary"
-                        />
-                    </div>
-                    <div onClick={() => handleFilterChange('status', 'active')}>
-                        <StatsCard
-                            title="Active"
-                            value={summary.active}
-                            icon={Activity}
-                            color="primary"
-                        />
-                    </div>
-                    <div onClick={() => handleFilterChange('status', 'completed')}>
-                        <StatsCard
-                            title="Completed"
-                            value={summary.completed}
-                            icon={CheckCircle2}
-                            color="cyan"
-                        />
-                    </div>
-                    <div onClick={() => handleFilterChange('status', 'draft')}>
-                        <StatsCard
-                            title="Draft"
-                            value={summary.draft}
-                            icon={FileEdit}
-                            color="accent"
-                        />
-                    </div>
-                </div>
+                {/* Summary Cards - Deferred */}
+                <Deferred data="summary" fallback={<Shimmer.StatsCards count={4} />}>
+                    <SummaryCardsSection 
+                        summary={summary!} 
+                        onFilterChange={handleFilterChange} 
+                    />
+                </Deferred>
 
-                {/* Filters */}
+                {/* Filters - Uses deferred categories */}
                 <Card padding="sm">
                     <div className="flex flex-col sm:flex-row gap-4">
                         <form onSubmit={handleSearch} className="flex-1">
@@ -177,16 +151,22 @@ export default function ProjectsIndex({
                         </form>
                         <div className="flex items-center gap-2">
                             <Filter className="w-4 h-4 text-gray-400" />
-                            <select
-                                value={filters.category_id || ''}
-                                onChange={(e) => handleFilterChange('category_id', e.target.value)}
-                                className="px-3 py-2 bg-white dark:bg-[#1a2744] border border-gray-300 dark:border-[#1e3a5f] rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm text-gray-900 dark:text-white"
-                            >
-                                <option value="">All Categories</option>
-                                {categories.map((c) => (
-                                    <option key={c.id} value={c.id}>{c.name}</option>
-                                ))}
-                            </select>
+                            <Deferred data="categories" fallback={
+                                <select className="px-3 py-2 bg-white dark:bg-[#1a2744] border border-gray-300 dark:border-[#1e3a5f] rounded-lg text-sm text-gray-400">
+                                    <option>Loading...</option>
+                                </select>
+                            }>
+                                <select
+                                    value={filters.category_id || ''}
+                                    onChange={(e) => handleFilterChange('category_id', e.target.value)}
+                                    className="px-3 py-2 bg-white dark:bg-[#1a2744] border border-gray-300 dark:border-[#1e3a5f] rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm text-gray-900 dark:text-white"
+                                >
+                                    <option value="">All Categories</option>
+                                    {categories?.map((c) => (
+                                        <option key={c.id} value={c.id}>{c.name}</option>
+                                    ))}
+                                </select>
+                            </Deferred>
                             <select
                                 value={filters.status || ''}
                                 onChange={(e) => handleFilterChange('status', e.target.value)}
@@ -201,102 +181,173 @@ export default function ProjectsIndex({
                     </div>
                 </Card>
 
-                {/* Projects Table */}
-                <Card padding="none" className="overflow-hidden">
-                    <Table>
-                        <Table.Thead>
-                            <Table.Tr>
-                                <Table.Th>Project</Table.Th>
-                                <Table.Th>Category</Table.Th>
-                                <Table.Th align="right">Budget</Table.Th>
-                                <Table.Th>Progress</Table.Th>
-                                <Table.Th>Status</Table.Th>
-                                <Table.Th align="right">Actions</Table.Th>
-                            </Table.Tr>
-                        </Table.Thead>
-                        <Table.Tbody>
-                            {projects.data.map((item) => (
-                                <Table.Tr key={item.id}>
-                                    <Table.Td>
-                                        <div>
-                                            <p className="text-sm font-medium text-gray-900 dark:text-white">{item.name}</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{item.code}</p>
-                                        </div>
-                                    </Table.Td>
-                                    <Table.Td>
-                                        <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-primary-50 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 border border-primary-200 dark:border-primary-500/30">
-                                            {item.category?.code || '-'}
-                                        </span>
-                                    </Table.Td>
-                                    <Table.Td align="right">
-                                        <p className="text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(item.budget)}</p>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Spent: {formatCurrency(item.spent)}</p>
-                                    </Table.Td>
-                                    <Table.Td>
-                                        <div className="w-28">
-                                            <div className="flex justify-between text-xs mb-1">
-                                                <span className="font-medium text-gray-700 dark:text-gray-300">{item.spent_percentage}%</span>
-                                            </div>
-                                            <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                                                <div 
-                                                    className="h-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600"
-                                                    style={{ width: `${Math.min(item.spent_percentage, 100)}%` }}
-                                                />
-                                            </div>
-                                        </div>
-                                    </Table.Td>
-                                    <Table.Td>
-                                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
-                                            {item.status_label}
-                                        </span>
-                                    </Table.Td>
-                                    <Table.Td align="right">
-                                        <div className="flex items-center justify-end gap-1">
-                                            <Link
-                                                href={`/projects/${item.id}/edit`}
-                                                className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/20 rounded-lg transition-colors"
-                                            >
-                                                <Edit className="w-4 h-4" />
-                                            </Link>
-                                            <button
-                                                onClick={() => handleDelete(item.id, item.name)}
-                                                className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/20 rounded-lg transition-colors"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </Table.Td>
-                                </Table.Tr>
-                            ))}
-                        </Table.Tbody>
-                    </Table>
-
-                    {projects.data.length === 0 && (
-                        <div className="p-12 text-center">
-                            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                <FolderKanban className="w-8 h-8 text-gray-400" />
-                            </div>
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No projects yet</h3>
-                            <p className="text-gray-500 dark:text-gray-400 mb-6">Get started by creating your first project</p>
-                            <Link
-                                href="/projects/create"
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors shadow-sm"
-                            >
-                                <Plus className="w-4 h-4" />
-                                Add Project
-                            </Link>
-                        </div>
-                    )}
-
-                    {/* Pagination */}
-                    <Pagination 
-                        links={projects.links}
-                        from={(projects.current_page - 1) * projects.per_page + 1}
-                        to={Math.min(projects.current_page * projects.per_page, projects.total)}
-                        total={projects.total}
+                {/* Projects Table - Deferred */}
+                <Deferred data="projects" fallback={
+                    <Card padding="none" className="overflow-hidden">
+                        <Shimmer.Table rows={10} cols={6} />
+                    </Card>
+                }>
+                    <ProjectsTableSection 
+                        projects={projects!} 
+                        getStatusColor={getStatusColor}
+                        onDelete={handleDelete}
                     />
-                </Card>
+                </Deferred>
             </div>
         </AppLayout>
+    );
+}
+
+// --- Sub-components ---
+
+function SummaryCardsSection({ 
+    summary, 
+    onFilterChange 
+}: { 
+    summary: Summary; 
+    onFilterChange: (key: string, value: string) => void;
+}) {
+    return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div onClick={() => router.get('/projects', {})}>
+                <StatsCard
+                    title="Total Projects"
+                    value={summary.total}
+                    icon={FolderKanban}
+                    color="secondary"
+                />
+            </div>
+            <div onClick={() => onFilterChange('status', 'active')}>
+                <StatsCard
+                    title="Active"
+                    value={summary.active}
+                    icon={Activity}
+                    color="primary"
+                />
+            </div>
+            <div onClick={() => onFilterChange('status', 'completed')}>
+                <StatsCard
+                    title="Completed"
+                    value={summary.completed}
+                    icon={CheckCircle2}
+                    color="cyan"
+                />
+            </div>
+            <div onClick={() => onFilterChange('status', 'draft')}>
+                <StatsCard
+                    title="Draft"
+                    value={summary.draft}
+                    icon={FileEdit}
+                    color="accent"
+                />
+            </div>
+        </div>
+    );
+}
+
+function ProjectsTableSection({ 
+    projects, 
+    getStatusColor,
+    onDelete
+}: { 
+    projects: PaginatedData; 
+    getStatusColor: (status: string) => string;
+    onDelete: (id: number, name: string) => void;
+}) {
+    return (
+        <Card padding="none" className="overflow-hidden">
+            <Table>
+                <Table.Thead>
+                    <Table.Tr>
+                        <Table.Th>Project</Table.Th>
+                        <Table.Th>Category</Table.Th>
+                        <Table.Th align="right">Budget</Table.Th>
+                        <Table.Th>Progress</Table.Th>
+                        <Table.Th>Status</Table.Th>
+                        <Table.Th align="right">Actions</Table.Th>
+                    </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                    {projects.data.map((item) => (
+                        <Table.Tr key={item.id}>
+                            <Table.Td>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white">{item.name}</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{item.code}</p>
+                                </div>
+                            </Table.Td>
+                            <Table.Td>
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-primary-50 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 border border-primary-200 dark:border-primary-500/30">
+                                    {item.category?.code || '-'}
+                                </span>
+                            </Table.Td>
+                            <Table.Td align="right">
+                                <p className="text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(item.budget)}</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Spent: {formatCurrency(item.spent)}</p>
+                            </Table.Td>
+                            <Table.Td>
+                                <div className="w-28">
+                                    <div className="flex justify-between text-xs mb-1">
+                                        <span className="font-medium text-gray-700 dark:text-gray-300">{item.spent_percentage}%</span>
+                                    </div>
+                                    <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                                        <div 
+                                            className="h-full rounded-full bg-gradient-to-r from-primary-400 to-primary-600"
+                                            style={{ width: `${Math.min(item.spent_percentage, 100)}%` }}
+                                        />
+                                    </div>
+                                </div>
+                            </Table.Td>
+                            <Table.Td>
+                                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
+                                    {item.status_label}
+                                </span>
+                            </Table.Td>
+                            <Table.Td align="right">
+                                <div className="flex items-center justify-end gap-1">
+                                    <Link
+                                        href={`/projects/${item.id}/edit`}
+                                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/20 rounded-lg transition-colors"
+                                    >
+                                        <Edit className="w-4 h-4" />
+                                    </Link>
+                                    <button
+                                        onClick={() => onDelete(item.id, item.name)}
+                                        className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/20 rounded-lg transition-colors"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </Table.Td>
+                        </Table.Tr>
+                    ))}
+                </Table.Tbody>
+            </Table>
+
+            {projects.data.length === 0 && (
+                <div className="p-12 text-center">
+                    <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <FolderKanban className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No projects yet</h3>
+                    <p className="text-gray-500 dark:text-gray-400 mb-6">Get started by creating your first project</p>
+                    <Link
+                        href="/projects/create"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors shadow-sm"
+                    >
+                        <Plus className="w-4 h-4" />
+                        Add Project
+                    </Link>
+                </div>
+            )}
+
+            {/* Pagination */}
+            <Pagination 
+                links={projects.links}
+                from={(projects.current_page - 1) * projects.per_page + 1}
+                to={Math.min(projects.current_page * projects.per_page, projects.total)}
+                total={projects.total}
+            />
+        </Card>
     );
 }
