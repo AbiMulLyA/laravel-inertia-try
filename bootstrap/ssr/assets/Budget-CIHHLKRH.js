@@ -1,0 +1,145 @@
+import { d as Card, l as Table, p as StatsCard, t as AppLayout, u as PageHeader } from "./AppLayout-Cll6vCno.js";
+import { Head } from "@inertiajs/react";
+import { jsx, jsxs } from "react/jsx-runtime";
+import { DollarSign, PieChart, TrendingDown, TrendingUp } from "lucide-react";
+//#region resources/js/Pages/Reports/Budget.tsx
+function formatCurrency(value) {
+	return new Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0
+	}).format(value);
+}
+/**
+* Budget Report Page
+* 
+* Shows budget overview and breakdown by category.
+*/
+function BudgetReport({ summary = {
+	total_budget: 0,
+	total_spent: 0,
+	total_remaining: 0,
+	spent_percentage: 0
+}, categories = [], year = (/* @__PURE__ */ new Date()).getFullYear() }) {
+	return /* @__PURE__ */ jsxs(AppLayout, { children: [/* @__PURE__ */ jsx(Head, { title: "Budget Report" }), /* @__PURE__ */ jsxs("div", {
+		className: "space-y-6",
+		children: [
+			/* @__PURE__ */ jsx(PageHeader, {
+				title: "Budget Report",
+				subtitle: `Financial overview for year ${year}`
+			}),
+			/* @__PURE__ */ jsxs("div", {
+				className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",
+				children: [
+					/* @__PURE__ */ jsx(StatsCard, {
+						title: "Total Budget",
+						value: formatCurrency(summary.total_budget),
+						icon: DollarSign,
+						color: "primary"
+					}),
+					/* @__PURE__ */ jsx(StatsCard, {
+						title: "Total Spent",
+						value: formatCurrency(summary.total_spent),
+						icon: TrendingDown,
+						color: "accent"
+					}),
+					/* @__PURE__ */ jsx(StatsCard, {
+						title: "Remaining",
+						value: formatCurrency(summary.total_remaining),
+						icon: TrendingUp,
+						color: "secondary"
+					}),
+					/* @__PURE__ */ jsx(StatsCard, {
+						title: "Utilization",
+						value: `${summary.spent_percentage.toFixed(1)}%`,
+						icon: PieChart,
+						color: "cyan"
+					})
+				]
+			}),
+			/* @__PURE__ */ jsxs(Card, {
+				padding: "none",
+				children: [
+					/* @__PURE__ */ jsxs("div", {
+						className: "p-6 border-b border-theme",
+						children: [/* @__PURE__ */ jsx("h2", {
+							className: "text-lg font-semibold text-theme-primary",
+							children: "Budget by Category"
+						}), /* @__PURE__ */ jsx("p", {
+							className: "text-sm text-theme-secondary mt-1",
+							children: "Breakdown of budget allocation and spending"
+						})]
+					}),
+					/* @__PURE__ */ jsxs(Table, { children: [/* @__PURE__ */ jsx(Table.Thead, { children: /* @__PURE__ */ jsxs(Table.Tr, { children: [
+						/* @__PURE__ */ jsx(Table.Th, { children: "Category" }),
+						/* @__PURE__ */ jsx(Table.Th, {
+							align: "right",
+							children: "Budget"
+						}),
+						/* @__PURE__ */ jsx(Table.Th, {
+							align: "right",
+							children: "Spent"
+						}),
+						/* @__PURE__ */ jsx(Table.Th, {
+							align: "right",
+							children: "Remaining"
+						}),
+						/* @__PURE__ */ jsx(Table.Th, { children: "Usage" })
+					] }) }), /* @__PURE__ */ jsx(Table.Tbody, { children: categories.map((category) => /* @__PURE__ */ jsxs(Table.Tr, { children: [
+						/* @__PURE__ */ jsx(Table.Td, { children: /* @__PURE__ */ jsxs("div", {
+							className: "flex items-center gap-3",
+							children: [/* @__PURE__ */ jsx("div", {
+								className: "w-10 h-10 bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-900/50 dark:to-primary-800/30 rounded-lg flex items-center justify-center border border-primary-200 dark:border-primary-700",
+								children: /* @__PURE__ */ jsx("span", {
+									className: "text-sm font-bold text-primary-700 dark:text-primary-300",
+									children: category.code
+								})
+							}), /* @__PURE__ */ jsx("span", {
+								className: "font-medium text-theme-primary",
+								children: category.name
+							})]
+						}) }),
+						/* @__PURE__ */ jsx(Table.Td, {
+							align: "right",
+							className: "font-medium text-theme-primary",
+							children: formatCurrency(category.budget)
+						}),
+						/* @__PURE__ */ jsx(Table.Td, {
+							align: "right",
+							className: "text-accent-600 dark:text-accent-400",
+							children: formatCurrency(category.spent)
+						}),
+						/* @__PURE__ */ jsx(Table.Td, {
+							align: "right",
+							className: "text-secondary-600 dark:text-secondary-400",
+							children: formatCurrency(category.remaining)
+						}),
+						/* @__PURE__ */ jsx(Table.Td, { children: /* @__PURE__ */ jsxs("div", {
+							className: "flex items-center gap-3",
+							children: [/* @__PURE__ */ jsx("div", {
+								className: "w-24 h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden",
+								children: /* @__PURE__ */ jsx("div", {
+									className: `h-full rounded-full ${category.percentage > 90 ? "bg-red-500" : category.percentage > 70 ? "bg-accent-500" : "bg-secondary-500"}`,
+									style: { width: `${Math.min(category.percentage, 100)}%` }
+								})
+							}), /* @__PURE__ */ jsxs("span", {
+								className: `text-sm font-medium w-12 ${category.percentage > 90 ? "text-red-600 dark:text-red-400" : "text-theme-secondary"}`,
+								children: [category.percentage.toFixed(1), "%"]
+							})]
+						}) })
+					] }, category.id)) })] }),
+					categories.length === 0 && /* @__PURE__ */ jsxs("div", {
+						className: "p-12 text-center",
+						children: [/* @__PURE__ */ jsx(PieChart, { className: "w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" }), /* @__PURE__ */ jsx("p", {
+							className: "text-theme-secondary",
+							children: "No budget data available"
+						})]
+					})
+				]
+			})
+		]
+	})] });
+}
+//#endregion
+export { BudgetReport as default };

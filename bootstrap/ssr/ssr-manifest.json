@@ -1,106 +1,120 @@
 {
-  "node_modules/laravel-vite-plugin/inertia-helpers/index.js": [],
   "resources/js/Components/Cards/Card.tsx": [
-    "/build/assets/PageHeader-DAtmv7HV.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/Cards/StatsCard.tsx": [
-    "/build/assets/StatsCard-DQVB_KgP.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
+  ],
+  "resources/js/Components/Form/FormCard.tsx": [
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/Form/FormInput.tsx": [
-    "/build/assets/Form-KWQ9iQES.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/Form/FormSection.tsx": [
-    "/build/assets/Form-KWQ9iQES.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/Form/FormSelect.tsx": [
-    "/build/assets/Form-KWQ9iQES.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/Form/FormTextarea.tsx": [
-    "/build/assets/Form-KWQ9iQES.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
+  ],
+  "resources/js/Components/Navigation/Header.tsx": [
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/Navigation/NavItem.tsx": [
-    "/build/assets/AppLayout-ClUKwJTp.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/Navigation/Sidebar.tsx": [
-    "/build/assets/AppLayout-ClUKwJTp.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/PageHeader.tsx": [
-    "/build/assets/PageHeader-DAtmv7HV.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
+  ],
+  "resources/js/Components/Shimmer.tsx": [
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/Table/Pagination.tsx": [
-    "/build/assets/Pagination-0C2komkt.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Components/Table/Table.tsx": [
-    "/build/assets/AppLayout-ClUKwJTp.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
+  ],
+  "resources/js/Components/index.ts": [
+    "/build/assets/AppLayout-Cll6vCno.js"
+  ],
+  "resources/js/Contexts/DeferredCacheContext.tsx": [
+    "/build/assets/DeferredCacheContext-B4g-AeXi.js"
   ],
   "resources/js/Contexts/ThemeContext.tsx": [
-    "/build/assets/Appearance-DZ65K0W9.js"
+    "/build/assets/Appearance-Cbj69Tk7.js"
   ],
   "resources/js/Layouts/AppLayout.tsx": [
-    "/build/assets/AppLayout-ClUKwJTp.js"
+    "/build/assets/AppLayout-Cll6vCno.js"
   ],
   "resources/js/Pages/Auth/Login.tsx": [
-    "/build/assets/Login-jOlAWwG0.js"
+    "/build/assets/Login-DOv4r2dr.js"
   ],
   "resources/js/Pages/Auth/Register.tsx": [
-    "/build/assets/Register-BtKCtVaz.js"
+    "/build/assets/Register-DKbqR7Ch.js"
   ],
   "resources/js/Pages/Categories/Form.tsx": [
-    "/build/assets/Form-BBjNrkDu.js"
+    "/build/assets/Form-BoBNHgcE.js"
   ],
   "resources/js/Pages/Categories/Index.tsx": [
-    "/build/assets/Index-Dk7889Ag.js"
+    "/build/assets/Index-DdD33rKB.js"
   ],
   "resources/js/Pages/Dashboard.tsx": [
-    "/build/assets/Dashboard-D11YA8CA.js"
+    "/build/assets/Dashboard-BtEmwvq0.js"
   ],
   "resources/js/Pages/Profile/Index.tsx": [
-    "/build/assets/Index-BDaZ9n0H.js"
+    "/build/assets/Index-CAUgB-q-.js"
   ],
   "resources/js/Pages/Projects/Form.tsx": [
-    "/build/assets/Form-KWQ9iQES.js"
+    "/build/assets/Form-DOAW9Z-g.js"
   ],
   "resources/js/Pages/Projects/Index.tsx": [
-    "/build/assets/Index-C89PSxKq.js"
+    "/build/assets/Index-BCkUc14-.js"
   ],
   "resources/js/Pages/Reports/Budget.tsx": [
-    "/build/assets/Budget-_u0VXp_M.js"
+    "/build/assets/Budget-CIHHLKRH.js"
   ],
   "resources/js/Pages/Reports/ProjectProgress.tsx": [
-    "/build/assets/ProjectProgress-DMqzUYT4.js"
+    "/build/assets/ProjectProgress-CS81_6Np.js"
   ],
   "resources/js/Pages/Reports/Spending.tsx": [
-    "/build/assets/Spending-PQZ_RfWm.js"
+    "/build/assets/Spending-Dvu2EbHv.js"
   ],
   "resources/js/Pages/Reports/TaskProgress.tsx": [
-    "/build/assets/TaskProgress-i6rMF0p3.js"
+    "/build/assets/TaskProgress-C95DIG27.js"
   ],
   "resources/js/Pages/Settings/Appearance.tsx": [
-    "/build/assets/Appearance-DZ65K0W9.js"
+    "/build/assets/Appearance-Cbj69Tk7.js"
   ],
   "resources/js/Pages/Settings/Permissions/Form.tsx": [
-    "/build/assets/Form-CiQU3Zyh.js"
+    "/build/assets/Form-DsKAZ6Fq.js"
   ],
   "resources/js/Pages/Settings/Permissions/Index.tsx": [
-    "/build/assets/Index-CEdFwsP6.js"
+    "/build/assets/Index-zYvYw-RP.js"
   ],
   "resources/js/Pages/Settings/Roles/Form.tsx": [
-    "/build/assets/Form-B3NBxyiN.js"
+    "/build/assets/Form-DnmEa54z.js"
   ],
   "resources/js/Pages/Settings/Roles/Index.tsx": [
-    "/build/assets/Index-CAocBLQx.js"
+    "/build/assets/Index-CqlTaLuU.js"
   ],
   "resources/js/Pages/Settings/Users/Form.tsx": [
-    "/build/assets/Form-BuAPjS7s.js"
+    "/build/assets/Form-BviaSV6a.js"
   ],
   "resources/js/Pages/Settings/Users/Index.tsx": [
-    "/build/assets/Index-CvPDiZSm.js"
+    "/build/assets/Index-C_G58sh3.js"
   ],
   "resources/js/Pages/Tasks/Form.tsx": [
-    "/build/assets/Form-DaTdhfTi.js"
+    "/build/assets/Form-zwwdt-Md.js"
   ],
   "resources/js/Pages/Tasks/Index.tsx": [
-    "/build/assets/Index-rLls9iCY.js"
+    "/build/assets/Index-ZZo5kw5y.js"
   ],
   "resources/js/ssr.tsx": []
 }

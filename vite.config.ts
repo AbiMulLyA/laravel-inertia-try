@@ -43,10 +43,18 @@ export default defineConfig(({ isSsrBuild }) => ({
         rollupOptions: {
             output: isSsrBuild ? {} : {
                 // Improved chunking strategy for better caching (client only)
-                manualChunks: {
-                    'react-vendor': ['react', 'react-dom'],
-                    'inertia': ['@inertiajs/react'],
-                    'icons': ['lucide-react'],
+                manualChunks(id) {
+                    if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+                        return 'react-vendor';
+                    }
+
+                    if (id.includes('node_modules/@inertiajs/react')) {
+                        return 'inertia';
+                    }
+
+                    if (id.includes('node_modules/lucide-react')) {
+                        return 'icons';
+                    }
                 },
                 // Use content hash for cache busting
                 chunkFileNames: 'assets/js/[name]-[hash].js',
@@ -86,10 +94,4 @@ export default defineConfig(({ isSsrBuild }) => ({
         port: 4173,
     },
     
-    // Enable esbuild optimizations
-    esbuild: {
-        // Drop console.log in production (client only)
-        drop: !isSsrBuild && process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
-    },
 }));
-

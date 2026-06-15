@@ -2,20 +2,27 @@ import '../css/app.css';
 
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import type { ResolvedComponent } from '@inertiajs/react';
 import { ThemeProvider } from './Contexts/ThemeContext';
 import { DeferredCacheProvider } from './Contexts/DeferredCacheContext';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Kominfo Admin';
+const pages = import.meta.glob<{ default: ResolvedComponent }>('./Pages/**/*.tsx');
+
+async function resolvePageComponent(name: string) {
+    const page = pages[`./Pages/${name}.tsx`];
+
+    if (!page) {
+        throw new Error(`Page not found: ${name}`);
+    }
+
+    return (await page()).default;
+}
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     
-    resolve: (name) =>
-        resolvePageComponent(
-            `./Pages/${name}.tsx`,
-            import.meta.glob('./Pages/**/*.tsx')
-        ),
+    resolve: resolvePageComponent,
     
     setup({ el, App, props }) {
         const AppWithProviders = (
