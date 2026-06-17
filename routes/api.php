@@ -104,4 +104,3 @@ Route::prefix('v1')->group(function () {
         Route::delete('/users/{user}', [UserApiController::class, 'destroy']);
     });
 });
-

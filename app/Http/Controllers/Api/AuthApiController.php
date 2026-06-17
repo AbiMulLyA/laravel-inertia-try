@@ -25,13 +25,12 @@ class AuthApiController extends Controller
      *
      * This helper method provides proper type hinting for the JWTGuard,
      * resolving static analysis warnings for JWT-specific methods.
-     *
-     * @return JWTGuard
      */
     protected function guard(): JWTGuard
     {
         /** @var JWTGuard $guard */
         $guard = auth('api');
+
         return $guard;
     }
 
@@ -56,7 +55,7 @@ class AuthApiController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (!$token = $this->guard()->attempt($credentials)) {
+        if (! $token = $this->guard()->attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['Email atau password salah.'],
             ]);
@@ -102,7 +101,7 @@ class AuthApiController extends Controller
                 'access_token' => $token,
                 'token_type' => 'bearer',
                 'expires_in' => $this->guard()->factory()->getTTL() * 60,
-                'user' => $user
+                'user' => $user,
             ],
         ], 201);
     }
@@ -157,9 +156,8 @@ class AuthApiController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param string $token The JWT token
-     * @param string $message Response message
-     * @return JsonResponse
+     * @param  string  $token  The JWT token
+     * @param  string  $message  Response message
      */
     protected function respondWithToken(string $token, string $message = 'Success'): JsonResponse
     {
@@ -167,7 +165,7 @@ class AuthApiController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => $this->guard()->factory()->getTTL() * 60,
-            'user' => $this->guard()->user()
+            'user' => $this->guard()->user(),
         ], $message);
     }
 }

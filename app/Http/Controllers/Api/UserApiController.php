@@ -119,6 +119,7 @@ class UserApiController extends Controller
      * @authenticated
      *
      * @urlParam user int required The user ID. Example: 1
+     *
      * @bodyParam name string required Full name. Example: John Doe
      * @bodyParam email string required Email address. Example: john@example.com
      * @bodyParam password string optional New password (min 8 chars). Example: newpassword123
@@ -134,12 +135,12 @@ class UserApiController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
             'password' => ['nullable', Password::defaults(), 'confirmed'],
             'role' => ['nullable', 'string', 'max:50'],
         ]);
 
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
         } else {
             unset($validated['password']);

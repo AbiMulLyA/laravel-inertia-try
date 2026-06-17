@@ -10,7 +10,7 @@ use Inertia\Response as InertiaResponse;
 
 /**
  * TaskController
- * 
+ *
  * Example controller for full CRUD with progress tracking.
  * Demonstrates: filtering, pagination, status management, progress updates.
  */
@@ -182,7 +182,7 @@ class TaskController extends Controller
     {
         $validated = $request->validate([
             'project_id' => 'required|exists:projects,id',
-            'code' => 'required|string|max:30|unique:tasks,code,' . $task->id,
+            'code' => 'required|string|max:30|unique:tasks,code,'.$task->id,
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'location' => 'nullable|string|max:255',

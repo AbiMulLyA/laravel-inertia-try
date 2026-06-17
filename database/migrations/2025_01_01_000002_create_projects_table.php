@@ -6,11 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Projects Table Migration
- * 
+ *
  * Example migration for relational data.
  * Demonstrates: foreign key, status enum, budget tracking, date range.
  */
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {

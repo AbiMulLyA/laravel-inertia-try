@@ -129,6 +129,7 @@ class ProjectApiController extends Controller
      * @authenticated
      *
      * @urlParam project int required The project ID. Example: 1
+     *
      * @bodyParam category_id int required Category ID. Example: 1
      * @bodyParam code string required Project code, max 30 chars, unique. Example: PRJ001
      * @bodyParam name string required Project name, max 255 chars. Example: Infrastructure Project
@@ -149,7 +150,7 @@ class ProjectApiController extends Controller
     {
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'code' => 'required|string|max:30|unique:projects,code,' . $project->id,
+            'code' => 'required|string|max:30|unique:projects,code,'.$project->id,
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'year' => 'required|integer|min:2020|max:2100',

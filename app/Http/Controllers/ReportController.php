@@ -22,7 +22,7 @@ class ReportController extends Controller
         $categories = Category::withCount([
             'projects' => function ($q) use ($year) {
                 $q->where('year', $year);
-            }
+            },
         ])
             ->get()
             ->map(function ($category) use ($year) {
@@ -42,7 +42,7 @@ class ReportController extends Controller
                     'percentage' => round($percentage, 1),
                 ];
             })
-            ->filter(fn($c) => $c['budget'] > 0)
+            ->filter(fn ($c) => $c['budget'] > 0)
             ->values();
 
         // Calculate summary

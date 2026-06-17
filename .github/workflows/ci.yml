@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: bcmath, ctype, fileinfo, json, mbstring, openssl, pdo, pdo_sqlite, tokenizer, xml, zip
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Prepare Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+          php artisan optimize:clear
+
+      - name: Composer validation and audit
+        run: |
+          composer validate --no-check-publish
+          composer audit --ignore-unreachable
+
+      - name: NPM audit
+        run: npm audit --audit-level=moderate
+
+      - name: Static analysis
+        run: composer analyse
+
+      - name: Pint style check
+        run: composer pint -- --test
+
+      - name: Test suite
+        run: composer test
+
+      - name: Frontend build
+        run: npm run build

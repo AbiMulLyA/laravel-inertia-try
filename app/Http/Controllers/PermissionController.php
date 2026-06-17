@@ -101,7 +101,7 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:100', 'unique:permissions,name,' . $permission->id],
+            'name' => ['required', 'string', 'max:100', 'unique:permissions,name,'.$permission->id],
             'display_name' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:500'],
             'group' => ['required', 'string', 'max:50'],

@@ -37,7 +37,7 @@ class CategoryApiController extends Controller
                 ->with([
                     'projects' => function ($q) {
                         $q->select('id', 'category_id', 'budget', 'spent');
-                    }
+                    },
                 ]);
         }
 
@@ -111,6 +111,7 @@ class CategoryApiController extends Controller
      * @authenticated
      *
      * @urlParam category int required The category ID. Example: 1
+     *
      * @bodyParam code string required Category code, max 20 chars, unique. Example: CAT001
      * @bodyParam name string required Category name, max 255 chars. Example: Infrastructure
      * @bodyParam description string optional Description. Example: Infrastructure projects
@@ -124,7 +125,7 @@ class CategoryApiController extends Controller
     public function update(Request $request, Category $category): JsonResponse
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:20|unique:categories,code,' . $category->id,
+            'code' => 'required|string|max:20|unique:categories,code,'.$category->id,
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'is_active' => 'boolean',

@@ -71,4 +71,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

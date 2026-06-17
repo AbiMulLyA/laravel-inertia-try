@@ -1,24 +1,33 @@
 {
     "name": "kominfo/laravel-inertia-base",
     "type": "project",
-    "description": "Base template Laravel 12 + React 19 + Inertia.js dengan UI/UX siap pakai",
-    "keywords": ["laravel", "inertia", "react", "template", "kominfo"],
+    "description": "Base template Laravel 13 + React 19 + Inertia.js 3 dengan UI/UX, observability, dan quality gate siap pakai",
+    "keywords": [
+        "laravel",
+        "inertia",
+        "react",
+        "template",
+        "kominfo"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
         "inertiajs/inertia-laravel": "^3.1",
         "laravel/framework": "^13.15",
         "laravel/octane": "^2.17",
+        "laravel/pulse": "^1.4",
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^3.0",
         "maatwebsite/excel": "^3.1.69",
         "php-open-source-saver/jwt-auth": "^2.9",
+        "predis/predis": "^3.0",
         "spatie/laravel-permission": "^8.0",
         "spatie/laravel-query-builder": "^7.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
         "knuckleswtf/scribe": "^5.11",
+        "larastan/larastan": "^3.0",
         "laravel/breeze": "^2.4",
         "laravel/pail": "^1.2",
         "laravel/pint": "^1.29",
@@ -63,6 +72,16 @@
         ],
         "pint": [
             "@php vendor/bin/pint"
+        ],
+        "analyse": [
+            "@php vendor/bin/phpstan analyse --memory-limit=1G"
+        ],
+        "quality": [
+            "@composer validate --no-check-publish",
+            "@composer audit --ignore-unreachable",
+            "@php vendor/bin/pint --test",
+            "@php vendor/bin/phpstan analyse --memory-limit=1G",
+            "@php artisan test"
         ]
     },
     "extra": {

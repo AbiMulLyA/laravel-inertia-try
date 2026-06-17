@@ -136,6 +136,7 @@ class TaskApiController extends Controller
      * @authenticated
      *
      * @urlParam task int required The task ID. Example: 1
+     *
      * @bodyParam project_id int required Project ID. Example: 1
      * @bodyParam code string required Task code, max 30 chars, unique. Example: TSK001
      * @bodyParam name string required Task name, max 255 chars. Example: Build Foundation
@@ -162,7 +163,7 @@ class TaskApiController extends Controller
     {
         $validated = $request->validate([
             'project_id' => 'required|exists:projects,id',
-            'code' => 'required|string|max:30|unique:tasks,code,' . $task->id,
+            'code' => 'required|string|max:30|unique:tasks,code,'.$task->id,
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'location' => 'nullable|string|max:255',
@@ -208,6 +209,7 @@ class TaskApiController extends Controller
      * @authenticated
      *
      * @urlParam task int required The task ID. Example: 1
+     *
      * @bodyParam progress int required Progress percentage (0-100). Example: 75
      * @bodyParam achieved numeric optional Achieved amount. Example: 75
      * @bodyParam spent numeric optional Amount spent. Example: 37500000

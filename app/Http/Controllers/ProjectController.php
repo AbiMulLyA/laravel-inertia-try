@@ -10,7 +10,7 @@ use Inertia\Response as InertiaResponse;
 
 /**
  * ProjectController
- * 
+ *
  * Example controller for relational data CRUD operations.
  * Demonstrates: filtering, pagination, relationships.
  */
@@ -72,11 +72,11 @@ class ProjectController extends Controller
                         ];
                     });
             }),
-            'categories' => Inertia::defer(fn() => Category::active()
+            'categories' => Inertia::defer(fn () => Category::active()
                 ->select('id', 'code', 'name')
                 ->orderBy('name')
                 ->get()),
-            'summary' => Inertia::defer(fn() => [
+            'summary' => Inertia::defer(fn () => [
                 'total' => Project::count(),
                 'active' => Project::where('status', 'active')->count(),
                 'completed' => Project::where('status', 'completed')->count(),
@@ -149,7 +149,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'code' => 'required|string|max:30|unique:projects,code,' . $project->id,
+            'code' => 'required|string|max:30|unique:projects,code,'.$project->id,
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'year' => 'required|integer|min:2020|max:2100',

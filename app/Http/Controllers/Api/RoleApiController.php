@@ -110,7 +110,7 @@ class RoleApiController extends Controller
 
         $role = Role::create($validated);
 
-        if (!empty($validated['permissions'])) {
+        if (! empty($validated['permissions'])) {
             $role->syncPermissions($validated['permissions']);
         }
 
@@ -123,6 +123,7 @@ class RoleApiController extends Controller
      * @authenticated
      *
      * @urlParam role int required The role ID. Example: 1
+     *
      * @bodyParam name string required Unique role name. Example: manager
      * @bodyParam display_name string required Display name. Example: Manager
      * @bodyParam description string optional Description. Example: Manager role with limited access
@@ -138,7 +139,7 @@ class RoleApiController extends Controller
     public function update(Request $request, Role $role): JsonResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:50', 'unique:roles,name,' . $role->id],
+            'name' => ['required', 'string', 'max:50', 'unique:roles,name,'.$role->id],
             'display_name' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:500'],
             'color' => ['required', 'string', 'max:7'],

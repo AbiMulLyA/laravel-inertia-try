@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Category Model
- * 
+ *
  * Example model for master data / lookup tables.
  * Use this as a template for creating similar models.
  */

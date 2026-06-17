@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Task Model
- * 
+ *
  * Example model for full CRUD with progress tracking.
  * Demonstrates: status management, progress percentage, rich metadata.
  */
@@ -50,8 +50,11 @@ class Task extends Model
 
     // Status constants
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_IN_PROGRESS = 'in_progress';
+
     public const STATUS_COMPLETED = 'completed';
+
     public const STATUS_ON_HOLD = 'on_hold';
 
     public const STATUSES = [
@@ -63,7 +66,9 @@ class Task extends Model
 
     // Priority constants
     public const PRIORITY_LOW = 'low';
+
     public const PRIORITY_MEDIUM = 'medium';
+
     public const PRIORITY_HIGH = 'high';
 
     public const PRIORITIES = [
@@ -120,6 +125,7 @@ class Task extends Model
         if ($this->target == 0) {
             return 0;
         }
+
         return round(($this->achieved / $this->target) * 100, 2);
     }
 
@@ -128,6 +134,7 @@ class Task extends Model
         if ($this->budget == 0) {
             return 0;
         }
+
         return round(($this->spent / $this->budget) * 100, 2);
     }
 

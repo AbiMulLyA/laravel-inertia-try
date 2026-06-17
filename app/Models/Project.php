@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Project Model
- * 
+ *
  * Example model for data with relationships.
  * Demonstrates: BelongsTo parent, HasMany children, status field, date range.
  */
@@ -42,7 +42,9 @@ class Project extends Model
 
     // Status constants
     public const STATUS_DRAFT = 'draft';
+
     public const STATUS_ACTIVE = 'active';
+
     public const STATUS_COMPLETED = 'completed';
 
     public const STATUSES = [
@@ -93,6 +95,7 @@ class Project extends Model
         if ($this->budget == 0) {
             return 0;
         }
+
         return round(($this->spent / $this->budget) * 100, 2);
     }
 
@@ -107,6 +110,7 @@ class Project extends Model
         if ($tasks->isEmpty()) {
             return 0;
         }
+
         return round($tasks->avg('progress'), 2);
     }
 

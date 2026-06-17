@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * DashboardService
- * 
+ *
  * Provides dashboard statistics and analytics.
  * Uses caching for better performance with large datasets.
  */
@@ -38,7 +38,7 @@ class DashboardService
     /**
      * Get statistics per category with detailed breakdown
      */
-    public function getStatisticsPerCategory(int $year = null): Collection
+    public function getStatisticsPerCategory(?int $year = null): Collection
     {
         $year = $year ?? now()->year;
         $cacheKey = "statistics_category_{$year}";
@@ -53,12 +53,12 @@ class DashboardService
                 ->withSum([
                     'projects as total_budget' => function ($query) use ($year) {
                         $query->where('year', $year);
-                    }
+                    },
                 ], 'budget')
                 ->withSum([
                     'projects as total_spent' => function ($query) use ($year) {
                         $query->where('year', $year);
-                    }
+                    },
                 ], 'spent')
                 ->get()
                 ->map(function ($category) {
@@ -121,6 +121,7 @@ class DashboardService
                 ->get()
                 ->map(function ($item) {
                     $item->priority_label = Task::PRIORITIES[$item->priority] ?? $item->priority;
+
                     return $item;
                 });
         });

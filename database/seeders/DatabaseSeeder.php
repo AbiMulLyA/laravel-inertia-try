@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * DatabaseSeeder
- * 
+ *
  * Seeds the database with sample data for development and testing.
  * Customize this seeder for your specific needs.
  */
@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('✓ ' . count($categories) . ' categories created');
+        $this->command->info('✓ '.count($categories).' categories created');
 
         // =============================================
         // 3. Create Sample Projects
@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
                 $budget = fake()->numberBetween(10000000, 500000000);
                 Project::create([
                     'category_id' => $categoryId,
-                    'code' => "PRJ-" . str_pad((($categoryId - 1) * 3) + $i, 3, '0', STR_PAD_LEFT),
+                    'code' => 'PRJ-'.str_pad((($categoryId - 1) * 3) + $i, 3, '0', STR_PAD_LEFT),
                     'name' => fake()->sentence(3),
                     'description' => fake()->paragraph(),
                     'year' => now()->year,
@@ -92,7 +92,7 @@ class DatabaseSeeder extends Seeder
 
                 Task::create([
                     'project_id' => $project->id,
-                    'code' => $project->code . '-T' . str_pad($i, 2, '0', STR_PAD_LEFT),
+                    'code' => $project->code.'-T'.str_pad($i, 2, '0', STR_PAD_LEFT),
                     'name' => fake()->sentence(4),
                     'description' => fake()->paragraph(),
                     'location' => fake()->city(),

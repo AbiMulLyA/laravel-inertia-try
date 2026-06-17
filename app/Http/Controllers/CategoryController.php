@@ -9,7 +9,7 @@ use Inertia\Response as InertiaResponse;
 
 /**
  * CategoryController
- * 
+ *
  * Example controller for master data CRUD operations.
  * Use this as a template for simple CRUD controllers.
  */
@@ -24,7 +24,7 @@ class CategoryController extends Controller
             ->with([
                 'projects' => function ($query) {
                     $query->select('id', 'category_id', 'budget', 'spent');
-                }
+                },
             ])
             ->orderBy('code')
             ->get()
@@ -89,7 +89,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:20|unique:categories,code,' . $category->id,
+            'code' => 'required|string|max:20|unique:categories,code,'.$category->id,
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'is_active' => 'boolean',

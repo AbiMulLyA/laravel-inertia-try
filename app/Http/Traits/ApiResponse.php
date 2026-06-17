@@ -9,11 +9,6 @@ trait ApiResponse
 {
     /**
      * Success response
-     *
-     * @param mixed $data
-     * @param string $message
-     * @param int $code
-     * @return JsonResponse
      */
     protected function successResponse(mixed $data = null, string $message = 'Success', int $code = 200): JsonResponse
     {
@@ -31,10 +26,6 @@ trait ApiResponse
 
     /**
      * Created response (201)
-     *
-     * @param mixed $data
-     * @param string $message
-     * @return JsonResponse
      */
     protected function createdResponse(mixed $data = null, string $message = 'Created successfully'): JsonResponse
     {
@@ -43,11 +34,6 @@ trait ApiResponse
 
     /**
      * Error response
-     *
-     * @param string $message
-     * @param int $code
-     * @param array|null $errors
-     * @return JsonResponse
      */
     protected function errorResponse(string $message, int $code = 400, ?array $errors = null): JsonResponse
     {
@@ -65,10 +51,6 @@ trait ApiResponse
 
     /**
      * Paginated response
-     *
-     * @param LengthAwarePaginator $paginator
-     * @param string $message
-     * @return JsonResponse
      */
     protected function paginatedResponse(LengthAwarePaginator $paginator, string $message = 'Data retrieved successfully'): JsonResponse
     {
@@ -87,9 +69,6 @@ trait ApiResponse
 
     /**
      * Not found response
-     *
-     * @param string $message
-     * @return JsonResponse
      */
     protected function notFoundResponse(string $message = 'Resource not found'): JsonResponse
     {
@@ -98,9 +77,6 @@ trait ApiResponse
 
     /**
      * Unauthorized response
-     *
-     * @param string $message
-     * @return JsonResponse
      */
     protected function unauthorizedResponse(string $message = 'Unauthenticated'): JsonResponse
     {
@@ -109,9 +85,6 @@ trait ApiResponse
 
     /**
      * Forbidden response
-     *
-     * @param string $message
-     * @return JsonResponse
      */
     protected function forbiddenResponse(string $message = 'Forbidden'): JsonResponse
     {
@@ -120,9 +93,6 @@ trait ApiResponse
 
     /**
      * Conflict response
-     *
-     * @param string $message
-     * @return JsonResponse
      */
     protected function conflictResponse(string $message): JsonResponse
     {
@@ -131,10 +101,6 @@ trait ApiResponse
 
     /**
      * Validation error response
-     *
-     * @param array $errors
-     * @param string $message
-     * @return JsonResponse
      */
     protected function validationErrorResponse(array $errors, string $message = 'Validation error'): JsonResponse
     {

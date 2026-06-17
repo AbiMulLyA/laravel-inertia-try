@@ -6,11 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Categories Table Migration
- * 
+ *
  * Example migration for master data / lookup tables.
  * Simple structure with code, name, and active status.
  */
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {

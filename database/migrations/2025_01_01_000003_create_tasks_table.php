@@ -6,11 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Tasks Table Migration
- * 
+ *
  * Example migration for full CRUD with progress tracking.
  * Demonstrates: multiple statuses, progress percentage, priority, rich metadata.
  */
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {

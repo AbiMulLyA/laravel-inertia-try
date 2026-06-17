@@ -3,6 +3,7 @@ import '../css/app.css';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import type { ResolvedComponent } from '@inertiajs/react';
+import { AppErrorBoundary } from './Components/ErrorBoundary';
 import { ThemeProvider } from './Contexts/ThemeContext';
 import { DeferredCacheProvider } from './Contexts/DeferredCacheContext';
 
@@ -26,11 +27,13 @@ createInertiaApp({
     
     setup({ el, App, props }) {
         const AppWithProviders = (
-            <ThemeProvider>
-                <DeferredCacheProvider>
-                    <App {...props} />
-                </DeferredCacheProvider>
-            </ThemeProvider>
+            <AppErrorBoundary>
+                <ThemeProvider>
+                    <DeferredCacheProvider>
+                        <App {...props} />
+                    </DeferredCacheProvider>
+                </ThemeProvider>
+            </AppErrorBoundary>
         );
 
         if (import.meta.env.SSR) {

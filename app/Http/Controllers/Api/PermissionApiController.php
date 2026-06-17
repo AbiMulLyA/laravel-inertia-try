@@ -103,6 +103,7 @@ class PermissionApiController extends Controller
      * @authenticated
      *
      * @urlParam permission int required The permission ID. Example: 1
+     *
      * @bodyParam name string required Unique permission name. Example: users.export
      * @bodyParam display_name string required Display name. Example: Export Users
      * @bodyParam description string optional Description. Example: Allows exporting users to CSV
@@ -116,7 +117,7 @@ class PermissionApiController extends Controller
     public function update(Request $request, Permission $permission): JsonResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:100', 'unique:permissions,name,' . $permission->id],
+            'name' => ['required', 'string', 'max:100', 'unique:permissions,name,'.$permission->id],
             'display_name' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:500'],
             'group' => ['required', 'string', 'max:50'],
