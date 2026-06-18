@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Media\MediaController;
+use App\Http\Controllers\Media\TemporaryUploadController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -69,6 +71,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
+
+    // ================================================
+    // Media Attachments
+    // ================================================
+    Route::get('/media/{media}/download', [MediaController::class, 'download'])->name('media.download');
+    Route::delete('/media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
+    Route::post('/media/temp', [TemporaryUploadController::class, 'store'])->name('media.temp.store');
+    Route::delete('/media/temp/{temporaryUpload}', [TemporaryUploadController::class, 'destroy'])->name('media.temp.destroy');
 });
 
 require __DIR__.'/auth.php';

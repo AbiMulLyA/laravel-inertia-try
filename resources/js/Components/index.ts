@@ -22,5 +22,9 @@ export { default as FormTextarea } from './Form/FormTextarea';
 export { default as FormSection } from './Form/FormSection';
 export { default as FormCard } from './Form/FormCard';
 
+// Upload Components
+export { default as FileUploadField } from './Upload/FileUploadField';
+export type { ExistingAttachment, TemporaryAttachment, UploadCategoryConfig } from './Upload/FileUploadField';
+
 // Loading Components
 export { Shimmer } from './Shimmer';

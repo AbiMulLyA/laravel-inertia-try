@@ -1,7 +1,9 @@
 import AppLayout from '@/Layouts/AppLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
-import { FormInput, FormSelect, FormTextarea, FormCard } from '@/Components';
+import { FileUploadField, FormInput, FormSelect, FormTextarea, FormCard } from '@/Components';
+import type { ExistingAttachment, TemporaryAttachment, UploadCategoryConfig } from '@/Components';
+import { useState } from 'react';
 
 interface Category {
     id: number;
@@ -35,6 +37,7 @@ interface Task {
     start_date: string | null;
     end_date: string | null;
     notes: string | null;
+    attachments?: ExistingAttachment[];
 }
 
 interface Props {
@@ -42,6 +45,7 @@ interface Props {
     projects: Project[];
     statuses: Record<string, string>;
     priorities: Record<string, string>;
+    uploadCategories: UploadCategoryConfig[];
 }
 
 /**
@@ -50,10 +54,12 @@ interface Props {
  * Example of a comprehensive form with multiple sections.
  * UI Pattern: Multi-section form with all field types.
  */
-export default function TaskForm({ task, projects, statuses, priorities }: Props) {
+export default function TaskForm({ task, projects, statuses, priorities, uploadCategories }: Props) {
     const isEdit = !!task;
+    const [temporaryAttachments, setTemporaryAttachmentsState] = useState<TemporaryAttachment[]>([]);
 
-    const { data, setData, post, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
+        _method: isEdit ? 'put' : '',
         project_id: task?.project_id?.toString() ?? '',
         code: task?.code ?? '',
         name: task?.name ?? '',
@@ -70,14 +76,21 @@ export default function TaskForm({ task, projects, statuses, priorities }: Props
         start_date: task?.start_date ?? '',
         end_date: task?.end_date ?? '',
         notes: task?.notes ?? '',
+        attachments: [] as File[],
+        temporary_upload_ids: [] as number[],
     });
+
+    const setTemporaryAttachments = (attachments: TemporaryAttachment[]) => {
+        setTemporaryAttachmentsState(attachments);
+        setData('temporary_upload_ids', attachments.map((attachment) => attachment.id));
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isEdit) {
-            put(`/tasks/${task.id}`);
+            post(`/tasks/${task.id}`, { forceFormData: true });
         } else {
-            post('/tasks');
+            post('/tasks', { forceFormData: true });
         }
     };
 
@@ -274,6 +287,28 @@ export default function TaskForm({ task, projects, statuses, priorities }: Props
                                     onChange={(e) => setData('notes', e.target.value)}
                                     rows={3}
                                     placeholder="Additional notes..."
+                                />
+                            </div>
+                        )}
+
+                        {uploadCategories.length > 0 && (
+                            <div className="border-t border-gray-100 dark:border-gray-700 pt-6 space-y-4">
+                                <div>
+                                    <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">Attachments</h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Reusable upload module example for task attachments.</p>
+                                </div>
+
+                                <FileUploadField
+                                    label=""
+                                    mode="immediate"
+                                    categories={uploadCategories}
+                                    files={data.attachments}
+                                    onFilesChange={(files) => setData('attachments', files)}
+                                    temporaryFiles={temporaryAttachments}
+                                    onTemporaryFilesChange={setTemporaryAttachments}
+                                    existingFiles={task?.attachments ?? []}
+                                    maxFiles={uploadCategories[0]?.max_files ?? 10}
+                                    error={errors.attachments as string | undefined}
                                 />
                             </div>
                         )}

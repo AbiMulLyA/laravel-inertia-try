@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Task;
+use App\Services\Upload\UploadManager;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
@@ -115,13 +116,14 @@ class TaskController extends Controller
             'projects' => $projects,
             'statuses' => Task::STATUSES,
             'priorities' => Task::PRIORITIES,
+            'uploadCategories' => app(UploadManager::class)->publicConfig(['document', 'image']),
         ]);
     }
 
     /**
      * Store new task
      */
-    public function store(Request $request)
+    public function store(Request $request, UploadManager $uploadManager)
     {
         $validated = $request->validate([
             'project_id' => 'required|exists:projects,id',
@@ -136,9 +138,30 @@ class TaskController extends Controller
             'priority' => 'required|in:low,medium,high',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'attachment_category' => 'nullable|string',
+            'attachments' => 'nullable|array',
+            'attachments.*' => 'file',
+            'temporary_upload_ids' => 'nullable|array',
+            'temporary_upload_ids.*' => 'integer|exists:temporary_uploads,id',
         ]);
 
-        Task::create($validated);
+        $attachments = $request->file('attachments', []);
+        $temporaryUploadIds = $validated['temporary_upload_ids'] ?? [];
+        unset($validated['attachment_category'], $validated['attachments'], $validated['temporary_upload_ids']);
+
+        $task = Task::create($validated);
+
+        if ($attachments) {
+            $uploadManager->uploadManyForModel(
+                $task,
+                is_array($attachments) ? $attachments : [$attachments],
+                $request->input('attachment_category', 'document'),
+                'attachments',
+                $request->user()?->id,
+            );
+        }
+
+        $uploadManager->attachTemporaryUploads($task, $temporaryUploadIds, 'attachments', $request->user()?->id);
 
         return redirect()
             ->route('tasks.index')
@@ -167,18 +190,24 @@ class TaskController extends Controller
             ->orderBy('name')
             ->get();
 
+        $task->load('mediaAttachments');
+
         return Inertia::render('Tasks/Form', [
-            'task' => $task,
+            'task' => [
+                ...$task->toArray(),
+                'attachments' => $task->mediaForFrontend('attachments'),
+            ],
             'projects' => $projects,
             'statuses' => Task::STATUSES,
             'priorities' => Task::PRIORITIES,
+            'uploadCategories' => app(UploadManager::class)->publicConfig(['document', 'image']),
         ]);
     }
 
     /**
      * Update task
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Task $task, UploadManager $uploadManager)
     {
         $validated = $request->validate([
             'project_id' => 'required|exists:projects,id',
@@ -197,9 +226,30 @@ class TaskController extends Controller
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'notes' => 'nullable|string',
+            'attachment_category' => 'nullable|string',
+            'attachments' => 'nullable|array',
+            'attachments.*' => 'file',
+            'temporary_upload_ids' => 'nullable|array',
+            'temporary_upload_ids.*' => 'integer|exists:temporary_uploads,id',
         ]);
 
+        $attachments = $request->file('attachments', []);
+        $temporaryUploadIds = $validated['temporary_upload_ids'] ?? [];
+        unset($validated['attachment_category'], $validated['attachments'], $validated['temporary_upload_ids']);
+
         $task->update($validated);
+
+        if ($attachments) {
+            $uploadManager->uploadManyForModel(
+                $task,
+                is_array($attachments) ? $attachments : [$attachments],
+                $request->input('attachment_category', 'document'),
+                'attachments',
+                $request->user()?->id,
+            );
+        }
+
+        $uploadManager->attachTemporaryUploads($task, $temporaryUploadIds, 'attachments', $request->user()?->id);
 
         return redirect()
             ->route('tasks.index')

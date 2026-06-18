@@ -67,6 +67,10 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names=server,queue,vite"
         ],
+        "dev:octane": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185\" \"php artisan octane:start --server=frankenphp --watch --caddyfile=config/octane/Caddyfile\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names=octane,queue,vite"
+        ],
         "test": [
             "@php artisan test"
         ],
