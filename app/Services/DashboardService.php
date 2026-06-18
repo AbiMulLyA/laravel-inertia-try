@@ -17,12 +17,16 @@ use Illuminate\Support\Facades\DB;
  */
 class DashboardService
 {
+    private const DEFAULT_CACHE_TTL = [300, 1800];
+
+    private const SHORT_CACHE_TTL = [120, 900];
+
     /**
      * Get overview statistics
      */
     public function getOverview(): array
     {
-        return Cache::remember('dashboard_overview', 1800, function () {
+        return Cache::flexible('dashboard_overview', self::DEFAULT_CACHE_TTL, function () {
             return [
                 'total_categories' => Category::active()->count(),
                 'total_projects' => Project::active()->count(),
@@ -43,7 +47,7 @@ class DashboardService
         $year = $year ?? now()->year;
         $cacheKey = "statistics_category_{$year}";
 
-        return Cache::remember($cacheKey, 1800, function () use ($year) {
+        return Cache::flexible($cacheKey, self::DEFAULT_CACHE_TTL, function () use ($year) {
             return Category::active()
                 ->withCount([
                     'projects as total_projects' => function ($query) use ($year) {
@@ -82,7 +86,7 @@ class DashboardService
      */
     public function getTaskProgress(): Collection
     {
-        return Cache::remember('task_progress', 900, function () {
+        return Cache::flexible('task_progress', self::SHORT_CACHE_TTL, function () {
             return DB::table('tasks')
                 ->join('projects', 'tasks.project_id', '=', 'projects.id')
                 ->join('categories', 'projects.category_id', '=', 'categories.id')
@@ -107,7 +111,7 @@ class DashboardService
      */
     public function getTasksByPriority(): Collection
     {
-        return Cache::remember('tasks_by_priority', 1800, function () {
+        return Cache::flexible('tasks_by_priority', self::DEFAULT_CACHE_TTL, function () {
             return DB::table('tasks')
                 ->select(
                     'priority',

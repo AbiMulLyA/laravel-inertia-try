@@ -1,8 +1,8 @@
 # Kominfo Laravel Inertia Base
 
-A production-ready template for building modern web applications with **Laravel 12**, **React 19**, **TypeScript**, and **Inertia.js**.
+A production-ready template for building modern web applications with **Laravel 13**, **React 19**, **TypeScript**, and **Inertia.js**.
 
-![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat&logo=laravel&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=flat&logo=laravel&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.x-61DAFB?style=flat&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
@@ -21,7 +21,7 @@ A production-ready template for building modern web applications with **Laravel 
 
 ### Prerequisites
 
-- PHP 8.2+
+- PHP 8.3+
 - Node.js 18+
 - PostgreSQL (or MySQL)
 - Composer
@@ -201,14 +201,18 @@ curl http://localhost:8000/api/v1/auth/user \
 
 | Layer    | Technology                |
 | -------- | ------------------------- |
-| Backend  | Laravel 12, PHP 8.2       |
+| Backend  | Laravel 13, PHP 8.3+      |
 | Frontend | React 19, TypeScript      |
-| Bridge   | Inertia.js 2              |
+| Bridge   | Inertia.js 3              |
 | Styling  | Tailwind CSS 4            |
-| Build    | Vite 7                    |
+| Build    | Vite 8                    |
 | Database | PostgreSQL / MySQL        |
 | Auth     | JWT (API) + Session (Web) |
 | Icons    | Lucide React              |
+
+## ⚡ Dashboard Cache
+
+Dashboard aggregate queries use Laravel 13's `Cache::flexible` stale-while-revalidate strategy. Cached dashboard data is served immediately during the stale window while Laravel refreshes it in the background, keeping dashboard pages responsive without changing the API response shape.
 
 ## 🛠️ Development
 

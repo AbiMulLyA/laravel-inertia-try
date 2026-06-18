@@ -24,6 +24,7 @@ Gunakan versi ini sebagai baseline project baru:
 - Octane server: FrankenPHP
 
 > Catatan: PHP `8.5` belum direkomendasikan untuk template ini karena beberapa dependency ekosistem spreadsheet masih membatasi kompatibilitas PHP `<8.5`.
+> Constraint Composer tetap gunakan `"php": "^8.3"` karena Laravel 13 mendukung PHP `8.3 - 8.5`; runtime CI/template saat ini direkomendasikan PHP `8.4` sampai seluruh dependency spreadsheet kompatibel penuh dengan PHP `8.5`.
 
 ## Stack Utama
 
@@ -288,6 +289,7 @@ Gunakan PHP `8.4` dan Node `22` di CI.
 
 - Pulse aktif sebagai monitoring dashboard ringan.
 - Redis sudah disiapkan via `predis/predis`, tetapi local default tetap database agar onboarding mudah.
+- Aggregate dashboard memakai `Cache::flexible` untuk pola stale-while-revalidate: default `[300, 1800]` dan short `[120, 900]`. Gunakan pola ini untuk data ringkasan yang mahal dihitung tetapi toleran terhadap stale data singkat.
 - Horizon belum dipasang karena stable release yang kompatibel Laravel 13 belum tersedia saat template ini dibuat. Tambahkan Horizon saat package stable kompatibel Laravel 13 sudah rilis.
 - Telescope belum dipasang karena stable release Laravel 13 belum tersedia saat template ini dibuat. Tambahkan Telescope hanya untuk local/dev setelah release kompatibel tersedia.
 - Untuk production, jalankan Octane dengan FrankenPHP dan aktifkan Redis untuk cache, session, dan queue.
